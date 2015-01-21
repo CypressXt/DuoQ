@@ -1,0 +1,95 @@
+/*------------------------------------------------------------------------------
+/                         Global style                                         
+------------------------------------------------------------------------------*/
+
+html,body {
+	margin:0;
+	padding:0;
+	width: 100%;
+	font-family: "Open sans";
+	background: url(https://lh6.googleusercontent.com/ChvtzIed2CwdxpZ2SPH8oCmAWcLFQdl3Av6RZQ0eD1g=w9999-no);
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-size: cover;
+}
+
+body{
+	margin-top: 50px;
+}
+
+table{
+	margin-bottom: 25px;
+}
+
+th{
+	color: #ffffff;
+	background-color:#333 !important;
+}
+
+.form-container{
+	padding: 1em;
+	margin-top: 1em;
+	max-width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: rgba(255, 255, 255, 0.980392);
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+}
+
+form{
+	margin-left: auto;
+	margin-right: auto;
+	padding: 15px;
+}
+
+.form-control{
+	-webkit-background-clip: border-box;
+	-webkit-background-origin: padding-box;
+	-webkit-background-size: auto;
+	background-attachment: scroll;
+	background-clip: border-box;
+	background-color: rgba(0, 0, 0, 0);
+	background-image: none;
+	background-origin: padding-box;
+	background-size: auto;
+	border-bottom-color: rgb(51, 122, 183);
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-left-color: rgb(109, 119, 129);
+	border-left-style: none;
+	border-left-width: 0px;
+	border-right-color: rgb(109, 119, 129);
+	border-right-style: none;
+	border-right-width: 0px;
+	border-top-color: rgb(109, 119, 129);
+	border-top-style: none;
+	border-top-width: 0px;
+	color: rgb(109, 119, 129);
+	display: inline-block;
+	font-size: 16px;
+	height: 18px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+	outline-color: rgb(109, 119, 129);
+	outline-style: none;
+	outline-width: 0px;
+	padding-bottom: 20px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 20px;
+	border-radius: 0px;
+	box-shadow: none;
+
+	
+}
+
+.form-control:focus{
+	box-shadow: none;
+}
+
