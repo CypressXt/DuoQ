@@ -11,7 +11,10 @@
 		<%= f.password_field :password, class: "form-control", :placeholder => "Password"  %>
 		</div>
 		<div class="form-group">
-		<%= f.submit %> 
+			<input class="form-control" id="app_user_password_confirmation" name="password_confirmation" placeholder="Password confirmation" type="password">
+		</div>
+		<div class="form-group">
+		<%= f.submit :class => 'btn btn-info' %> 
 		</div>
 	<% end %>
 </div>
