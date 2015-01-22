@@ -1,5 +1,8 @@
 <div class="form-container">
 	<h1>Register</h1>
+	<% flash.each do |name, msg| -%>
+      <%= content_tag :div, msg, class: name %>
+    <% end -%>
 	<%= form_for @user, html: {class: "form-horizontal"} do |f| %>
 		<div class="form-group">
 		<%= f.text_field :username, class: "form-control" , :placeholder => "Username" %>

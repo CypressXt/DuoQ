@@ -11,10 +11,15 @@ class AppUsersController < ApplicationController
 	def create
 		@user=AppUser.new(user_params)
 		@user.attributes = {mailConfirmed: false}
+		salt = BCrypt::Engine.generate_salt
+		hashed_password = Digest::SHA1.hexdigest(@user[:password])
+		@user.attributes = {password: hashed_password}
 		if @user.save
-			redirect_to root_path
+			flash[:notice] = "Your account has been successfully created !"
+			redirect_to new_app_user_path
 		else
-			render 'new'
+			flash[:notice] = "Failed to create your account"
+			redirect_to new_app_user_path
 		end
 	end
 end
