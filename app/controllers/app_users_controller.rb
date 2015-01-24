@@ -1,7 +1,7 @@
 class AppUsersController < ApplicationController
 
 	def user_params
-		params.required(:app_user).permit(:username, :email, :password, :password_confirmation)
+		params.require(:app_user).permit(:username, :email, :password, :password_confirmation)
 	end
 
 	def new
@@ -15,7 +15,7 @@ class AppUsersController < ApplicationController
 		@user.attributes = {password: hashed_password}
 		if @user.save
 			flash[:notice] = "Your account has been successfully created !"
-			redirect_to new_app_user_path
+			redirect_to @user
 		else
 			flash[:notice] = "Failed to create your account"
 			redirect_to new_app_user_path
