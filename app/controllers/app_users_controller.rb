@@ -12,13 +12,13 @@ class AppUsersController < ApplicationController
 		@user=AppUser.new(user_params)
 		@user.attributes = {mailConfirmed: false}
 		hashed_password = Digest::SHA1.hexdigest(@user[:password])
+		hashed_password_conf = Digest::SHA1.hexdigest(user_params[:password_confirmation])
 		@user.attributes = {password: hashed_password}
+		@user.attributes = {password_confirmation: hashed_password_conf}
 		if @user.save
-			flash[:notice] = "Your account has been successfully created !"
 			redirect_to @user
 		else
-			flash[:notice] = "Failed to create your account"
-			redirect_to new_app_user_path
+			render 'new'
 		end
 	end
 end

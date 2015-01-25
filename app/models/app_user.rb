@@ -4,7 +4,7 @@ class AppUser < ActiveRecord::Base
 	validates :username, :email, :password, presence: true
 	validates :password, confirmation: true
 	validates :username, length: { in: 4..20 }
-	validates :password, length: { in: 6..30 }
+	validates :email, :username, uniqueness: true
 
 	def authenticate(email, password)
 		user = find_by_email(email)
