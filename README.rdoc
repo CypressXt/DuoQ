@@ -1,3 +1,7 @@
+= DuoQ
+Advanced premade match management for League Of Legends
+
+
 == README
 
 This README would normally document whatever steps are necessary to get the
