@@ -6,10 +6,11 @@ class AppUser < ActiveRecord::Base
 	validates :username, length: { in: 4..20 }
 	validates :email, :username, uniqueness: true
 
-	def authenticate(email, password)
-		user = find_by_email(email)
-		if user && user.password == Digest::SHA1.hexdigest(password)
-			user
+
+
+	def authenticate(pass)
+		if pass == password
+			true
 		end
 	end
 end

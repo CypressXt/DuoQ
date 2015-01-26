@@ -1,0 +1,14 @@
+<div class="row">
+	<div class="col-md-6 col-md-offset-3 whiteContent">
+		<table class="softTable">
+			<tr>
+				<td>
+					<%= image_tag @gravatar_img_url, class: "img-circle", size: "80x80" %>
+				</td>
+				<td>
+					<h2>Welcome <%= current_logged_user.username %></h2>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>

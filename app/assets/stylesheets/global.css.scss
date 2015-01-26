@@ -3,19 +3,12 @@
 ------------------------------------------------------------------------------*/
 
 html,body {
-	margin:0;
-	padding:0;
-	width: 100%;
 	font-family: "Open sans";
 	background: url(https://lh6.googleusercontent.com/ChvtzIed2CwdxpZ2SPH8oCmAWcLFQdl3Av6RZQ0eD1g=w9999-no);
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	background-position: center top;
 	background-size: cover;
-}
-
-body{
-	margin-top: 50px;
 }
 
 table{
@@ -27,23 +20,14 @@ th{
 	background-color:#333 !important;
 }
 
-.form-container{
-	padding: 1em;
-	margin-top: 1em;
-	max-width: 600px;
-	margin-left: auto;
-	margin-right: auto;
-	background-color: rgba(255, 255, 255, 0.980392);
-	border-bottom-left-radius: 2px;
-	border-bottom-right-radius: 2px;
-	border-top-left-radius: 2px;
-	border-top-right-radius: 2px;
-}
-
 form{
 	margin-left: auto;
 	margin-right: auto;
 	padding: 15px;
+}
+
+.global_wrapper{
+	margin-top: 60px;
 }
 
 .form-control{
@@ -91,5 +75,18 @@ form{
 
 .form-control:focus{
 	box-shadow: none;
+}
+
+.whiteContent{
+	padding: 1em;
+	background-color: rgba(255, 255, 255, 0.980392);
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+}
+
+.softTable{
+	width: 100%;
 }
 
