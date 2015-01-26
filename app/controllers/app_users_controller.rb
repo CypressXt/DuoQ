@@ -6,13 +6,13 @@ class AppUsersController < ApplicationController
 
 
 	def show
-		@logged_user=current_logged_user
-		default_url = "#{root_url}images/guest.png"
-		gravatar_id = Digest::MD5.hexdigest(@logged_user.email.downcase) 
-		@gravatar_img_url= "http://gravatar.com/avatar/#{gravatar_id}.png?s=800&d=#{CGI.escape(default_url)}"
+		if (logged_in? && current_logged_user.id == params[:id].to_i)
+			@user=current_logged_user
+		else
+			@user=AppUser.find_by(id: params[:id].to_i)
+		end
+		@gravatar_img_url = gravatar_url(@user)
 	end
-
-
 
 	def new
 		@user=AppUser.new
@@ -31,5 +31,23 @@ class AppUsersController < ApplicationController
 		else
 			render 'new'
 		end
+	end
+
+	def update
+		@user = AppUser.find(params[:id])
+		if @user.update_attributes(user_params)
+			@gravatar_img_url = gravatar_url(@user)
+			render 'show'
+		else
+			@gravatar_img_url = gravatar_url(@user)
+			render 'show'
+		end
+	end
+
+	def gravatar_url(user)
+		default_url = "#{root_url}images/guest.png"
+		gravatar_id = Digest::MD5.hexdigest(user.email.downcase) 
+		gravatar_img_url= "http://gravatar.com/avatar/#{gravatar_id}.png?s=800&d=#{CGI.escape(default_url)}"
+		return gravatar_img_url
 	end
 end
