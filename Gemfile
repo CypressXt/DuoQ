@@ -39,4 +39,3 @@ gem 'spring',        group: :development
 # gem 'debugger', group: [:development, :test]
 
 gem 'bcrypt-ruby', :require => 'bcrypt'
-gem 'pg'
