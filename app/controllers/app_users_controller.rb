@@ -27,6 +27,7 @@ class AppUsersController < ApplicationController
 		@user.attributes = {password_confirmation: hashed_password_conf}
 		if @user.save
 			log_in_session @user
+			AppUserMailer.confirmation(@user).deliver
 			redirect_to @user
 		else
 			render 'new'

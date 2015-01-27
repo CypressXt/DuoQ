@@ -34,4 +34,22 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Email settings
+  config.action_mailer.default_url_options = { :host => 'cypressxt.net' }
+  # ActionMailer Config
+  # Setup for production - deliveries, no errors raised
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default :charset => "utf-8"
+  config.action_mailer.smtp_settings = {
+    :address   => Rails.application.secrets.mail_smtp_srv,
+    :port      => Rails.application.secrets.mail_smtp_port,
+    :user_name => Rails.application.secrets.mail_user,
+    :password  => Rails.application.secrets.mail_user_pwd,
+    :authentication => 'login',
+    :ssl => true
+  }
+
 end
