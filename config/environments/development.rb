@@ -48,7 +48,7 @@ Rails.application.configure do
     :port      => Rails.application.secrets.mail_smtp_port,
     :user_name => Rails.application.secrets.mail_user,
     :password  => Rails.application.secrets.mail_user_pwd,
-    :authentication => 'login',
+    :authentication => 'plain',
     :ssl => true
   }
 
