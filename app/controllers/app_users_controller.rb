@@ -37,12 +37,36 @@ class AppUsersController < ApplicationController
 	def update
 		@user = AppUser.find(params[:id])
 		if @user.update_attributes(user_params)
+			hashed_password = Digest::SHA1.hexdigest(@user[:password])
+			hashed_password_conf = Digest::SHA1.hexdigest(user_params[:password_confirmation])
+			@user.update_attribute(:password, hashed_password)
+			@user.update_attribute(:password_confirmation, hashed_password_conf)
 			@gravatar_img_url = gravatar_url(@user)
 			render 'show'
 		else
 			@gravatar_img_url = gravatar_url(@user)
 			render 'show'
 		end
+	end
+
+	def confirmation
+		@user = AppUser.find_by(id: params[:id])
+		if @user
+			@validationResult="Hello "+@user.username
+			if params[:token] == Digest::SHA1.hexdigest(@user.username+@user.email+@user.created_at.to_s).to_s
+				if @user.mailConfirmed
+					@validation_info="Your email has already been validated, genius !"
+				else
+					@validation_info="Your email has been validated, thanks !"
+					@user.update_attribute(:mailConfirmed, true)
+				end
+			else
+				@validation_info="Your email cannot be validated !"
+			end
+		else
+			@validationResult="Wrong link, nice try !"
+		end
+		render 'confirmation'
 	end
 
 	def gravatar_url(user)

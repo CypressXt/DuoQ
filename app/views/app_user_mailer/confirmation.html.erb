@@ -735,7 +735,7 @@ body.outlook p {
 									</tr>
 									<tr>
 										<td style="padding:1em; padding-left:2em;">
-											<a href="<%= @validationUrl %>"><%= @validationUrl %></a>
+											<%= link_to "confirmation link", confirmation_url(:id => @user.id ,:token => Digest::SHA1.hexdigest(@user.username+@user.email+@user.created_at.to_s).to_s) %>
 										</td>
 									</tr>
 									<tr>

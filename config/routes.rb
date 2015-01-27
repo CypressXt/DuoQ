@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :app_users
+  get '/app_users/:id/validate/:token' => 'app_users#confirmation' , as: :confirmation
   root 'welcome#index'
   get 'login' => 'sessions#new'
   post 'login' => 'sessions#create'
