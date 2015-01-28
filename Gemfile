@@ -39,3 +39,8 @@ gem 'spring',        group: :development
 # gem 'debugger', group: [:development, :test]
 
 gem 'bcrypt-ruby', :require => 'bcrypt'
+
+group :production do
+  # gems specifically for Heroku go here
+  gem "pg"
+end
