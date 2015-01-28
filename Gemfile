@@ -21,9 +21,6 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
-# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-gem 'spring',        group: :development
-
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -39,12 +36,18 @@ gem 'spring',        group: :development
 gem 'bcrypt-ruby', :require => 'bcrypt'
 
 group :development do
- # Use sqlite3 as the database for Active Record
- gem 'sqlite3', group: :development
+	# Use sqlite3 as the database for Active Record
+	gem 'sqlite3'
+	gem 'capistrano'
+	gem 'capistrano-rails'
+	gem 'capistrano-rbenv', '~> 2.0', require: false
+	gem 'capistrano-ext'
+	gem 'capistrano-bundler'
+	# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+	gem 'spring'
 end
 
-
 group :production do
-  # gems specifically for Heroku go here
-  gem "pg"
+	# gems specifically for Heroku go here
+	gem "pg"
 end
