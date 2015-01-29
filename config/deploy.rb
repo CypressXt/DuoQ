@@ -23,7 +23,7 @@ set :repo_url, 'git@github.com:CypressXt/DuoQ.git'
 # set :pty, true
 
 # Default value for :linked_files is []
-# set :linked_files, fetch(:linked_files, []).push('config/database.yml')
+set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml')
 
 # Default value for linked_dirs is []
 # set :linked_dirs, fetch(:linked_dirs, []).push('bin', 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
@@ -34,15 +34,14 @@ set :repo_url, 'git@github.com:CypressXt/DuoQ.git'
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-namespace :deploy do
+	namespace :deploy do
 
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
-    end
-  end
-
+		after :restart, :clear_cache do
+			on roles(:web), in: :groups, limit: 3, wait: 10 do
+	      # Here we can do anything such as:
+	      # within release_path do
+	      #   execute :rake, 'cache:clear'
+	      # end
+	  end
+	end
 end
