@@ -12,9 +12,7 @@
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
             <ul class="nav navbar-nav">
                 <% if logged_in? %>
-                <li><a href="/lanes">Lanes</a></li>
-                <% else %>
-                <li><a href="/login">Lanes</a></li>
+                <li><a href="#">Teams</a></li>
                 <% end %>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -28,7 +26,7 @@
                     </ul>
                 </li>
                 <% else %>
-                <li><a href="/login"><span class="glyphicon glyphicon-user"></span> Account</a></li>
+                <li><a href="/login"><span class="glyphicon glyphicon-user"></span> Log in | register</a></li>
                 <% end %>
             </ul>
         </nav>

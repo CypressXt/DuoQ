@@ -8,4 +8,8 @@
 		</td>
 	</tr>
 </table>
-<%= render 'form_user_update' %>
+<% if (!@user.mailConfirmed) %>
+		<h5>Please <%= @user.username %>, confirm your email address</h6>
+<%= link_to 'send me an other mail', validation_path%>
+<% end %>
+<!--<%= render 'form_user_update' %>-->

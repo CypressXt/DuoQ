@@ -69,6 +69,16 @@ class AppUsersController < ApplicationController
 		render 'confirmation'
 	end
 
+	def resend_mail
+		@user = AppUser.find_by(id: params[:id])
+		if @user && !@user.mailConfirmed
+			@validationResult=@user.username
+			@validation_info="A new validation mail has been send to "+@user.email
+			AppUserMailer.confirmation(@user).deliver
+			render 'confirmation'
+		end
+	end
+
 	def gravatar_url(user)
 		default_url = "#{root_url}images/guest.png"
 		gravatar_id = Digest::MD5.hexdigest(user.email.downcase) 
