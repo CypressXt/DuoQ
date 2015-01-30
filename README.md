@@ -1,11 +1,11 @@
-= DuoQ
+# DuoQ
 Advanced premade match management for League Of Legends
 
 
-== Hosting
-=== Ngnix
+## Hosting
+### Ngnix
 
-====config file 
+#### Config file 
 ```
 upstream DuoQ {
   server unix:///tmp/DuoQ.sock;
@@ -36,9 +36,9 @@ server {
   }
 }
 ```
-=== Puma
+### Puma
 
-==== start puma 
+#### Start puma 
 startPuma.sh
 ```
 #!/bin/bash
@@ -48,7 +48,7 @@ cd /home/cypress/www/DuoQ/current
 bundle exec puma -e production -d -b unix:///tmp/DuoQ.sock
 ```
 
-==== restart puma
+#### Restart puma
 restartPuma.sh
 ```
 #!/bin/bash
