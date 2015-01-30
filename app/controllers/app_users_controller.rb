@@ -92,7 +92,7 @@ class AppUsersController < ApplicationController
 		if user && !user.mailConfirmed
 			AppUserMailer.confirmation(user).deliver
 		end
-		@message = { "success" => "A new mail has been send to "+user.email}
+		@message = { "success" => "A new mail has been sent to "+user.email}
 		render 'global_info'
 	end
 
