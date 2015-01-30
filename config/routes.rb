@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
-  resources :app_users
+  
+  resources :user, :controller => "app_users"
   get 'ask_new_password' => 'password_reset#new', as: :new_reset_password
   post 'new_password' => 'password_reset#create', as: :reset_password
-  get '/app_users/:id/validate/:token' => 'app_users#confirmation' , as: :confirmation
-  get '/app_users/:id/validate_once_again' => 'app_users#resend_mail' , as: :validation
+  get '/user/:id/validate/:token' => 'app_users#confirmation' , as: :confirmation
+  get '/user/:id/validate_once_again' => 'app_users#resend_mail' , as: :validation
   root 'welcome#index'
   get 'login' => 'sessions#new'
   post 'login' => 'sessions#create'
