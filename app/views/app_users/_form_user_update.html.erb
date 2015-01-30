@@ -8,7 +8,7 @@
 	</ul>
 </div>
 <% end %>
-<%= form_for @user, html: {class: "form-horizontal"} do |f| %>
+<%= form_for @user, url: {action: "update"},  html: {class: "form-horizontal"} do |f| %>
 <div class="form-group">
 	<%= f.label :username %>
 	<%= f.text_field :username, class: "form-control"  %>

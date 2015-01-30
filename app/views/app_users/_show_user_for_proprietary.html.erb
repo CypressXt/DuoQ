@@ -1,0 +1,14 @@
+<table class="softTable">
+	<tr>
+		<td style="width:90px;">
+			<%= image_tag @gravatar_img_url, class: "img-circle", size: "80x80" %>
+		</td>
+		<td style="width:100%; text-align:left;">
+			<h2>Hello <%= @user.username %></h2>
+		</td>
+	</tr>
+</table>
+<% if (!@user.mailConfirmed) %>
+		<h5>Please <%= @user.username %>, confirm your email address</h6>
+<%= link_to 'send me an other mail', validation_path%>
+<% end %>

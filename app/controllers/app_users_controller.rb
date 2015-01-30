@@ -50,7 +50,8 @@ class AppUsersController < ApplicationController
 			@user.update_attribute(:password, hashed_password)
 			@user.update_attribute(:password_confirmation, hashed_password_conf)
 			@gravatar_img_url = gravatar_url(@user)
-			render 'update'
+			@message = { "success" => "Your personal information has correctly been updated !"}
+			render 'global_info'
 		else
 			@gravatar_img_url = gravatar_url(@user)
 			render 'update'
