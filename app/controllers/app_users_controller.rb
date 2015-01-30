@@ -31,7 +31,7 @@ class AppUsersController < ApplicationController
 		@user.attributes = {password_confirmation: hashed_password_conf}
 		if @user.save
 			log_in_session @user
-			redirect_to user_path(@user.id)
+			redirect_to app_user_path(@user.id)
 		else
 			render 'new'
 		end

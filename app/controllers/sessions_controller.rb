@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
 		user = AppUser.find_by(email: params[:session][:email].downcase)
 		if user && user.authenticate(Digest::SHA1.hexdigest(params[:session][:password]))
 			log_in_session(user)
-			redirect_to user_path(user.id)
+			redirect_to app_user_path(user.id)
 		else
 			flash[:danger] = 'Invalid email and password combination'
 			render 'login'

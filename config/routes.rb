@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  
-  resources :user, :controller => "app_users"
+
+  resources :user, :as => :app_users, :controller => "app_users"
   get 'ask_new_password' => 'password_reset#new', as: :new_reset_password
   post 'new_password' => 'password_reset#create', as: :reset_password
   get '/user/:id/validate/:token' => 'app_users#confirmation' , as: :confirmation
