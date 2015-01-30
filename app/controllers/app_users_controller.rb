@@ -1,4 +1,8 @@
 class AppUsersController < ApplicationController
+	before_action :connected?, only: [:edit, :update, :send_mail]
+	before_action :proprietary?, only: [:edit]
+	after_action :send_mail, only: [:create]
+
 
 	def user_params
 		params.require(:app_user).permit(:username, :email, :password, :password_confirmation)
@@ -27,11 +31,15 @@ class AppUsersController < ApplicationController
 		@user.attributes = {password_confirmation: hashed_password_conf}
 		if @user.save
 			log_in_session @user
-			AppUserMailer.confirmation(@user).deliver
 			redirect_to @user
 		else
 			render 'new'
 		end
+	end
+
+	def edit
+		@user = current_logged_user
+		render 'update'
 	end
 
 	def update
@@ -42,10 +50,10 @@ class AppUsersController < ApplicationController
 			@user.update_attribute(:password, hashed_password)
 			@user.update_attribute(:password_confirmation, hashed_password_conf)
 			@gravatar_img_url = gravatar_url(@user)
-			render 'show'
+			render 'update'
 		else
 			@gravatar_img_url = gravatar_url(@user)
-			render 'show'
+			render 'update'
 		end
 	end
 
@@ -55,28 +63,37 @@ class AppUsersController < ApplicationController
 			@validationResult="Hello "+@user.username
 			if params[:token] == Digest::SHA1.hexdigest(@user.username+@user.email+@user.created_at.to_s).to_s
 				if @user.mailConfirmed
-					@validation_info="Your email has already been validated, genius !"
+					@message = { "info" => "Your email has already been validated, genius !"}
+					render 'global_info'
 				else
-					@validation_info="Your email has been validated, thanks !"
+					@message = { "success" => "Your email has been validated, thanks !"}
 					@user.update_attribute(:mailConfirmed, true)
+					render 'global_info'
 				end
 			else
-				@validation_info="Your email cannot be validated !"
+				@message = { "danger" => "Your email cannot be validated !"}
+				render 'global_info'
 			end
 		else
-			@validationResult="Wrong link, nice try !"
+			@message = { "danger" => "Dead link, nice try !"}
+			render 'global_info'
 		end
-		render 'confirmation'
+	end
+
+	def send_mail
+		user = current_logged_user
+		if user && !user.mailConfirmed
+			AppUserMailer.confirmation(user).deliver
+		end
 	end
 
 	def resend_mail
-		@user = AppUser.find_by(id: params[:id])
-		if @user && !@user.mailConfirmed
-			@validationResult=@user.username
-			@validation_info="A new validation mail has been send to "+@user.email
-			AppUserMailer.confirmation(@user).deliver
-			render 'confirmation'
+		user = current_logged_user
+		if user && !user.mailConfirmed
+			AppUserMailer.confirmation(user).deliver
 		end
+		@message = { "success" => "A new mail has been send to "+user.email}
+		render 'global_info'
 	end
 
 	def gravatar_url(user)
@@ -84,5 +101,18 @@ class AppUsersController < ApplicationController
 		gravatar_id = Digest::MD5.hexdigest(user.email.downcase) 
 		gravatar_img_url= "http://gravatar.com/avatar/#{gravatar_id}.png?s=800&d=#{CGI.escape(default_url)}"
 		return gravatar_img_url
+	end
+
+	def connected?
+		if !logged_in?
+			redirect_to login_path
+		end
+	end
+
+	def proprietary?
+		if (current_logged_user.id != params[:id].to_i ) 
+			@message = { "danger" => "You're not proprietary of this resource !"}
+			render 'global_info'
+		end
 	end
 end
