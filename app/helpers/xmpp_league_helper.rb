@@ -8,7 +8,7 @@ module XmppLeagueHelper
 
 	def connect_xmpp(token, sumId)
 		Jabber::debug = true
-		client = Jabber::Client::new(Jabber::JID::new("duoqterminal@pvp.net"))
+		client = Jabber::Client::new(Jabber::JID::new(Rails.application.secrets.xmpp_riot_account))
 		client.use_ssl = true;
 		client.connect("chat.euw1.lol.riotgames.com",5223)
 		client.auth(Rails.application.secrets.xmpp_riot_password)
