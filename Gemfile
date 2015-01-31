@@ -34,6 +34,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # gem 'debugger', group: [:development, :test]
 
 gem 'bcrypt-ruby', :require => 'bcrypt'
+gem 'xmpp4r'
 
 group :development do
 	# Use sqlite3 as the database for Active Record

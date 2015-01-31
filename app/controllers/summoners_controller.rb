@@ -1,0 +1,11 @@
+class SummonersController < ApplicationController
+
+
+	
+
+
+
+
+
+	
+end

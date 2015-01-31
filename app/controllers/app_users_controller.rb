@@ -100,7 +100,7 @@ class AppUsersController < ApplicationController
 	def gravatar_url(user)
 		default_url = "#{root_url}images/guest.png"
 		gravatar_id = Digest::MD5.hexdigest(user.email.downcase) 
-		gravatar_img_url= "http://gravatar.com/avatar/#{gravatar_id}.png?s=800&d=#{CGI.escape(default_url)}"
+		gravatar_img_url = "http://gravatar.com/avatar/#{gravatar_id}.png?s=800&d=#{CGI.escape(default_url)}"
 		return gravatar_img_url
 	end
 
