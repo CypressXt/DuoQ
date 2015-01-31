@@ -1,4 +1,5 @@
 class AppUser < ActiveRecord::Base
+	has_many :summoners
 	attr_accessor :password_confirmation
 
 	validates :username, :email, :password, :password_confirmation, presence: true

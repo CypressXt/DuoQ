@@ -1,0 +1,21 @@
+<div class="page-header">
+	<h2>Link League of Legends account</h2>
+</div>
+<% if @summoner.errors.any? %>
+<div id="error_explanation" class="text-danger">
+	<h5><%= pluralize(@summoner.errors.count, "error") %> canceled your registration:</h5>
+	<ul>
+		<% @summoner.errors.full_messages.each do |msg| %>
+		<li><%= msg %></li>
+		<% end %>
+	</ul>
+</div>
+<% end %>
+<%= form_tag app_user_summoners_path, class: "form-horizontal" , :method => :post do%>
+<div class="form-group">
+	<%= text_field_tag :summoner_token, "", class: 'form-control',  placeholder: 'Type your authentication key here'%>
+</div>
+<div class="form-group">
+	<%= submit_tag "Validate", :class => 'btn btn-info' %> 
+</div>
+<% end %>

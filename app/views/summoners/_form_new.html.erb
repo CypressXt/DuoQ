@@ -1,0 +1,34 @@
+<div class="page-header">
+	<h2>Link League of Legends account</h2>
+</div>
+<div class="alert alert-info">
+	<ul>
+		<li>
+			First, you need to be connected to the League of Legends launcher.
+		</li>
+		<li>
+			Then accept the friend request from "DuoQTerminal".
+		</li>
+		<li>
+			You should normaly recive your secret code by personnal message in the launcher.
+		</li>
+	</ul>
+</div>
+<% if @summoner.errors.any? %>
+<div id="error_explanation" class="text-danger">
+	<h5><%= pluralize(@summoner.errors.count, "error") %> canceled your registration:</h5>
+	<ul>
+		<% @summoner.errors.full_messages.each do |msg| %>
+		<li><%= msg %></li>
+		<% end %>
+	</ul>
+</div>
+<% end %>
+<%= form_for @summoner, url: {action: "create_token"} , html: {class: "form-horizontal"} do |f| %>
+<div class="form-group">
+	<%= f.text_field :name, class: "form-control" , :placeholder => "Type your summoner's name here" %>
+</div>
+<div class="form-group">
+	<%= f.submit "Link", :class => 'btn btn-info' %> 
+</div>
+<% end %>
