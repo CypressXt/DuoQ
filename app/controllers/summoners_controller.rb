@@ -1,7 +1,4 @@
 class SummonersController < ApplicationController
-	@@sumId
-	@@sumName
-
 
 	def summoner_params
 		params.require(:summoner).permit(:name, :id)
@@ -26,26 +23,25 @@ class SummonersController < ApplicationController
 	def create_token
 		@summoner = Summoner.new(summoner_params)
 		req = LolApiHelper.get_summoner_id_by_name(@summoner.name)
-		sumId = req.first[1]['id']
-		@@sumId=sumId
-		@@sumName=@summoner.name
-		puts "@@@@@@@@@@@@@@@@@@@@@ "+sumId.to_s
+		sumIdReq = req.first[1]['id']
+		flash[:sumId]=sumIdReq
+		flash[:sumName]=req.first[0]
 		token = ""
 		token = rand(36**25).to_s(36)
-		session[:sent_summoner_token]=token
-		client = XmppLeagueHelper.connect_xmpp(token, sumId)
-		XmppLeagueHelper.invite_xmpp(sumId,client)
+		flash[:sent_summoner_token]=token
+		client = XmppLeagueHelper.connect_xmpp(flash[:sent_summoner_token], flash[:sumId])
+		XmppLeagueHelper.invite_xmpp(flash[:sumId],client)
 	end
 
 	def create
-		if params[:summoner_token] == session[:sent_summoner_token]
-			summoner = Summoner.new({id: @@sumId, name: @@sumName, app_user_id: @user.id})
+		if params[:summoner_token] == flash[:sent_summoner_token]
+			summoner = Summoner.new({id: flash[:sumId].to_s, name: flash[:sumName].to_s, app_user_id: @user.id})
 			if summoner.save
 				@message = { "success" => "Your League of Legends account is now confirmed, thanks !"}
 				render 'global_info'
 			end
 		else
-			@message = { "danger" => "You send the wrong summoner's authentication key !"}
+			@message = { "danger" => "You send the wrong summoner's authentication key ! "+params[:summoner_token].to_s+" \n "+flash[:sent_summoner_token].to_s}
 			render 'global_info'
 		end
 	end
