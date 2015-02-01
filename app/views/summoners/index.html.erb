@@ -11,7 +11,7 @@
 			</tr>
 			<% @summoners.each do |summoner| %>
 			<tr>
-				<td><%= summoner.name %></td>
+				<td><%= summoner.name.capitalize %></td>
 				<td><%= summoner.id %></td>
 				<td>
 					<!--<%= link_to 'remove', [@user, summoner], method: :delete %>-->
