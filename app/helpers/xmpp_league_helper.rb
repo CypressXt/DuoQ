@@ -7,7 +7,7 @@ module XmppLeagueHelper
 
 
 	def connect_xmpp(token, sumId)
-		Jabber::debug = false
+		Jabber::debug = Rails.application.secrets.xmpp_debug
 		client = Jabber::Client::new(Jabber::JID::new(Rails.application.secrets.xmpp_riot_account))
 		client.use_ssl = true;
 		client.connect("chat.euw1.lol.riotgames.com",5223)
@@ -20,7 +20,7 @@ module XmppLeagueHelper
 			send_xmpp_message("sum"+sumId.to_s+"@pvp.net", " Hello\nI'm sending you your authentication key: \n"+token+"\nsee you ;)", client)
 		else
 			roster.add_subscription_callback do |item,pres|
-				if pres.type.to_s == "subscribed"
+				if pres.type.to_s == "subscribed" && pres.from.to_s == "sum"+sumId.to_s+"@pvp.net"
 					send_xmpp_message(pres.from.to_s, " Hello\nI'm sending you your authentication key: \n"+token+"\nsee you ;)", client)
 				end
 			end

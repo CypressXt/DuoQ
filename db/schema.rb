@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150131173833) do
+ActiveRecord::Schema.define(version: 20150203111502) do
 
   create_table "app_users", force: true do |t|
     t.datetime "created_at"
@@ -27,6 +27,9 @@ ActiveRecord::Schema.define(version: 20150131173833) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "app_user_id"
+    t.integer  "summonerLevel"
+    t.string   "summonerToken"
+    t.boolean  "validated"
   end
 
   add_index "summoners", ["app_user_id"], name: "index_summoners_on_app_user_id"

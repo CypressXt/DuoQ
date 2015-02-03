@@ -7,6 +7,10 @@
 				<% @message={} %>
 				<% end %>
 			<% end %>
+			<% if session[:previous_url] %>
+				</br>
+				<%= link_to "back", session[:previous_url], :class => 'btn btn-info' %>
+			<% end %>
 		</div>
 	</div>
 </div>

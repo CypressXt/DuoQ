@@ -1,16 +1,28 @@
 module LolApiHelper
 	require 'net/http'
+	require 'json'
 
 
 	def get_summoner_id_by_name(name)
-		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v1.4/summoner/by-name/"+name+"?api_key=b9e12604-3a32-44f1-b766-64028b22cbd7")	
-		summoner = JSON.parse(result)
-		return summoner
+		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v1.4/summoner/by-name/"+name+"?api_key="+Rails.application.secrets.riot_api_key.to_s)	
+		if result
+			summoner = JSON.parse(result).first[1]
+			summoner.delete("profileIconId")
+			summoner.delete("revisionDate")
+			return summoner
+		else
+			return result
+		end
 	end
 
 
 	def perform_request(url)
-		return Net::HTTP.get(URI.parse(URI.encode(url)))
+		resp = Net::HTTP.get_response(URI.parse(URI.encode(url)))
+		if resp.code.to_s == "200"
+			return resp.body
+		else
+			return nil
+		end
 	end
 
 	module_function :get_summoner_id_by_name, :perform_request
