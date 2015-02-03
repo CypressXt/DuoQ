@@ -13,15 +13,14 @@ module XmppLeagueHelper
 		client.connect("chat.euw1.lol.riotgames.com",5223)
 		client.auth(Rails.application.secrets.xmpp_riot_password)
 		client.send(Jabber::Presence.new(:chat, "<body><profileIcon>21</profileIcon><level>30</level><wins>+9000</wins><leaves>30</leaves><odinWins>11</odinWins><odinLeaves>1</odinLeaves><queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>GOLD</tier><rankedSoloRestricted>false</rankedSoloRestricted><rankedLeagueName /><rankedLeagueDivision /><rankedLeagueTier /><rankedLeagueQueue /><gameStatus>outOfGame</gameStatus><statusMsg /></body>"))
-		#@client.send(Jabber::Presence.new.set_type(:available))
 		roster = get_xmpp_friend_list(client)
 
 		if xmpp_friend_with?(sumId, roster)
-			send_xmpp_message("sum"+sumId.to_s+"@pvp.net", " Hello\nI'm sending you your authentication key: \n"+token+"\nsee you ;)", client)
+			send_xmpp_message("sum"+sumId.to_s+"@pvp.net", " Hi\nhere is your authentication key: \n"+token+"\n ", client)
 		else
 			roster.add_subscription_callback do |item,pres|
 				if pres.type.to_s == "subscribed" && pres.from.to_s == "sum"+sumId.to_s+"@pvp.net"
-					send_xmpp_message(pres.from.to_s, " Hello\nI'm sending you your authentication key: \n"+token+"\nsee you ;)", client)
+					send_xmpp_message(pres.from.to_s, " Hi\nhere is your authentication key: \n"+token+"\n ", client)
 				end
 			end
 		end
@@ -60,12 +59,14 @@ module XmppLeagueHelper
 	def xmpp_friend_with?(sumId, roster)
 		# check if the terminal is friend with the passed summoner
 		roster.items.each do |jid, contact|
-			if jid.to_s ==  "sum"+sumId.to_s+"@pvp.net" && contact.subscription.to_s=='both'
-				return true
-			else
-				return false
+			#Rails.logger.info "[RiotXmppFriendList] contain :"+jid.to_s
+			if (jid.to_s ==  "sum"+sumId.to_s+"@pvp.net")
+				if (contact.subscription.to_s == "both")
+					return true
+				end
 			end
 		end
+		return false
 	end
 
 	module_function :connect_xmpp, :send_xmpp_message, :invite_xmpp, :xmpp_friend_with?, :get_xmpp_friend_list
