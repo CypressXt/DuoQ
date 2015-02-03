@@ -35,6 +35,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 
 gem 'bcrypt-ruby', :require => 'bcrypt'
 gem 'xmpp4r'
+gem 'newrelic_rpm'
 
 group :development do
 	# Use sqlite3 as the database for Active Record
@@ -53,5 +54,4 @@ group :production do
 	# gem 'unicorn'
 	gem 'puma', '~> 2.3.2'
 	gem "pg"
-	gem 'newrelic_rpm'
 end
