@@ -35,6 +35,7 @@ set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/
 # set :keep_releases, 5
 
 after "deploy", "deploy:restart" 
+after "deploy:updated", "newrelic:notice_deployment"
 
 namespace :deploy do
 
