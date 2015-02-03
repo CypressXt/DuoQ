@@ -26,6 +26,7 @@
 <% end %>
 <%= form_for @summoner, url: {action: "create_token"} , html: {class: "form-horizontal"} do |f| %>
 <div class="form-group">
+	<%= label_tag 'name', "Summoner's name" %>
 	<%= f.text_field :name, class: "form-control" , :placeholder => "Type your summoner's name here" %>
 </div>
 <div class="form-group">

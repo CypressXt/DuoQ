@@ -9,10 +9,12 @@
 			</div>
 			<%= form_for(:session, url: login_path,:html => {:class => 'form-horizontal'}) do |f| %>
 			<div class="form-group">
-				<%= f.email_field :email, class: 'form-control', :placeholder => "Email"  %>
+				<%= label_tag 'email', "Email" %>
+				<%= f.email_field :email, class: 'form-control' %>
 			</div>
 			<div class="form-group">
-				<%= f.password_field :password, class: 'form-control', :placeholder => "Password"   %>
+				<%= label_tag 'password', "Password" %>
+				<%= f.password_field :password, class: 'form-control'   %>
 			</div>
 			<div class="form-group">
 				<%= link_to '(forgot password)', new_reset_password_path %>
