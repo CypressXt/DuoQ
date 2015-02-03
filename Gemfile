@@ -53,4 +53,5 @@ group :production do
 	# gem 'unicorn'
 	gem 'puma', '~> 2.3.2'
 	gem "pg"
+	gem 'newrelic_rpm'
 end
