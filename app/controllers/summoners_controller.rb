@@ -33,7 +33,7 @@ class SummonersController < ApplicationController
 		summoner = Summoner.find_or_create_by(summoner_params)
 		summonerFromRiot = LolApiHelper.get_summoner_id_by_name(summoner.name)
 		if summonerFromRiot
-			if summoner.app_user_id == nil
+			if summoner.app_user_id == nil || summoner.validated == false
 				@summoner = Summoner.find_or_create_by(summonerFromRiot)
 				sumIdReq = @summoner.id
 				sum_name = @summoner.name
