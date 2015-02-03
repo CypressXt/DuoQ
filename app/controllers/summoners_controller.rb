@@ -33,15 +33,20 @@ class SummonersController < ApplicationController
 		summoner = Summoner.find_or_create_by(summoner_params)
 		summonerFromRiot = LolApiHelper.get_summoner_id_by_name(summoner.name)
 		if summonerFromRiot
-			@summoner = Summoner.find_or_create_by(summonerFromRiot)
-			sumIdReq = @summoner.id
-			sum_name = @summoner.name
-			token = rand(36**25).to_s(36)
-			@summoner.summonerToken = token
-			@summoner.validated = false
-			@summoner.save
-			client = XmppLeagueHelper.connect_xmpp(token, sumIdReq)
-			XmppLeagueHelper.invite_xmpp(sumIdReq,client)
+			if summoner.app_user_id == nil
+				@summoner = Summoner.find_or_create_by(summonerFromRiot)
+				sumIdReq = @summoner.id
+				sum_name = @summoner.name
+				token = rand(36**25).to_s(36)
+				@summoner.summonerToken = token
+				@summoner.validated = false
+				@summoner.save
+				client = XmppLeagueHelper.connect_xmpp(token, sumIdReq)
+				XmppLeagueHelper.invite_xmpp(sumIdReq,client)
+			else
+				@message = { "danger" => "This summoner is already linked to a DuoQ account ! "}
+				render 'global_info'
+			end
 		else
 			@previouse_url = session[:previous_url]
 			@message = { "danger" => "Enter a valide summoner's name ! "}
