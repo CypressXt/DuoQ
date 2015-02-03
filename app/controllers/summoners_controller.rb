@@ -20,7 +20,7 @@ class SummonersController < ApplicationController
 
 
 	def index
-		@summoners = @user.summoners.where(validated: true)
+		@summoners = @user.summoners.where(validated: true).order(:id)
 	end
 
 
