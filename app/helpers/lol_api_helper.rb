@@ -19,7 +19,7 @@ module LolApiHelper
 	def perform_request(url)
 		Rails.logger.info "[RiotRequest] "+url
 		resp = Net::HTTP.get_response(URI.parse(URI.encode(url)))
-		Rails.logger.info "[RiotReply] "+resp.to_s
+		Rails.logger.info "[RiotReply] "+resp.message.to_s
 		if resp.code.to_s == "200"
 			return resp.body
 		else
