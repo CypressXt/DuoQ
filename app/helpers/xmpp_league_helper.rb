@@ -37,12 +37,14 @@ module XmppLeagueHelper
 
 	def send_xmpp_message(summoner, data, client)
 		# send a message with a content of "data" to the summoner
+		Rails.logger.info "[RiotXmppSend] to:"+summoner
 		message = " <message from='sum57467554@pvp.net' id='m_40' to='"+summoner+"' type='chat' xmlns='jabber:client'><body>"+data+"</body></message>"
 		client.send(message)
 	end
 
 	def invite_xmpp(sumId, client)
 		# send a friend request to the summoner passed
+		Rails.logger.info "[RiotXmppFriend] to: sum"+sumId.to_s+"@pvp.net"
 		pres = Jabber::Presence.new.set_type(:subscribe).set_to("sum"+sumId.to_s+"@pvp.net")
 		client.send(pres)
 	end
