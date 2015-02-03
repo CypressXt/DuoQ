@@ -8,10 +8,10 @@ module XmppLeagueHelper
 
 	def connect_xmpp(token, sumId)
 		Jabber::debug = Rails.application.secrets.xmpp_debug
-		client = Jabber::Client::new(Jabber::JID::new(Rails.application.secrets.xmpp_riot_account))
+		client = Jabber::Client::new(Jabber::JID::new(Rails.application.secrets.xmpp_riot_euw_account))
 		client.use_ssl = true;
 		client.connect("chat.euw1.lol.riotgames.com",5223)
-		client.auth(Rails.application.secrets.xmpp_riot_password)
+		client.auth(Rails.application.secrets.xmpp_riot_euw_password)
 		client.send(Jabber::Presence.new(:chat, "<body><profileIcon>21</profileIcon><level>30</level><wins>+9000</wins><leaves>30</leaves><odinWins>11</odinWins><odinLeaves>1</odinLeaves><queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>GOLD</tier><rankedSoloRestricted>false</rankedSoloRestricted><rankedLeagueName /><rankedLeagueDivision /><rankedLeagueTier /><rankedLeagueQueue /><gameStatus>outOfGame</gameStatus><statusMsg /></body>"))
 		roster = get_xmpp_friend_list(client)
 
@@ -37,7 +37,8 @@ module XmppLeagueHelper
 	def send_xmpp_message(summoner, data, client)
 		# send a message with a content of "data" to the summoner
 		Rails.logger.info "[RiotXmppSend] to:"+summoner
-		message = " <message from='sum57467554@pvp.net' id='m_40' to='"+summoner+"' type='chat' xmlns='jabber:client'><body>"+data+"</body></message>"
+		from = LolApiHelper.get_summoner_id_by_name(Rails.application.secrets.xmpp_riot_euw_account_name)
+		message = " <message from='sum"+from["id"].to_s+"@pvp.net' id='m_40' to='"+summoner+"' type='chat' xmlns='jabber:client'><body>"+data+"</body></message>"
 		client.send(message)
 	end
 
