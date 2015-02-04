@@ -31,7 +31,7 @@ form{
 	margin-bottom: 60px;
 }
 
-.form-control{
+input[type="text"],input[type="email"],input[type="password"].form-control{
 	-webkit-background-clip: border-box;
 	-webkit-background-origin: padding-box;
 	-webkit-background-size: auto;

@@ -17,6 +17,24 @@ class TeamsController < ApplicationController
 		@type = TeamType.all
 	end
 
+	def create
+		team = Team.new(team_params)
+		team.type_id=params[:game_type]
+		if team.save
+			@message = { "success" => "Your team has been created !"}
+			render 'global_info'
+		else
+			@message = { "danger" => "Something goes wrong while creating your team !"}
+			render 'global_info'
+		end
+	end
+
+
+	def team_params
+		params.require(:team).permit(:id, :name)
+	end
+
+
 	def get_user
 		@user = AppUser.find_by(id: params[:app_user_id])
 	end

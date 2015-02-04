@@ -17,7 +17,8 @@
 	<%= f.text_field :name, class: "form-control"%>
 </div>
 <div class="form-group">
-	<%= select_tag "game type", options_from_collection_for_select(@type, "id", "name"), class: "selectpicker" %>
+	<%= label_tag "Team's type", "Team's type" %>
+	<%= select_tag "game_type", options_from_collection_for_select(@type, "id", "name"), class: "form-control" %>
 </div>
 <div class="form-group">
 	<%= f.submit "Create", :class => 'btn btn-info' %> 

@@ -2,8 +2,8 @@ Rails.application.routes.draw do
 
   root 'welcome#index'
 
-  resources :user, :as => :app_users, :controller => "app_users" do
-    resources :summoners
+  resources :user, :as => :app_users, :controller => "app_users", :except => [:destroy] do
+    resources :summoners, :except => [:show]
     resources :teams
     post '/summoners/create_token' => 'summoners#create_token'
   end
