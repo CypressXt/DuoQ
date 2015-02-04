@@ -18,11 +18,6 @@
 </div>
 <div class="form-group">
 	<%= select_tag "game type", options_from_collection_for_select(@type, "id", "name"), class: "selectpicker" %>
-	<select class="selectpicker" multiple data-max-options="2">
-		<option>Mustard</option>
-		<option>Ketchup</option>
-		<option>Relish</option>
-	</select>
 </div>
 <div class="form-group">
 	<%= f.submit "Create", :class => 'btn btn-info' %> 
