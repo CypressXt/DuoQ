@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :user, :as => :app_users, :controller => "app_users" do
     resources :summoners
+    resources :teams
     post '/summoners/create_token' => 'summoners#create_token'
   end
   

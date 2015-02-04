@@ -12,7 +12,7 @@
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
             <ul class="nav navbar-nav">
                 <% if logged_in? %>
-                <li><a href="#">Teams</a></li>
+                <li><%= link_to "Teams", app_user_teams_path(current_logged_user.id) %></li>
                 <% end %>
             </ul>
             <ul class="nav navbar-nav navbar-right">

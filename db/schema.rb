@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150203111502) do
+ActiveRecord::Schema.define(version: 20150204184647) do
 
   create_table "app_users", force: true do |t|
     t.datetime "created_at"
@@ -20,6 +20,12 @@ ActiveRecord::Schema.define(version: 20150203111502) do
     t.string   "email"
     t.string   "password"
     t.boolean  "mailConfirmed"
+  end
+
+  create_table "regions", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "summoners", force: true do |t|
@@ -33,5 +39,29 @@ ActiveRecord::Schema.define(version: 20150203111502) do
   end
 
   add_index "summoners", ["app_user_id"], name: "index_summoners_on_app_user_id"
+
+  create_table "team_compositions", force: true do |t|
+    t.integer  "team_id"
+    t.integer  "summoner_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "team_compositions", ["summoner_id"], name: "index_team_compositions_on_summoner_id"
+  add_index "team_compositions", ["team_id"], name: "index_team_compositions_on_team_id"
+
+  create_table "team_types", force: true do |t|
+    t.integer  "number_players"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+    t.string   "key"
+  end
+
+  create_table "teams", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

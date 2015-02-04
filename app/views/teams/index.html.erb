@@ -1,0 +1,24 @@
+<div class="row">
+	<div class="col-md-6 col-md-offset-3 whiteContent">
+		<div class="page-header">
+			<h2>League of Legends teams</h2>
+		</div>
+		<table class="table table-condensed">
+			<tr>
+				<th>Team's name</th>
+				<th>type</th>
+				<th>Action</th>
+			</tr>
+			<% @teams.each do |team| %>
+			<tr>
+				<td><%= team.name %></td>
+				<td><%= team.type %></td>
+				<td>
+					<%= link_to 'unlink', [@user, team], method: :delete, :class => 'btn btn-danger btn-xs'   %>
+				</td>
+			</tr>
+			<% end %>
+		</table>
+		<%= link_to "Create a team", new_app_user_team_path(@user.id), :class => 'btn btn-info'  %>
+	</div>
+</div>

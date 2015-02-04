@@ -1,0 +1,30 @@
+<div class="page-header">
+	<h2>Create League of Legends team</h2>
+</div>
+<% if @team.errors.any? %>
+<div id="error_explanation" class="text-danger">
+	<h5><%= pluralize(@team.errors.count, "error") %> canceled your registration:</h5>
+	<ul>
+		<% @team.errors.full_messages.each do |msg| %>
+		<li><%= msg %></li>
+		<% end %>
+	</ul>
+</div>
+<% end %>
+<%= form_for @team, url: {action: "create"} , html: {class: "form-horizontal"} do |f| %>
+<div class="form-group">
+	<%= label_tag 'name', "Team's name" %>
+	<%= f.text_field :name, class: "form-control"%>
+</div>
+<div class="form-group">
+	<%= select_tag "game type", options_from_collection_for_select(@type, "id", "name"), class: "selectpicker" %>
+	<select class="selectpicker" multiple data-max-options="2">
+		<option>Mustard</option>
+		<option>Ketchup</option>
+		<option>Relish</option>
+	</select>
+</div>
+<div class="form-group">
+	<%= f.submit "Create", :class => 'btn btn-info' %> 
+</div>
+<% end %>
