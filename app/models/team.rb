@@ -1,7 +1,7 @@
 class Team < ActiveRecord::Base
-	belongs_to :TeamType
-	has_many :TeamComposition
-	has_many :summoner, through: :TeamComposition
-	has_many :RelationTeamAppUser
-	has_many :app_user, through: :RelationTeamAppUser
+	belongs_to :team_type
+	has_many :team_compositions
+	has_many :summoners, through: :team_compositions
+	has_many :relation_team_app_users
+	has_many :app_users, through: :relation_team_app_users
 end

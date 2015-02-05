@@ -1,3 +1,3 @@
 class TeamType < ActiveRecord::Base
-	has_many :Teams
+	has_many :teams
 end
