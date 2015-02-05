@@ -17,21 +17,24 @@ class TeamsController < ApplicationController
 
 	def create
 		team = Team.new(team_params)
-		team.team_types_id=params[:game_type]
+		team.team_type_id=params[:game_type]
 		if team.save
-			@message = { "success" => "Your team has been created !"}
-			render 'global_info'
+			relationAppUserTeam = RelationTeamAppUser.new
+			relationAppUserTeam.team_id=team.id
+			relationAppUserTeam.app_user_id=@user.id
+			if relationAppUserTeam.save
+				@message = { "success" => "Your team has been created !"}
+				render 'global_info'
+			end
 		else
 			@message = { "danger" => "Something goes wrong while creating your team !"}
 			render 'global_info'
 		end
 	end
 
-
 	def team_params
 		params.require(:team).permit(:id, :name)
 	end
-
 
 	def get_user
 		@user = AppUser.find_by(id: params[:app_user_id])
