@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150205143204) do
+ActiveRecord::Schema.define(version: 20150205144719) do
 
   create_table "app_users", force: true do |t|
     t.datetime "created_at"
@@ -68,9 +68,9 @@ ActiveRecord::Schema.define(version: 20150205143204) do
 
   create_table "teams", force: true do |t|
     t.string  "name"
-    t.integer "team_types_id"
+    t.integer "team_type_id"
   end
 
-  add_index "teams", ["team_types_id"], name: "index_teams_on_team_types_id"
+  add_index "teams", ["team_type_id"], name: "index_teams_on_team_type_id"
 
 end
