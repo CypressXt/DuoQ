@@ -1,5 +1,7 @@
 class AppUser < ActiveRecord::Base
 	has_many :summoners
+	has_many :RelationTeamAppUser
+	has_many :team, through: :RelationTeamAppUser
 	attr_accessor :password_confirmation
 
 	validates :username, :email, :password, :password_confirmation, presence: true

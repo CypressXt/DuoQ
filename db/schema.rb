@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150204235144) do
+ActiveRecord::Schema.define(version: 20150205131524) do
 
   create_table "app_users", force: true do |t|
     t.datetime "created_at"
@@ -27,6 +27,14 @@ ActiveRecord::Schema.define(version: 20150204235144) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "relation_team_app_users", force: true do |t|
+    t.integer "team_id"
+    t.integer "app_user_id"
+  end
+
+  add_index "relation_team_app_users", ["app_user_id"], name: "index_relation_team_app_users_on_app_user_id"
+  add_index "relation_team_app_users", ["team_id"], name: "index_relation_team_app_users_on_team_id"
 
   create_table "summoners", force: true do |t|
     t.string   "name"
@@ -59,12 +67,12 @@ ActiveRecord::Schema.define(version: 20150204235144) do
   end
 
   create_table "teams", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "type_id"
+    t.string  "name"
+    t.string  "riot_key"
+    t.integer "nb_player"
+    t.integer "team_types_id"
   end
 
-  add_index "teams", ["type_id"], name: "index_teams_on_type_id"
+  add_index "teams", ["team_types_id"], name: "index_teams_on_team_types_id"
 
 end

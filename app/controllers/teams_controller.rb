@@ -4,11 +4,9 @@ class TeamsController < ApplicationController
 
 	def index
 		@teams = []
-		summoners = @user.summoners
-		summoners.each do |summoner|
-			summoner.team.each do |team|
-				@teams << team
-			end
+		teamsLocals = @user.team
+		teamsLocals.each do |team|
+			@teams.push(team)
 		end
 	end
 
@@ -19,7 +17,7 @@ class TeamsController < ApplicationController
 
 	def create
 		team = Team.new(team_params)
-		team.type_id=params[:game_type]
+		team.team_types_id=params[:game_type]
 		if team.save
 			@message = { "success" => "Your team has been created !"}
 			render 'global_info'
