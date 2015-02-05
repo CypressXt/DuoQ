@@ -98,3 +98,19 @@ input[type="text"],input[type="email"],input[type="password"].form-control{
 	padding-bottom: 2em;
 }
 
+#wrapper{
+	width: 99%;
+	max-width: 1200px;
+	padding-top: 1em;
+	padding-left: 3em;
+	padding-right: 3em;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.homePageRow{
+	.thumbnail{
+		min-height: 404px;
+	}
+}
+

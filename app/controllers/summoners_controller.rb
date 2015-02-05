@@ -1,14 +1,10 @@
 class SummonersController < ApplicationController
-	after_filter "save_previous_url"
+	after_filter "save_previous_url", :only => [:index, :new]
 	before_action :get_user, :connected?, :proprietary?
 
 	attr_accessor :sumId
 	attr_accessor :sumName
 	attr_accessor :sumToken
-
-	def save_previous_url
-		session[:previous_url] = URI(request.referer).path
-	end
 
 	def summoner_params
 		params.require(:summoner).permit(:id, :name, :summonerLevel, :summonerToken)
@@ -95,5 +91,10 @@ class SummonersController < ApplicationController
 			@message = { "danger" => "You're not proprietary of this resource !"}
 			render 'global_info'
 		end
+	end
+
+
+	def save_previous_url
+		session[:previous_url] = URI(request.referer).path
 	end
 end
