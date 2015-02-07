@@ -22,6 +22,14 @@
 		<%= f.text_field :name, class: "form-control"%>
 	</div>
 </div>
+<% if !@user.summoners.first %>
+<div class="form-group">
+	<div class="alert alert-info">		
+		The "you" dropdownlist is empty, please link first a League Of Legends account
+		<%= link_to "here", new_app_user_summoner_path(@user.id)%>.
+	</div>
+</div>
+<% end %>
 <div class="form-group">
 	<%= label_tag 'sumName0', "You" , class: "col-sm-2 control-label" %>
 	<div class="col-sm-10">

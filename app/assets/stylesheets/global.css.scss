@@ -32,15 +32,6 @@ form{
 }
 
 input[type="text"],input[type="email"],input[type="password"].form-control{
-	-webkit-background-clip: border-box;
-	-webkit-background-origin: padding-box;
-	-webkit-background-size: auto;
-	background-attachment: scroll;
-	background-clip: border-box;
-	background-color: rgba(0, 0, 0, 0);
-	background-image: none;
-	background-origin: padding-box;
-	background-size: auto;
 	border-bottom-color: rgb(51, 122, 183);
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
@@ -54,24 +45,9 @@ input[type="text"],input[type="email"],input[type="password"].form-control{
 	border-top-style: none;
 	border-top-width: 0px;
 	color: rgb(109, 119, 129);
-	display: inline-block;
-	font-size: 16px;
-	height: 18px;
-	margin-bottom: 0px;
-	margin-left: 0px;
-	margin-right: 0px;
-	margin-top: 0px;
-	outline-color: rgb(109, 119, 129);
-	outline-style: none;
-	outline-width: 0px;
-	padding-bottom: 20px;
-	padding-left: 0px;
-	padding-right: 0px;
-	padding-top: 20px;
+	background-color: rgba(0, 0, 0, 0);
 	border-radius: 0px;
 	box-shadow: none;
-
-	
 }
 
 .form-control:focus{
