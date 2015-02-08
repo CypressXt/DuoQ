@@ -3,6 +3,9 @@
 		<div class="page-header">
 			<h2>Changelogs</h2>
 		</div>
+		<div class="alert alert-info" role="alert">
+			Display the last 10 changes
+		</div>
 		<% @commits.each do |commit| %>
 		<% date = DateTime.parse(commit.author.date) %>
 		<div class="panel panel-default">
