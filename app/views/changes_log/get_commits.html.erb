@@ -1,0 +1,19 @@
+<div class="row">
+	<div class="col-md-6 col-md-offset-3 whiteContent">
+		<div class="page-header">
+			<h2>Changelogs</h2>
+		</div>
+		<% @commits.each do |commit| %>
+		<% date = DateTime.parse(commit.author.date) %>
+		<div class="panel panel-default">
+			<div class="panel-heading"><%= date.strftime("%d %B %Y at %Hh%M") %></div>
+			<div class="panel-body">
+
+				<h5>
+					<span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span> <%= commit.message.capitalize %>
+				</h5>
+			</div>
+		</div>
+		<% end %>
+	</div>
+</div>

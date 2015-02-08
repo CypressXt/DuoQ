@@ -36,6 +36,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'bcrypt-ruby', :require => 'bcrypt'
 gem 'xmpp4r'
 gem 'newrelic_rpm'
+gem 'github_api'
 
 group :development do
 	# Use sqlite3 as the database for Active Record

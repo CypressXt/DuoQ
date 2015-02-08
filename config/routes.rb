@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get 'ask_new_password' => 'password_reset#new', as: :new_reset_password
   post 'new_password' => 'password_reset#create', as: :reset_password
   
+  get 'change_log' => 'changes_log#get_commits'
   get 'login' => 'sessions#new'
   post 'login' => 'sessions#create'
   delete 'logout' => 'sessions#destroy'
