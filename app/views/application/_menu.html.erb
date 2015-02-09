@@ -16,9 +16,7 @@
                 <% end %>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <ul class="nav navbar-nav">
-                    <li><%= link_to "Logs",change_log_path %></li>
-                </ul>
+                <li><%= link_to "Logs",change_log_path %></li>
                 <% if logged_in? %>
                 <li class="dropdown">
                     <a href="/bugs" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></a>
