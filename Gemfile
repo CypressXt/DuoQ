@@ -53,6 +53,7 @@ end
 group :production do
 	# gems specifically for Heroku go here
 	# gem 'unicorn'
+	gem 'google-analytics-rails'
 	gem 'puma', '~> 2.3.2'
 	gem "pg"
 end

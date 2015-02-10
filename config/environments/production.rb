@@ -75,6 +75,10 @@ config.i18n.fallbacks = true
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  # Google analystic
+  # replace this with your tracker code
+  GA.tracker = Rails.application.secrets.google_analytics
+
   # Email settings
   config.action_mailer.default_url_options = { :host => 'http://duoq.cypressxt.net' }
   # ActionMailer Config
