@@ -13,12 +13,8 @@
 <% end %>
 <%= form_for @team, url: {action: "create"} , html: {class: "form-horizontal"} do |f| %>
 <div class="form-group">
-	<%= label_tag "Team's type", "Team's type" %>
-	<%= select_tag "game_type", options_from_collection_for_select(@type, "id", "name"), class: "form-control" %>
-</div>
-<div class="form-group">
-	<%= label_tag 'name', "Team's name", class: "col-sm-2 control-label" %>
-	<div class="col-sm-10">
+	<%= label_tag 'name', "Team's name: ", class: "col-sm-3 control-label" %>
+	<div class="col-sm-9">
 		<%= f.text_field :name, class: "form-control"%>
 	</div>
 </div>
@@ -31,21 +27,21 @@
 </div>
 <% end %>
 <div class="form-group">
-	<%= label_tag 'sumName0', "You" , class: "col-sm-2 control-label" %>
-	<div class="col-sm-10">
+	<%= label_tag 'sumName0', "Your summoner :" , class: "col-sm-3 control-label" %>
+	<div class="col-sm-9">
 		<%= select_tag "you", options_from_collection_for_select(@user.summoners, "id", "name"), class: "form-control" %>
 	</div>
 </div>
 <% ((@type.first.number_players)-1).times do |i| %>
 <div class="form-group">
-	<%= label_tag 'sumName'+i.to_s, "Your mate's name #"+(i+1).to_s , class: "col-sm-2 control-label" %>
-	<div class="col-sm-10">
-		<%= text_field_tag :sumName1, nil,  class: "form-control"%>
+	<%= label_tag 'sumName2', "Your mate's name :", class: "col-sm-3 control-label" %>
+	<div class="col-sm-9">
+		<%= text_field_tag :sumName2, nil,  class: "form-control"%>
 	</div>
 </div>
 <% end %>
 <div class="form-group">
-	<div class="col-sm-offset-2 col-sm-10">
+	<div class="col-sm-offset-3 col-sm-9">
 		<%= f.submit "Create", :class => 'btn btn-info' %> 
 	</div>
 </div>

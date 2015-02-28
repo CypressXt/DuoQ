@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150205144719) do
+ActiveRecord::Schema.define(version: 20150223082153) do
 
   create_table "app_users", force: true do |t|
     t.datetime "created_at"
@@ -53,10 +53,16 @@ ActiveRecord::Schema.define(version: 20150205144719) do
     t.integer  "summoner_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "player_status_id"
   end
 
+  add_index "team_compositions", ["player_status_id"], name: "index_team_compositions_on_player_status_id"
   add_index "team_compositions", ["summoner_id"], name: "index_team_compositions_on_summoner_id"
   add_index "team_compositions", ["team_id"], name: "index_team_compositions_on_team_id"
+
+  create_table "team_player_statuses", force: true do |t|
+    t.string "label"
+  end
 
   create_table "team_types", force: true do |t|
     t.integer  "number_players"
@@ -67,8 +73,10 @@ ActiveRecord::Schema.define(version: 20150205144719) do
   end
 
   create_table "teams", force: true do |t|
-    t.string  "name"
-    t.integer "team_type_id"
+    t.string   "name"
+    t.integer  "team_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "teams", ["team_type_id"], name: "index_teams_on_team_type_id"

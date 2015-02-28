@@ -18,24 +18,65 @@ class TeamsController < ApplicationController
 
 	def create
 		team = Team.new(team_params)
-		team.team_type_id=params[:game_type]
+		team.team_type_id=TeamType.find_by(key: "RANKED_SOLO_5x5").id
 		if team.save
+			# Adding the second summoner to the db
+			summoner2 = Summoner.new(LolApiHelper.get_summoner_id_by_name(params[:sumName2]))
+			summoner2.summonerToken = rand(36**25).to_s(36)
+			
+			if summoner2.name==nil
+				@message = { "danger" => "Error while adding your mate's summoner, please enter a valid summoner name..."}
+				render 'global_info' and return
+			end
+			Summoner.find_or_create_by(id: summoner2.id) do |summoner|
+				summoner.id = summoner2.id
+				summoner.name = summoner2.name
+				summoner.app_user_id = @user.id
+				summoner.summonerToken = summoner2.summonerToken
+				summoner.summonerLevel = summoner2.summonerLevel
+			end
+			if !Summoner.find_by(id: summoner2.id)
+				@message = { "danger" => "Error while adding your mate's summoner to our database..."}
+				render 'global_info' and return
+			end
+			#----------------------------------------------------
+
+			# Adding first summoners to the new duo team (app_user's selected game account)
+			teamMember1 = TeamComposition.new(team_id: team.id, summoner_id: params[:you])
+			if !teamMember1.save
+				@message = { "danger" => "Error while adding your personal summoner's account to your duo team..."}
+				raise ActiveRecord::Rollback, "Db error while adding your mate summoner's"
+				render 'global_info' and return
+			end
+			#----------------------------------------------------
+
+
+			# Adding the second summoner to the new duo team
+			teamMember2 = TeamComposition.new(team_id: team.id, summoner_id: summoner2.id)
+			if !teamMember2.save
+				@message = { "danger" => "Error while adding your mate summoner's account to your duo team..."}
+				raise ActiveRecord::Rollback, "Db error while adding your mate summoner's"
+				render 'global_info' and return
+			end
+			#----------------------------------------------------
+
+			# Link duo team with user's DuoQ account
 			relationAppUserTeam = RelationTeamAppUser.new
 			relationAppUserTeam.team_id=team.id
 			relationAppUserTeam.app_user_id=@user.id
-			teamMember1 = TeamComposition.new(team_id: team.id, summoner_id: params[:you])
-			summoner1 = Summoner.find_or_create_by(LolApiHelper.get_summoner_id_by_name(params[:sumName1]))
-			teamMember2 = TeamComposition.new(team_id: team.id, summoner_id: summoner1.id)
-			if relationAppUserTeam.save && teamMember1.save && teamMember2.save && summoner1.save
-				@message = { "success" => "Your team has been created !"}
-				render 'global_info'
+			if !relationAppUserTeam.save
+				@message = { "danger" => "Error while linking your duo with your DuoQ account..."}
+				raise ActiveRecord::Rollback, "Db error while linking your duo"
+				render 'global_info' and return
 			else
-				@message = { "danger" => "Something goes wrong while creating your team !"}
-				render 'global_info'
+				@message = { "success" => "Your team has been created !"}
+				render 'global_info' and return
 			end
+			#----------------------------------------------------
 		else
-			@message = { "danger" => "Something goes wrong while creating your team !"}
-			render 'global_info'
+			@message = { "danger" => "Something goes wrong while creating your team !"+params.to_s}
+			raise ActiveRecord::Rollback, "Something goes wrong while creating your team"
+			render 'global_info' and return
 		end
 	end
 
