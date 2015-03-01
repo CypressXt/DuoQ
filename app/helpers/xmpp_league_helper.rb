@@ -37,7 +37,7 @@ module XmppLeagueHelper
 	def send_xmpp_message(summoner, data, client)
 		# send a message with a content of "data" to the summoner
 		Rails.logger.info "[RiotXmppSend] to:"+summoner
-		from = LolApiHelper.get_summoner_id_by_name(Rails.application.secrets.xmpp_riot_euw_account_name)
+		from = LolApiHelper.get_summoner_by_name(Rails.application.secrets.xmpp_riot_euw_account_name)
 		message = " <message from='sum"+from["id"].to_s+"@pvp.net' id='m_40' to='"+summoner+"' type='chat' xmlns='jabber:client'><body>"+data+"</body></message>"
 		client.send(message)
 	end
