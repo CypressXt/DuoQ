@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :user, :as => :app_users, :controller => "app_users", :except => [:destroy] do
     resources :summoners, :except => [:show]
     resources :teams
+    get 'refresh_teams' => 'teams#refresh_teams'
     post '/summoners/create_token' => 'summoners#create_token'
   end
   

@@ -3,23 +3,54 @@
 		<div class="page-header">
 			<h2>League of Legends teams</h2>
 		</div>
+		<h4>Team 5v5</h4>
 		<table class="table table-condensed">
 			<tr>
-				<th>Team's name</th>
+				<th>Name</th>
+				<th>Tag</th>
+				<th>Rank</th>
+				<th>Type</th>
+				<th>Action</th>
+			</tr>
+			<% @teams5v5.each do |team| %>
+			<tr>
+				<td><%= team.name %></td>
+				<td>[<%= team.tag %>]</td>
+				<% if team.team_tier!=nil %>
+				<td><%= team.team_tier.name %></td>
+				<% elsif team.team_division!=nil %>
+				<td><%= team.team_tier.name %> <%= team.team_division.name %></td>
+				<% else %>
+				<td>Unranked</td>
+				<% end %>
+				<td><%= team.team_type.name %></td>
+				<td>
+					<%= link_to 'Show', app_user_team_path(@user.id, team.id), :class => 'btn btn-info btn-xs' %>
+				</td>
+			</tr>
+			<% end %>
+		</table>
+		<%= link_to "refresh team 5v5 (could be long... rito plz...)", app_user_refresh_teams_path(@user.id), :class => 'btn btn-info btn-xs', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")'%>
+		<h4>Team duo</h4>
+		<table class="table table-condensed">
+			<tr>
+				<th>Team</th>
 				<th>type</th>
 				<th>Action</th>
 			</tr>
-			<% @teams.each do |team| %>
+			<% @teamsDuo.each do |team| %>
 			<tr>
-				<td><%= team.name %></td>
+				<td>
+					<%= team.summoners.first.name %> & <%= team.summoners.last.name %>
+				</td>
 				<td><%= team.team_type.name %></td>
 				<td>
-					<%= link_to 'Edit', edit_app_user_team_path(@user.id, team.id), :class => 'btn btn-info btn-xs' %>
+					<%= link_to 'Show', app_user_team_path(@user.id, team.id), :class => 'btn btn-info btn-xs' %>
 					<%= link_to 'Unlink', app_user_team_path(@user, team.id), method: :delete, :class => 'btn btn-danger btn-xs' %>
 				</td>
 			</tr>
 			<% end %>
 		</table>
-		<%= link_to "Create a duo team", new_app_user_team_path(@user.id), :class => 'btn btn-info'  %>
+		<%= link_to "Create a new duo team", new_app_user_team_path(@user.id), :class => 'btn btn-info btn-xs'  %>
 	</div>
 </div>

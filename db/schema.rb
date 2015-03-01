@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150223082153) do
+ActiveRecord::Schema.define(version: 20150301142524) do
 
   create_table "app_users", force: true do |t|
     t.datetime "created_at"
@@ -60,8 +60,21 @@ ActiveRecord::Schema.define(version: 20150223082153) do
   add_index "team_compositions", ["summoner_id"], name: "index_team_compositions_on_summoner_id"
   add_index "team_compositions", ["team_id"], name: "index_team_compositions_on_team_id"
 
+  create_table "team_divisions", force: true do |t|
+    t.string   "name"
+    t.integer  "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "team_player_statuses", force: true do |t|
     t.string "label"
+  end
+
+  create_table "team_tiers", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "team_types", force: true do |t|
@@ -77,8 +90,15 @@ ActiveRecord::Schema.define(version: 20150223082153) do
     t.integer  "team_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "tag"
+    t.integer  "team_tier_id"
+    t.integer  "team_division_id"
+    t.string   "key"
   end
 
+  add_index "teams", ["id"], name: "index_teams_on_id"
+  add_index "teams", ["team_division_id"], name: "index_teams_on_team_division_id"
+  add_index "teams", ["team_tier_id"], name: "index_teams_on_team_tier_id"
   add_index "teams", ["team_type_id"], name: "index_teams_on_team_type_id"
 
 end

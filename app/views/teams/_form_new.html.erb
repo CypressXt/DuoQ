@@ -12,12 +12,6 @@
 </div>
 <% end %>
 <%= form_for @team, url: {action: "create"} , html: {class: "form-horizontal"} do |f| %>
-<div class="form-group">
-	<%= label_tag 'name', "Team's name: ", class: "col-sm-3 control-label" %>
-	<div class="col-sm-9">
-		<%= f.text_field :name, class: "form-control"%>
-	</div>
-</div>
 <% if !@user.summoners.first %>
 <div class="form-group">
 	<div class="alert alert-info">		
