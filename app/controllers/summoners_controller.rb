@@ -27,7 +27,7 @@ class SummonersController < ApplicationController
 
 	def create_token
 		summoner = Summoner.find_or_create_by(summoner_params)
-		summonerFromRiot = LolApiHelper.get_summoner_id_by_name(summoner.name)
+		summonerFromRiot = LolApiHelper.get_summoner_by_name(summoner.name)
 		if summonerFromRiot
 			if summoner.app_user_id == nil || summoner.validated == false
 				@summoner = Summoner.find_or_create_by(summonerFromRiot)

@@ -3,15 +3,17 @@ class TeamsController < ApplicationController
 
 
 	def index
-		@t5v5 = LolApiHelper.get_teams5v5_by_summoner(@user.summoners.first)
-		@teamsDuo = Array.new
-		@teams5v5 = Array.new
-		teams = @user.team
-		teams.each do |team|
-			if team.team_type.key=="RANKED_SOLO_5x5"
-				@teamsDuo.push(team)
-			elsif team.team_type.key=="RANKED_TEAM_5x5"
-				@teams5v5.push(team)
+		if @user.summoners
+			@t5v5 = LolApiHelper.get_teams5v5_by_summoner(@user.summoners.first)
+			@teamsDuo = Array.new
+			@teams5v5 = Array.new
+			teams = @user.team
+			teams.each do |team|
+				if team.team_type.key=="RANKED_SOLO_5x5"
+					@teamsDuo.push(team)
+				elsif team.team_type.key=="RANKED_TEAM_5x5"
+					@teams5v5.push(team)
+				end
 			end
 		end
 	end
