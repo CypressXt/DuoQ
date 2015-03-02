@@ -10,5 +10,5 @@
 </table>
 <% if (!@user.mailConfirmed) %>
 		<h5>Please <%= @user.username %>, confirm your email address</h6>
-<%= link_to 'send me an other mail', validation_path%>
+<%= link_to 'send me an other mail', validation_path, :class => 'btn btn-info btn-xs', :onclick => '$(this).addClass("disabled"); $(this).text("sending...")'%>
 <% end %>
