@@ -123,10 +123,15 @@ class TeamsController < ApplicationController
 	end
 
 	def refresh_teams
-		if LolApiHelper.refresh_teams_from_api_by_appuser(@user)
-			redirect_to app_user_teams_path(@user.id)
+		if @user.summoners.first!=nil
+			if LolApiHelper.refresh_teams_from_api_by_appuser(@user)
+				redirect_to app_user_teams_path(@user.id)
+			else
+				@message = { "danger" => "Something goes wrong while updating your teams !"}
+				render 'global_info'
+			end
 		else
-			@message = { "danger" => "Something goes wrong while updating your teams !"}
+			@message = { "danger" => "You need to register a summoner account first (Account>Game account>Link an account)"}
 			render 'global_info'
 		end
 	end
