@@ -36,7 +36,11 @@
 <% end %>
 <div class="form-group">
 	<div class="col-sm-offset-3 col-sm-9">
+		<% if !@user.summoners.first %>
+		<%= f.submit "Create", :class => 'btn btn-info disabled' %> 
+		<% else %>
 		<%= f.submit "Create", :class => 'btn btn-info' %> 
+		<% end %>
 	</div>
 </div>
 <% end %>

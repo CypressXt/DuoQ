@@ -3,6 +3,12 @@
 		<div class="page-header">
 			<h2>League of Legends teams</h2>
 		</div>
+		<% if !@user.summoners.first %>
+		<div class="alert alert-info">		
+			Before creating a team, you need to register a League Of Legends account
+			<%= link_to "here", new_app_user_summoner_path(@user.id)%>.
+		</div>
+		<% end %>
 		<h4>Team 5v5</h4>
 		<table class="table table-condensed">
 			<tr>
@@ -30,7 +36,11 @@
 			</tr>
 			<% end %>
 		</table>
+		<% if @user.summoners.first %>
 		<%= link_to "refresh team 5v5 (could be long... rito plz...)", app_user_refresh_teams_path(@user.id), :class => 'btn btn-info btn-xs', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")'%>
+		<% else %>
+		<%= link_to "refresh team 5v5 (could be long... rito plz...)", app_user_refresh_teams_path(@user.id), :class => 'btn btn-info btn-xs disabled'%>
+		<% end %>
 		<h4>Team duo</h4>
 		<table class="table table-condensed">
 			<tr>
@@ -51,6 +61,10 @@
 			</tr>
 			<% end %>
 		</table>
+		<% if @user.summoners.first %>
 		<%= link_to "Create a new duo team", new_app_user_team_path(@user.id), :class => 'btn btn-info btn-xs'  %>
+		<%else%>
+		<%= link_to "Create a new duo team", new_app_user_team_path(@user.id), :class => 'btn btn-info btn-xs disabled'  %>
+		<%end%>
 	</div>
 </div>
