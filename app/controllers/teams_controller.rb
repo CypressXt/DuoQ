@@ -5,9 +5,7 @@ class TeamsController < ApplicationController
 	def index
 		@teamsDuo = Array.new
 		@teams5v5 = Array.new
-		@t5v5 = Array.new
 		if @user.summoners.first!=nil
-			@t5v5 = LolApiHelper.get_teams5v5_by_summoner(@user.summoners.first)
 			@teamsDuo = Array.new
 			@teams5v5 = Array.new
 			teams = @user.team

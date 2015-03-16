@@ -12,25 +12,29 @@ server {
   server_name duoq.cypressxt.net; # change to match your URL
   root /home/cypress/www/DuoQ/current/public; # I assume your app is located at that location
 
-  location / {
-    proxy_pass http://DuoQ; # match the name of upstream directive which is defined above
-    proxy_set_header Host $host;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_buffers 8 32k;
+  proxy_buffer_size 64k;
+
+location / {
+    root              /home/cypress/www/DuoQ/current/public;
+    try_files         $uri @app;
+    gzip_static       on;
+    expires           max;
+    add_header        Cache-Control public;
   }
 
-  location ~* ^/assets/ {
-    # Per RFC2616 - 1 year maximum expiry
-    expires 1y;
-    add_header Cache-Control public;
-
-    # Some browsers still send conditional-GET requests if there's a
-    # Last-Modified header or an ETag header even if they haven't
-    # reached the expiry date sent in the Expires header.
-    add_header Last-Modified "";
-    add_header ETag "";
-    break;
+location @app {
+    proxy_pass        http://duoq;
+    proxy_set_header  X-Real-IP  $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header  X-Forwarded-Proto http;
+    proxy_set_header  Host $http_host;
+    proxy_redirect    off;
+    proxy_next_upstream error timeout invalid_header http_502;
   }
+
 }
+
 ```
 ### Puma
 

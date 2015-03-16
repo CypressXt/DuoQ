@@ -39,7 +39,7 @@
 		<% if @user.summoners.first %>
 		<%= link_to "refresh team 5v5 (could be long... rito plz...)", app_user_refresh_teams_path(@user.id), :class => 'btn btn-info btn-xs', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")'%>
 		<% else %>
-		<%= link_to "refresh team 5v5 (could be long... rito plz...)", app_user_refresh_teams_path(@user.id), :class => 'btn btn-info btn-xs disabled'%>
+		<a class="btn btn-info btn-xs disabled" href="#">refresh team 5v5 (could be long... rito plz...)</a>
 		<% end %>
 		<h4>Team duo</h4>
 		<table class="table table-condensed">

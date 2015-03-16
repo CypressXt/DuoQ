@@ -26,10 +26,19 @@
 <% end %>
 <%= form_for @summoner, url: {action: "create_token"} , html: {class: "form-horizontal"} do |f| %>
 <div class="form-group">
-	<%= label_tag 'name', "Summoner's name" %>
-	<%= f.text_field :name, class: "form-control" , :placeholder => "Type your summoner's name here" %>
+	<div class="col-sm-9 col-sm-offset-1">
+		<%= label_tag 'name', "Summoner's name" %>
+		<%= f.text_field :name, class: "form-control" , :placeholder => "Type your summoner's name here" %>
+	</div>
+	<div class="col-sm-2">
+		<!-- Region update available here soon -->
+		<% label_tag 'region_id', "Region" %>
+		<% f.select "region_id", options_from_collection_for_select(Region.where.not(name: "global"), "id", "name", Region.find_by(name: "euw").id),{}, {class: 'form-control'} %>
+	</div>
 </div>
 <div class="form-group">
-	<%= f.submit "Link", :class => 'btn btn-info' %> 
+	<div class="col-sm-9 col-sm-offset-1">
+		<%= f.submit "Link", :class => 'btn btn-info' %> 
+	</div>
 </div>
 <% end %>

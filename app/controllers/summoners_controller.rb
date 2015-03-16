@@ -2,28 +2,17 @@ class SummonersController < ApplicationController
 	after_filter "save_previous_url", :only => [:index, :new]
 	before_action :get_user, :connected?, :proprietary?
 
-	attr_accessor :sumId
-	attr_accessor :sumName
-	attr_accessor :sumToken
-
 	def summoner_params
-		params.require(:summoner).permit(:id, :name, :summonerLevel, :summonerToken)
+		params.require(:summoner).permit(:id, :name, :summonerLevel, :summonerToken, :region_id)
 	end
-
-	def get_user
-		@user = AppUser.find_by(id: params[:app_user_id])
-	end
-
 
 	def index
 		@summoners = @user.summoners.where(validated: true).order(:id)
 	end
 
-
 	def new
 		@summoner = Summoner.new
 	end
-
 
 	def create_token
 		summoner = Summoner.find_or_create_by(summoner_params)
@@ -31,14 +20,13 @@ class SummonersController < ApplicationController
 		if summonerFromRiot
 			if summoner.app_user_id == nil || summoner.validated == false
 				@summoner = Summoner.find_or_create_by(summonerFromRiot)
-				sumIdReq = @summoner.id
-				sum_name = @summoner.name
-				token = rand(36**25).to_s(36)
-				@summoner.summonerToken = token
+				@summoner.summonerToken = rand(36**25).to_s(36)
 				@summoner.validated = false
+				@summoner.region = Region.find_by(name: "euw") # BEFORE REGION MIGRATION
+				#@summoner.region = Region.find_by(id: summoner_params['region_id']) AFTER REGION MIGRATION
 				@summoner.save
-				client = XmppLeagueHelper.connect_xmpp(token, sumIdReq)
-				XmppLeagueHelper.invite_xmpp(sumIdReq,client)
+				client = XmppLeagueHelper.connect_xmpp(@summoner, @summoner.summonerToken)
+				XmppLeagueHelper.invite_xmpp(@summoner,client)
 			else
 				@message = { "danger" => "This summoner is already linked to a DuoQ account ! "}
 				render 'global_info'
@@ -79,6 +67,13 @@ class SummonersController < ApplicationController
 			end
 		end
 	end
+
+
+	
+	def get_user
+		@user = AppUser.find_by(id: params[:app_user_id])
+	end
+
 
 	def connected?
 		if !logged_in?

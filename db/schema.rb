@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150301142524) do
+ActiveRecord::Schema.define(version: 20150309075817) do
 
   create_table "app_users", force: true do |t|
     t.datetime "created_at"
@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 20150301142524) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "endpoint"
+    t.string   "chat_endpoint"
   end
 
   create_table "relation_team_app_users", force: true do |t|
@@ -44,9 +46,11 @@ ActiveRecord::Schema.define(version: 20150301142524) do
     t.integer  "summonerLevel"
     t.string   "summonerToken"
     t.boolean  "validated"
+    t.integer  "region_id"
   end
 
   add_index "summoners", ["app_user_id"], name: "index_summoners_on_app_user_id"
+  add_index "summoners", ["region_id"], name: "index_summoners_on_region_id"
 
   create_table "team_compositions", force: true do |t|
     t.integer  "team_id"

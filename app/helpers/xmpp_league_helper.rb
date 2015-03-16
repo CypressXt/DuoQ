@@ -6,21 +6,21 @@ module XmppLeagueHelper
 	include Jabber
 
 
-	def connect_xmpp(token, sumId)
+	def connect_xmpp(summoner, token)
 		Jabber::debug = Rails.application.secrets.xmpp_debug
 		client = Jabber::Client::new(Jabber::JID::new(Rails.application.secrets.xmpp_riot_euw_account))
 		client.use_ssl = true;
 		client.connect("chat.euw1.lol.riotgames.com",5223)
 		client.auth(Rails.application.secrets.xmpp_riot_euw_password)
-		client.send(Jabber::Presence.new(:chat, "<body><profileIcon>21</profileIcon><level>30</level><wins>+9000</wins><leaves>30</leaves><odinWins>11</odinWins><odinLeaves>1</odinLeaves><queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>GOLD</tier><rankedSoloRestricted>false</rankedSoloRestricted><rankedLeagueName /><rankedLeagueDivision /><rankedLeagueTier /><rankedLeagueQueue /><gameStatus>outOfGame</gameStatus><statusMsg /></body>"))
+		client.send(Jabber::Presence.new(:chat, "<body><profileIcon>21</profileIcon><level>30</level><wins>9000</wins><leaves>30</leaves><odinWins>11</odinWins><odinLeaves>1</odinLeaves><queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>GOLD</tier><rankedSoloRestricted>false</rankedSoloRestricted><rankedLeagueName /><rankedLeagueDivision /><rankedLeagueTier /><rankedLeagueQueue /><gameStatus>outOfGame</gameStatus><statusMsg /></body>"))
 		roster = get_xmpp_friend_list(client)
 
-		if xmpp_friend_with?(sumId, roster)
-			send_xmpp_message("sum"+sumId.to_s+"@pvp.net", " Hi\nhere is your authentication key: \n"+token+"\n ", client)
+		if xmpp_friend_with?(summoner.id, roster)
+			send_xmpp_message("sum"+summoner.id.to_s+"@pvp.net", " Hi\nhere is your authentication key: \n"+summoner.summonerToken+"\n ", client)
 		else
 			roster.add_subscription_callback do |item,pres|
-				if pres.type.to_s == "subscribed" && pres.from.to_s == "sum"+sumId.to_s+"@pvp.net"
-					send_xmpp_message(pres.from.to_s, " Hi\nhere is your authentication key: \n"+token+"\n ", client)
+				if pres.type.to_s == "subscribed" && pres.from.to_s == "sum"+summoner.id.to_s+"@pvp.net"
+					send_xmpp_message(pres.from.to_s, " Hi\nhere is your authentication key: \n"+summoner.summonerToken+"\n ", client)
 				end
 			end
 		end
@@ -42,10 +42,10 @@ module XmppLeagueHelper
 		client.send(message)
 	end
 
-	def invite_xmpp(sumId, client)
+	def invite_xmpp(summoner, client)
 		# send a friend request to the summoner passed
-		Rails.logger.info "[RiotXmppFriend] to: sum"+sumId.to_s+"@pvp.net"
-		pres = Jabber::Presence.new.set_type(:subscribe).set_to("sum"+sumId.to_s+"@pvp.net")
+		Rails.logger.info "[RiotXmppFriend] to: sum"+summoner.id.to_s+"@pvp.net"
+		pres = Jabber::Presence.new.set_type(:subscribe).set_to("sum"+summoner.id.to_s+"@pvp.net")
 		client.send(pres)
 	end
 
