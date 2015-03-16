@@ -51,7 +51,7 @@ module LolApiHelper
 						dd, hh = hh.divmod(24)
 						lastChange = " last change "+dd.to_s+" days "+hh.to_s+" hours "+mm.to_s+" min "+ss.to_s+" sec"
 						Rails.logger.info("[Refresh_team_skipped] "+team5v5['name']+" riot_version:"+ team5v5['modifyDate'].to_s+" db_version:"+ (db_team.updated_at.to_i*1000).to_s+lastChange)
-						#refresh_team_league_by_team(db_team)
+						refresh_team_league_by_team(db_team)
 						next
 					end
 					Rails.logger.info("[Refresh_team_skipped] "+team5v5['name'])
@@ -94,11 +94,10 @@ module LolApiHelper
 	end
 
 	def refresh_team_league_by_team(team)
-		testTeam = Team.new("key"=>"TEAM-56460830-a667-11e4-836d-c81f66db96d8")
 		teamLeagueInfo = LolApiHelper.get_team5v5_league_by_team(team)
 		if teamLeagueInfo
 			team.team_tier = TeamTier.find_by(name: teamLeagueInfo['tier'].downcase)
-			team.team_division = TeamDivision.find_by(name: teamLeagueInfo['division'])
+			team.team_division = TeamDivision.find_by(name: teamLeagueInfo['entries'].first['division'])
 		else
 			team.team_tier = nil
 			team.team_division = nil
@@ -106,8 +105,8 @@ module LolApiHelper
 		team.save
 	end
 
-	def get_team5v5_league_by_team(team)
-		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v2.5/league/by-team/"+team.key.to_s+"?api_key="+Rails.application.secrets.riot_api_key.to_s)	
+	def get_team5v5_league_by_team(team)	
+		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v2.5/league/by-team/"+team.key.to_s+"/entry?api_key="+Rails.application.secrets.riot_api_key.to_s)	
 		if result && result!="404"
 			teamLeague = JSON.parse(result).first[1][0]
 			return teamLeague

@@ -1,11 +1,17 @@
 <div class="row">
 	<div class="col-md-6 col-md-offset-3 whiteContent">
 		<div class="page-header">
-			<h2><%= @team.name %></h2>
-			<% if (@team.team_tier && @team.team_division) %>
-				<h6><%= @team.team_tier.name %> <%= @team.team_division.name %></h6>
-			<% end %>
-			<h6><%= @team.team_type.name %></h6>
+			<div class="center-block" style="width:300px; text-align:center;">
+				<h2><%= @team.name %></h2>
+				<% if (@team.team_tier && @team.team_division) %>
+				<%= image_tag("leaguesIcones/"+@team.team_tier.name+"_"+@team.team_division.value.to_s+".png") %>
+				<h4><%= @team.team_tier.name.capitalize %> <%= @team.team_division.name %></h4>
+				<% else %>
+				<%= image_tag("leaguesIcones/unranked.png") %>
+				<h4>Unranked</h4>
+				<% end %>
+				<h6><%= @team.team_type.name.capitalize %></h6>
+			</div>
 		</div>
 		<h4>
 			Team composition:
