@@ -34,6 +34,14 @@ module LolApiHelper
 			get_summoner_by_id(id)
 		end
 	end
+
+	def get_summoner_league_by_id(summoner)
+		result = perform_request()
+		if result && result!="404"
+		else
+
+		end
+	end
 	# -------------------------------------------------------------------------------------------
 
 
