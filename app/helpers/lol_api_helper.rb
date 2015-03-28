@@ -104,11 +104,11 @@ module LolApiHelper
 	def refresh_team_league_by_team(team)
 		teamLeagueInfo = LolApiHelper.get_team5v5_league_by_team(team)
 		if teamLeagueInfo
-			team.team_tier = TeamTier.find_by(name: teamLeagueInfo['tier'].downcase)
-			team.team_division = TeamDivision.find_by(name: teamLeagueInfo['entries'].first['division'])
+			team.team_tier = LeagueTier.find_by(name: teamLeagueInfo['tier'].downcase)
+			team.team_division = LeagueDivision.find_by(name: teamLeagueInfo['entries'].first['division'])
 		else
-			team.team_tier = nil
-			team.team_division = nil
+			team.league_tier = nil
+			team.league_division = nil
 		end
 		team.save
 	end

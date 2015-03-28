@@ -3,34 +3,31 @@
 		<div class="page-header">
 			<div class="center-block" style="width:300px; text-align:center;">
 				<h2><%= @team.name %></h2>
-				<% if (@team.team_tier && @team.team_division) %>
-				<%= image_tag("leaguesIcones/"+@team.team_tier.name+"_"+@team.team_division.value.to_s+".png") %>
-				<h4><%= @team.team_tier.name.capitalize %> <%= @team.team_division.name %></h4>
-				<% else %>
-				<%= image_tag("leaguesIcones/unranked.png") %>
-				<h4>Unranked</h4>
+				<% if(@team.league_tier && @team.league_division) %>
+					<%= render 'show_team5v5_ranked' %>
+				<% elsif(@team.team_type.key == "RANKED_TEAM_5x5") %>
+					<%= render 'show_team5v5_unranked' %>
+				<% elsif(@team.team_type.key == "RANKED_SOLO_5x5") %>
+					<%= render 'show_team_solo' %>
 				<% end %>
 				<h6><%= @team.team_type.name.capitalize %></h6>
+				</div>
 			</div>
+			<h4>
+				Team composition:
+			</h4>
+			<table class="table table-condensed">
+				<tr>
+					<th>Summoner's name</th>
+					<th>Status</th>
+				</tr>
+				<% @team.summoners.each do |summoner| %>
+				<tr>
+					<td><%= summoner.name %></td>
+					<td></td>
+				</tr>
+				<% end %>
+			</table>
 		</div>
-		<h4>
-			Team composition:
-		</h4>
-		<table class="table table-condensed">
-			<tr>
-				<th>Summoner's name</th>
-				<th>Summoner's id</th>
-				<th>Status</th>
-			</tr>
-			<% @team.summoners.each do |summoner| %>
-			<tr>
-				<td><%= summoner.name %></td>
-				<td><%= summoner.id %></td>
-				<td>
-					
-				</td>
-			</tr>
-			<% end %>
-		</table>
 	</div>
 </div>

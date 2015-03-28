@@ -20,16 +20,16 @@
 			</tr>
 			<% @teams5v5.each do |team| %>
 			<tr>
-				<td><%= team.name %></td>
+				<td><%= team.name.capitalize %></td>
 				<td>[<%= team.tag %>]</td>
-				<% if team.team_tier!=nil %>
-				<td><%= team.team_tier.name %></td>
-				<% elsif team.team_division!=nil %>
-				<td><%= team.team_tier.name %> <%= team.team_division.name %></td>
+				<% if team.league_tier!=nil %>
+				<td><%= team.league_tier.name %></td>
+				<% elsif team.league_division!=nil %>
+				<td><%= team.league_tier.name.capitalize %> <%= team.league_division.name %></td>
 				<% else %>
 				<td>Unranked</td>
 				<% end %>
-				<td><%= team.team_type.name %></td>
+				<td><%= team.team_type.name.capitalize %></td>
 				<td>
 					<%= link_to 'Show', app_user_team_path(@user.id, team.id), :class => 'btn btn-info btn-xs' %>
 				</td>
@@ -37,9 +37,9 @@
 			<% end %>
 		</table>
 		<% if @user.summoners.first %>
-		<%= link_to "refresh team 5v5 (could be long... rito plz...)", app_user_refresh_teams_path(@user.id), :class => 'btn btn-info btn-xs', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")'%>
+		<%= link_to "Refresh team 5v5 (could be long... rito plz...)", app_user_refresh_teams_path(@user.id), :class => 'btn btn-info btn-xs', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")'%>
 		<% else %>
-		<a class="btn btn-info btn-xs disabled" href="#">refresh team 5v5 (could be long... rito plz...)</a>
+		<a class="btn btn-info btn-xs disabled" href="#">Refresh team 5v5 (could be long... rito plz...)</a>
 		<% end %>
 		<h4>Team duo</h4>
 		<table class="table table-condensed">
