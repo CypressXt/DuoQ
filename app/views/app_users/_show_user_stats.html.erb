@@ -1,0 +1,28 @@
+<div class="row" id="stats_row"style="margin-top:1em;">
+	<div class="col-xs-6 col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<h4>Team participation</h4>
+				<h1><%= @user.team.count %></h1>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-6 col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<h4>L.O.L accounts</h4>
+				<h1><%= @user.summoners.count %></h1>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-6 col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<h4>Match played</h4>
+				<h1><small>soon...</small></h1>
+			</div>
+		</div>
+	</div>
+</div>
