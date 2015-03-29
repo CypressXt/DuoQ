@@ -10,8 +10,12 @@
  * Licensed under the MIT license
  */
 
- #stats_row{
+ .stats_row{
  	.panel-body{
+ 		font-family: 'Raleway', sans-serif;
  		text-align: center;
+ 		h1{
+ 			text-shadow: 0px 1px 1px #b0b0b0;
+ 		}
  	}
  }
