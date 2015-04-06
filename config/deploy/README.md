@@ -29,8 +29,11 @@ server {
     proxy_buffer_size 64k;
     proxy_pass http://rails_app;
   }
-}
 
+  location /fonts {
+    alias /home/cypress/www/DuoQ/current/vendor/assets/fonts;
+  }
+}
 
 ```
 ### Puma
