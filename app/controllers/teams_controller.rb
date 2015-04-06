@@ -45,9 +45,10 @@ class TeamsController < ApplicationController
 				Summoner.find_or_create_by(id: summoner2.id) do |summoner|
 					summoner.id = summoner2.id
 					summoner.name = summoner2.name
-					summoner.app_user_id = @user.id
 					summoner.summonerToken = summoner2.summonerToken
 					summoner.summonerLevel = summoner2.summonerLevel
+					summoner.get_tier_and_division
+					summoner.region = Region.find_by(name: "euw") # BEFORE REGION MIGRATION
 				end
 				if !Summoner.find_by(id: summoner2.id)
 					@message = { "danger" => "Error while adding your mate's summoner to our database..."}

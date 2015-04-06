@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150328211634) do
+ActiveRecord::Schema.define(version: 20150406140109) do
 
   create_table "app_users", force: :cascade do |t|
     t.datetime "created_at"
@@ -52,22 +52,22 @@ ActiveRecord::Schema.define(version: 20150328211634) do
   add_index "relation_team_app_users", ["team_id"], name: "index_relation_team_app_users_on_team_id"
 
   create_table "summoners", force: :cascade do |t|
-    t.string   "name",          limit: 255
+    t.string   "name",               limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "app_user_id"
     t.integer  "summonerLevel"
-    t.string   "summonerToken", limit: 255
+    t.string   "summonerToken",      limit: 255
     t.boolean  "validated"
     t.integer  "region_id"
-    t.integer  "tier_id"
-    t.integer  "division_id"
+    t.integer  "league_tier_id"
+    t.integer  "league_division_id"
   end
 
   add_index "summoners", ["app_user_id"], name: "index_summoners_on_app_user_id"
-  add_index "summoners", ["division_id"], name: "index_summoners_on_division_id"
+  add_index "summoners", ["league_division_id"], name: "index_summoners_on_league_division_id"
+  add_index "summoners", ["league_tier_id"], name: "index_summoners_on_league_tier_id"
   add_index "summoners", ["region_id"], name: "index_summoners_on_region_id"
-  add_index "summoners", ["tier_id"], name: "index_summoners_on_tier_id"
 
   create_table "team_compositions", force: :cascade do |t|
     t.integer  "team_id"

@@ -24,6 +24,7 @@ class SummonersController < ApplicationController
 				@summoner.validated = false
 				@summoner.region = Region.find_by(name: "euw") # BEFORE REGION MIGRATION
 				#@summoner.region = Region.find_by(id: summoner_params['region_id']) AFTER REGION MIGRATION
+				@summoner.get_tier_and_division
 				@summoner.save
 				client = XmppLeagueHelper.connect_xmpp(@summoner, @summoner.summonerToken)
 				XmppLeagueHelper.invite_xmpp(@summoner,client)

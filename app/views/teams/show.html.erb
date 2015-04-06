@@ -4,30 +4,40 @@
 			<div class="center-block" style="width:300px; text-align:center;">
 				<h2><%= @team.name %></h2>
 				<% if(@team.league_tier && @team.league_division) %>
-					<%= render 'show_team5v5_ranked' %>
+				<%= render 'show_team5v5_ranked' %>
 				<% elsif(@team.team_type.key == "RANKED_TEAM_5x5") %>
-					<%= render 'show_team5v5_unranked' %>
+				<%= render 'show_team5v5_unranked' %>
 				<% elsif(@team.team_type.key == "RANKED_SOLO_5x5") %>
-					<%= render 'show_team_solo' %>
+				<%= render 'show_team_solo' %>
 				<% end %>
 				<h6><%= @team.team_type.name.capitalize %></h6>
-				</div>
 			</div>
-			<h4>
-				Team composition:
-			</h4>
-			<table class="table table-condensed">
-				<tr>
-					<th>Summoner's name</th>
-					<th>Status</th>
-				</tr>
-				<% @team.summoners.each do |summoner| %>
-				<tr>
-					<td><%= summoner.name %></td>
-					<td></td>
-				</tr>
-				<% end %>
-			</table>
 		</div>
+		<h4>
+			Team composition:
+		</h4>
+		<table class="table table-condensed">
+			<tr>
+				<th>Summoner's name</th>
+				<th>Rank</th>
+				<th>Status</th>
+			</tr>
+			<% @team.summoners.each do |summoner| %>
+			<tr>
+				<td class="verticalMiddle"><%= summoner.name %></td>
+				<td>
+					<% if (summoner.league_tier!=nil && summoner.league_division!=nil) %>
+					<%= image_tag("leaguesIcones/"+summoner.league_tier.name+"_"+summoner.league_division.value.to_s+".png", size: "42x42", id: "rank_img_"+summoner.id.to_s, onmouseover: "$('#"+"rank_img_"+summoner.id.to_s+"').tooltip('show');", 
+					:data => { "toggle" => "tooltip", "original-title"=> summoner.league_tier.name.capitalize+" "+ summoner.league_division.name}) %>
+					<% else %>
+					<%= image_tag("leaguesIcones/unranked.png", size: "42x42", id: "rank_img_"+summoner.id.to_s, onmouseover: "$('#"+"rank_img_"+summoner.id.to_s+"').tooltip('show');", 
+					:data => { "toggle" => "tooltip", "original-title"=> "Unranked"}) %>
+					<% end %>
+				</td>
+				<td></td>
+			</tr>
+			<% end %>
+		</table>
 	</div>
+</div>
 </div>

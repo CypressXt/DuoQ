@@ -1,6 +1,7 @@
 class AppUsersController < ApplicationController
 	before_action :connected?, only: [:edit, :update, :send_mail]
 	before_action :proprietary?, only: [:edit]
+	before_action :exist, only: [:show]
 	after_action :send_mail, only: [:create]
 
 
@@ -98,7 +99,7 @@ class AppUsersController < ApplicationController
 	end
 
 	def gravatar_url(user)
-		default_url = "https://lh5.googleusercontent.com/-YSWgDjQjvaI/Ut0XN5gcVZI/AAAAAAAABy4/WnJisw7B2eA/w1680-no/tree.jpg"
+		default_url = "https://lh5.googleusercontent.com/-YSWgDjQjvaI/Ut0XN5gcVZI/AAAAAAAABy4/WnJisw7B2eA/w900-no/tree.jpg"
 		gravatar_id = Digest::MD5.hexdigest(user.email.downcase) 
 		gravatar_img_url = "http://gravatar.com/avatar/#{gravatar_id}.png?s=800&d=#{CGI.escape(default_url)}"
 		return gravatar_img_url
@@ -114,6 +115,12 @@ class AppUsersController < ApplicationController
 		if (current_logged_user.id != params[:id].to_i ) 
 			@message = { "danger" => "You're not proprietary of this resource !"}
 			render 'global_info'
+		end
+	end
+
+	def exist
+		if(!AppUser.find_by(id: params[:id].to_i))
+			render :file => "#{Rails.root}/public/404", :layout => true, :status => :not_found
 		end
 	end
 end
