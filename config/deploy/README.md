@@ -3,6 +3,7 @@
 
 #### Config file 
 ```
+
 upstream rails_app {
   server unix:///tmp/DuoQ.sock fail_timeout=0;
 }
@@ -16,9 +17,15 @@ server {
 
   try_files $uri/index.html $uri @rails_app;
 
-  client_max_body_size 10M;
-  keepalive_timeout 10;
-  large_client_header_buffers 8 32k;
+  client_body_buffer_size 10K;
+  client_header_buffer_size 1k;
+  client_max_body_size 8m;
+  large_client_header_buffers 2 1k;
+
+  client_body_timeout 12;
+  client_header_timeout 12;
+  keepalive_timeout 15;
+  send_timeout 10;
 
   location @rails_app {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -29,6 +36,11 @@ server {
     proxy_buffer_size 64k;
     proxy_pass http://rails_app;
   }
+
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+                expires 1y;
+                log_not_found off;
+        }
 
   location /fonts {
     alias /home/cypress/www/DuoQ/current/vendor/assets/fonts;
