@@ -97,6 +97,9 @@ module LolApiHelper
 						lastChange = " last change "+dd.to_s+" days "+hh.to_s+" hours "+mm.to_s+" min "+ss.to_s+" sec"
 						Rails.logger.info("[Refresh_team_skipped] "+team5v5['name']+" riot_version:"+ team5v5['modifyDate'].to_s+" db_version:"+ (db_team.updated_at.to_i*1000).to_s+lastChange)
 						refresh_team_league_by_team(db_team)
+						db_team.summoners.each do |summoner|
+							summoner.get_tier_and_division
+						end
 						next
 					end
 					Rails.logger.info("[Refresh_team_skipped] "+team5v5['name'])
@@ -180,6 +183,30 @@ module LolApiHelper
 		end
 	end
 	# -------------------------------------------------------------------------------------------
+
+	# Matches -----------------------------------------------------------------------------------
+
+
+	# This function get the last 10th matches from a given summoner.
+	#
+	# * *Args*    :
+	#   - +summoner+ -> object from class Summoner
+	# * *Returns* :
+	#   - If all goes well, return the getted JSON array
+	#   - Else return the http error code
+	def get_duo_match_by_summoner(summoner)
+		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v1.3/game/by-summoner/"+summoner.id.to_s+"/recent?api_key="+Rails.application.secrets.riot_api_key.to_s)	
+		if check_http_error_code(result)
+			
+		else
+			check_query_resut(result, "get_match_by_summoner", summoner)
+		end
+	end
+
+	# -------------------------------------------------------------------------------------------
+
+
+
 
 	# Generals ----------------------------------------------------------------------------------
 
