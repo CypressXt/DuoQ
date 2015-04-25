@@ -22,7 +22,7 @@ class TeamsController < ApplicationController
 
 
 	def show
-		if (@user && Team.find_by(id: params[:id]))
+		if (@user && Team.find_by(id: params[:id]) && @user.team.find_by(id: params[:id])
 			@team = @user.team.find_by(id: params[:id])
 		else
 			throw_404
