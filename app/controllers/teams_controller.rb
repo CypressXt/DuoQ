@@ -1,5 +1,6 @@
 class TeamsController < ApplicationController
-	before_action :get_user, :connected?, :proprietary?, :except => [:show]
+	before_action :connected?, :proprietary?, :except => [:show]
+	before_action :get_user
 
 
 	def index
@@ -21,7 +22,11 @@ class TeamsController < ApplicationController
 
 
 	def show
-		@team = Team.find_by(id: params[:id])
+		if (@user && Team.find_by(id: params[:id]))
+			@team = @user.team.find_by(id: params[:id])
+		else
+			throw_404
+		end
 	end
 
 	def new
@@ -76,8 +81,7 @@ class TeamsController < ApplicationController
 				#----------------------------------------------------
 
 				# Link duo team with user's DuoQ account
-				relationAppUserTeam = RelationTeamAppUser.find_or_create_by(team_id: team.id, app_user_id: @user.id)
-				if !relationAppUserTeam.save
+				if !RelationTeamAppUser.link_team_to_appuser(team, @user)
 					@message = { "danger" => "Error while linking your duo with your DuoQ account..."}
 					raise ActiveRecord::Rollback, "Db error while linking your duo"
 					render 'global_info' and return
@@ -144,8 +148,7 @@ class TeamsController < ApplicationController
 		commonMembership.each do |commonTeamId|
 			commonTeam = Team.find_by(id: commonTeamId)
 			if commonTeam.team_type == TeamType.find_by(key: "RANKED_SOLO_5x5")
-				linkTeam = RelationTeamAppUser.find_or_create_by(team_id: commonTeam.id, app_user_id: @user.id)
-				linkTeam.save
+				RelationTeamAppUser.link_team_to_appuser(commonTeam, @user)
 				return true
 			end
 		end

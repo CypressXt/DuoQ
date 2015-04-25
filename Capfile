@@ -28,3 +28,5 @@ require 'new_relic/recipes'
 Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
 
 set :rbenv_ruby, '2.1.5'
+
+load 'deploy/assets'

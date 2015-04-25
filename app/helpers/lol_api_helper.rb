@@ -97,19 +97,20 @@ module LolApiHelper
 						lastChange = " last change "+dd.to_s+" days "+hh.to_s+" hours "+mm.to_s+" min "+ss.to_s+" sec"
 						Rails.logger.info("[Refresh_team_skipped] "+team5v5['name']+" riot_version:"+ team5v5['modifyDate'].to_s+" db_version:"+ (db_team.updated_at.to_i*1000).to_s+lastChange)
 						refresh_team_league_by_team(db_team)
+						RelationTeamAppUser.link_team_to_appuser(db_team, appuser)
 						db_team.summoners.each do |summoner|
 							summoner.get_tier_and_division
 						end
 						next
 					end
-					Rails.logger.info("[Refresh_team_skipped] "+team5v5['name'])
 					new5v5 = Team.find_or_create_by(name: team5v5['name'])
 					new5v5.tag = team5v5['tag']
 					new5v5.key = team5v5['fullId']
 					new5v5.team_type = TeamType.find_by(key: "RANKED_TEAM_5x5")
 					if new5v5.save
-						relationAppUserTeam = RelationTeamAppUser.find_or_create_by(team_id: new5v5.id, app_user_id: appuser.id)
-						relationAppUserTeam.save
+						RelationTeamAppUser.link_team_to_appuser(new5v5, appuser)
+						#relationAppUserTeam = RelationTeamAppUser.find_or_create_by(team_id: new5v5.id, app_user_id: appuser.id)
+						#relationAppUserTeam.save
 						team5v5['roster']['memberList'].each do |teamMember|
 							riotSum = Summoner.new(LolApiHelper.get_summoner_by_id(teamMember['playerId']))
 							newSumm = Summoner.find_or_create_by(id: riotSum.id, name: riotSum.name)
@@ -203,6 +204,15 @@ module LolApiHelper
 		end
 	end
 
+
+	def get_match_by_id(match_id)
+		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v2.2/match/"+match_id.to_s+"?api_key="+Rails.application.secrets.riot_api_key.to_s)	
+		if check_http_error_code(result)
+			
+		else
+			check_query_resut(result, "get_match_by_id", match_id)
+		end
+	end
 	# -------------------------------------------------------------------------------------------
 
 
