@@ -16,6 +16,11 @@ class AppUsersController < ApplicationController
 		else
 			@user=AppUser.find_by(id: params[:id].to_i)
 		end
+		@match_count = 0
+		
+		@user.team.each do |team|
+			@match_count += team.matches.count
+		end
 		@gravatar_img_url = gravatar_url(@user)
 	end
 

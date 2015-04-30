@@ -291,6 +291,7 @@ module LolApiHelper
 								db_summoner.save
 							end
 							db_summoner.region = Region.find_by(name: "euw") # BEFORE REGION MIGRATION
+							db_summoner.save
 							db_summoner.get_tier_and_division
 							break
 						end
