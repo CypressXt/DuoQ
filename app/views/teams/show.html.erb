@@ -55,6 +55,7 @@
 				<th>#</th>
 				<th>Patch version</th>
 				<th>Season</th>
+				<th>Score</th>
 				<th>Result</th>
 				<th>Duration</th>
 				<th>Date</th>
@@ -65,7 +66,16 @@
 				<td><%= truncate(match.version, :length => 5, :separator => '.', omission: '') %></td>
 				<td><%= match.season.name.capitalize %></td>
 				<td>
-					<% if match.is_won(@team) %>
+					<% if match.get_team_side(@team) == 100 %>
+					<span class="label label-blue"><%= match.get_score['100'] %></span> - 
+					<span class="label label-purple"><%= match.get_score['200'] %></span>
+					<% else %>
+					<span class="label label-purple"><%= match.get_score['200'] %></span> - 
+					<span class="label label-blue"><%= match.get_score['100'] %></span>
+					<% end %>
+				</td>
+				<td>
+					<% if (match.is_won(@team)) %>
 					<span class="label label-success">Victory</span>
 					<% else %>
 					<span class="label label-danger">Defeat</span>

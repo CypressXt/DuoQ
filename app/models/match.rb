@@ -9,19 +9,43 @@ class Match < ActiveRecord::Base
 
 
 	def is_won(team)
-		summoner = team.summoners.first
 		match_teams = self.match_teams
 		match_teams.each do |match_team|
-			match_participants = match_team.match_participants
-			match_participants.each do |participant|
-				if summoner.id == participant.summoner.id
-					return match_team.won
+			participants = match_team.match_participants
+			participants.each do |participant|
+				team_summoners = team.summoners
+				team_summoners.each do |sum|
+					if sum.id == participant.summoner_id
+						return match_team.won
+					end
 				end
 			end
 		end
 	end
 
+	def get_score
+		result = Hash.new
+		self.match_teams.each do |match_team|
+			match_team.match_participants.each do |participant|
+				if match_team.riot_id == 100
+					result['100'] = participant.kills
+				else
+					result['200'] = participant.kills
+				end
+			end
+		end
+		return result
+	end
 
-
-	
+	def get_team_side(team)
+		self.match_teams.each do |match_team|
+			match_team.match_participants.each do |match_participant|
+				team.summoners.each do |sum|
+					if sum.id == match_participant.summoner_id
+						return match_team.riot_id
+					end
+				end
+			end
+		end
+	end
 end

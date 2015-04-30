@@ -23,3 +23,21 @@
  .verticalMiddle{
  	vertical-align: middle !important;
  }
+
+.label-purple{
+	color: #000;
+	background-color: #CC33FF;
+	display: inline-block;
+    *display: inline;/* for IE7*/
+    *zoom:1;/* for IE7*/
+    min-width: 3em;
+}
+
+.label-blue{
+	color: #000;
+	background-color: #3DC8FF;
+	display: inline-block;
+    *display: inline;/* for IE7*/
+    *zoom:1;/* for IE7*/
+    min-width: 3em;
+}
