@@ -15,4 +15,13 @@ module SessionsHelper
 	def log_out
 		session.delete(:AppUserLoggedId)
 	end
+
+	def is_proprietary
+		if current_logged_user != nil
+			if (current_logged_user.id == params[:app_user_id].to_i ) 
+				return true
+			end
+		end
+		return false
+	end
 end

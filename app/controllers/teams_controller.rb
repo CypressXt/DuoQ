@@ -1,6 +1,7 @@
 class TeamsController < ApplicationController
 	before_action :connected?, :proprietary?, :except => [:show]
 	before_action :get_user
+	before_action :get_current_team, :only => [:refresh_team_matches]
 
 
 	def index
@@ -41,7 +42,7 @@ class TeamsController < ApplicationController
 			if team.save
 				# Adding the second summoner to the db
 				summoner2 = Summoner.new(LolApiHelper.get_summoner_by_name(params[:sumName2]))
-				summoner2.summonerToken = rand(36**25).to_s(36)
+				summoner2.generate_token
 				
 				if summoner2.name==nil
 					@message = { "danger" => "Error while adding your mate's summoner, please enter a valid summoner name..."}
@@ -139,6 +140,33 @@ class TeamsController < ApplicationController
 		end
 	end
 
+	def refresh_team_matches
+		if @team.team_type.key == "RANKED_TEAM_5x5"
+			# Team 5v5 refresh 
+			match_ids = LolApiHelper.get_team5v5_recent_match_ids(@team)
+		else
+			# Team Duo refresh
+			match_ids_sum1 = LolApiHelper.get_duo_match_id_by_summoner(@team.summoners.first)
+			match_ids_sum2 = LolApiHelper.get_duo_match_id_by_summoner(@team.summoners.last)
+			match_ids = match_ids_sum1 & match_ids_sum2
+		end
+		if match_ids
+			match_ids.each do |match_id|
+				if(!Match.find_by(riot_id: match_id))
+					match = LolApiHelper.get_match_by_id(match_id)
+					if match
+						RelationTeamMatch.link_match_to_team(@team, match)
+					end
+				else
+					match = Match.find_by(riot_id: match_id)
+					RelationTeamMatch.link_match_to_team(@team, match)
+				end
+			end
+		end
+		
+		redirect_to app_user_team_path(@user.id, @team.id)
+	end
+
 	def team_already_exist(parameters)
 		you = Summoner.find_by(id: parameters['you']).id
 		mate = Summoner.new(LolApiHelper.get_summoner_by_name(parameters['sumName2'])).id
@@ -161,6 +189,11 @@ class TeamsController < ApplicationController
 
 	def get_user
 		@user = AppUser.find_by(id: params[:app_user_id])
+	end
+
+	def get_current_team
+		self.get_user
+		@team = AppUser.find_by(id: params[:app_user_id]).team.find_by(id: params[:team_id])
 	end
 
 	def connected?

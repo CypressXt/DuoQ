@@ -53,7 +53,7 @@
 				<td>
 					<%= team.summoners.first.name %> & <%= team.summoners.last.name %>
 				</td>
-				<td><%= team.team_type.name %></td>
+				<td><%= team.team_type.name.capitalize %></td>
 				<td>
 					<%= link_to 'Show', app_user_team_path(@user.id, team.id), :class => 'btn btn-info btn-xs' %>
 					<%= link_to 'Unlink', app_user_team_path(@user, team.id), method: :delete, :class => 'btn btn-danger btn-xs' %>

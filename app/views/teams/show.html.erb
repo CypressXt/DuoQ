@@ -13,6 +13,15 @@
 				<h6><%= @team.team_type.name.capitalize %></h6>
 			</div>
 		</div>
+		<p>
+			<% if(is_proprietary) %>
+			<% if @team.team_type.key == "RANKED_TEAM_5x5" %>
+			<%= link_to "Refresh team 5v5 matches (could be VERY long... rito plz...)", app_user_team_refresh_team_matches_path(@user.id, @team.id), :class => 'btn btn-info', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")' %>
+			<% else %>
+			<%= link_to "Refresh team matches (could be VERY long... rito plz...)", app_user_team_refresh_team_matches_path(@user.id, @team.id), :class => 'btn btn-info', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")' %>
+			<% end %>
+			<% end %>
+		</p>
 		<h4>
 			Team composition:
 		</h4>
@@ -35,6 +44,35 @@
 					<% end %>
 				</td>
 				<td></td>
+			</tr>
+			<% end %>
+		</table>
+		<h4>
+			Matches:
+		</h4>
+		<table class="table table-condensed">
+			<tr>
+				<th>#</th>
+				<th>Patch version</th>
+				<th>Season</th>
+				<th>Result</th>
+				<th>Duration</th>
+				<th>Date</th>
+			</tr>
+			<% @team.matches.order(match_date: :desc).each_with_index  do |match, i| %>
+			<tr>
+				<td><%= (i+1) %></td>
+				<td><%= truncate(match.version, :length => 5, :separator => '.', omission: '') %></td>
+				<td><%= match.season.name.capitalize %></td>
+				<td>
+					<% if match.is_won(@team) %>
+					<span class="label label-success">Victory</span>
+					<% else %>
+					<span class="label label-danger">Defeat</span>
+					<% end %>
+				</td>
+				<td><%= (match.duration/60) %> mins</td>
+				<td><%= match.match_date.strftime("%d %h, %Y %R") %></td>
 			</tr>
 			<% end %>
 		</table>

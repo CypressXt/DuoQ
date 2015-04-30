@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150406140109) do
+ActiveRecord::Schema.define(version: 20150428115205) do
 
   create_table "app_users", force: :cascade do |t|
     t.datetime "created_at"
@@ -35,6 +35,126 @@ ActiveRecord::Schema.define(version: 20150406140109) do
     t.datetime "updated_at"
   end
 
+  create_table "match_participants", force: :cascade do |t|
+    t.integer  "participant_number"
+    t.integer  "match_team_id"
+    t.integer  "summoner_id"
+    t.integer  "league_tier_id"
+    t.integer  "league_division_id"
+    t.integer  "summoner_level"
+    t.integer  "spell1_id"
+    t.integer  "spell2_id"
+    t.integer  "champion_id"
+    t.integer  "champion_level"
+    t.integer  "item0_id"
+    t.integer  "item1_id"
+    t.integer  "item2_id"
+    t.integer  "item3_id"
+    t.integer  "item4_id"
+    t.integer  "item5_id"
+    t.integer  "item6_id"
+    t.integer  "kills"
+    t.integer  "double_kills"
+    t.integer  "triple_kills"
+    t.integer  "quadra_kills"
+    t.integer  "penta_kills"
+    t.integer  "unreal_kills"
+    t.integer  "largest_killing_spree"
+    t.integer  "deaths"
+    t.integer  "assists"
+    t.integer  "total_damage_dealt"
+    t.integer  "total_damage_dealt_to_champions"
+    t.integer  "total_damage_taken"
+    t.integer  "largest_critical_strike"
+    t.integer  "total_heal"
+    t.integer  "minions_killed"
+    t.integer  "neutral_minions_killed"
+    t.integer  "neutral_minions_killed_team_jungle"
+    t.integer  "neutral_minions_killed_enemy_jungle"
+    t.integer  "gold_earned"
+    t.integer  "gold_spent"
+    t.integer  "combat_player_score"
+    t.integer  "objective_player_score"
+    t.integer  "total_player_score"
+    t.integer  "total_score_rank"
+    t.integer  "magic_damage_dealt_to_champions"
+    t.integer  "physical_damage_dealt_to_champions"
+    t.integer  "true_damage_dealt_to_champions"
+    t.integer  "vision_wards_bought_in_game"
+    t.integer  "sight_wards_bought_in_game"
+    t.integer  "magic_damage_dealt"
+    t.integer  "physical_damage_dealt"
+    t.integer  "true_damage_dealt"
+    t.integer  "magic_damage_taken"
+    t.integer  "physical_damage_taken"
+    t.integer  "true_damage_taken"
+    t.boolean  "first_blood_kill"
+    t.boolean  "first_blood_assist"
+    t.boolean  "first_tower_kill"
+    t.boolean  "first_tower_assist"
+    t.boolean  "first_inhibitor_kill"
+    t.boolean  "first_inhibitor_assist"
+    t.integer  "inhibitor_kills"
+    t.integer  "tower_kills"
+    t.integer  "wards_placed"
+    t.integer  "wards_killed"
+    t.integer  "largest_multi_kill"
+    t.integer  "killing_sprees"
+    t.integer  "total_units_healed"
+    t.integer  "total_time_crowd_control_dealt"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "match_participants", ["champion_id"], name: "index_match_participants_on_champion_id"
+  add_index "match_participants", ["item0_id"], name: "index_match_participants_on_item0_id"
+  add_index "match_participants", ["item1_id"], name: "index_match_participants_on_item1_id"
+  add_index "match_participants", ["item2_id"], name: "index_match_participants_on_item2_id"
+  add_index "match_participants", ["item3_id"], name: "index_match_participants_on_item3_id"
+  add_index "match_participants", ["item4_id"], name: "index_match_participants_on_item4_id"
+  add_index "match_participants", ["item5_id"], name: "index_match_participants_on_item5_id"
+  add_index "match_participants", ["item6_id"], name: "index_match_participants_on_item6_id"
+  add_index "match_participants", ["league_division_id"], name: "index_match_participants_on_league_division_id"
+  add_index "match_participants", ["league_tier_id"], name: "index_match_participants_on_league_tier_id"
+  add_index "match_participants", ["match_team_id"], name: "index_match_participants_on_match_team_id"
+  add_index "match_participants", ["spell1_id"], name: "index_match_participants_on_spell1_id"
+  add_index "match_participants", ["spell2_id"], name: "index_match_participants_on_spell2_id"
+  add_index "match_participants", ["summoner_id"], name: "index_match_participants_on_summoner_id"
+
+  create_table "match_teams", force: :cascade do |t|
+    t.integer  "riot_id"
+    t.boolean  "won"
+    t.boolean  "first_blood"
+    t.boolean  "first_tower"
+    t.boolean  "first_inhibitor"
+    t.boolean  "first_baron"
+    t.boolean  "first_dragon"
+    t.integer  "tower_kills"
+    t.integer  "inhibitor_kills"
+    t.integer  "baron_kills"
+    t.integer  "dragon_kills"
+    t.integer  "vilemaw_kills"
+    t.integer  "match_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "match_teams", ["match_id"], name: "index_match_teams_on_match_id"
+
+  create_table "matches", force: :cascade do |t|
+    t.decimal  "riot_id"
+    t.datetime "match_date"
+    t.integer  "duration"
+    t.integer  "team_type_id"
+    t.string   "version"
+    t.integer  "season_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "matches", ["season_id"], name: "index_matches_on_season_id"
+  add_index "matches", ["team_type_id"], name: "index_matches_on_team_type_id"
+
   create_table "regions", force: :cascade do |t|
     t.string   "name",          limit: 255
     t.datetime "created_at"
@@ -50,6 +170,23 @@ ActiveRecord::Schema.define(version: 20150406140109) do
 
   add_index "relation_team_app_users", ["app_user_id"], name: "index_relation_team_app_users_on_app_user_id"
   add_index "relation_team_app_users", ["team_id"], name: "index_relation_team_app_users_on_team_id"
+
+  create_table "relation_team_matches", force: :cascade do |t|
+    t.integer  "team_id"
+    t.integer  "match_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "relation_team_matches", ["match_id"], name: "index_relation_team_matches_on_match_id"
+  add_index "relation_team_matches", ["team_id"], name: "index_relation_team_matches_on_team_id"
+
+  create_table "seasons", force: :cascade do |t|
+    t.string   "name"
+    t.string   "riot_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "summoners", force: :cascade do |t|
     t.string   "name",               limit: 255

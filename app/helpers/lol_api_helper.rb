@@ -109,13 +109,12 @@ module LolApiHelper
 					new5v5.team_type = TeamType.find_by(key: "RANKED_TEAM_5x5")
 					if new5v5.save
 						RelationTeamAppUser.link_team_to_appuser(new5v5, appuser)
-						#relationAppUserTeam = RelationTeamAppUser.find_or_create_by(team_id: new5v5.id, app_user_id: appuser.id)
-						#relationAppUserTeam.save
 						team5v5['roster']['memberList'].each do |teamMember|
 							riotSum = Summoner.new(LolApiHelper.get_summoner_by_id(teamMember['playerId']))
 							newSumm = Summoner.find_or_create_by(id: riotSum.id, name: riotSum.name)
 							newSumm.summonerLevel = riotSum.summonerLevel
-							newSumm.summonerToken = rand(36**25).to_s(36)
+							newSumm.region = Region.find_by(name: "euw") # BEFORE REGION MIGRATION
+							newSumm.generate_token
 							if newSumm.save
 								teamComposition = TeamComposition.find_or_create_by(team_id: new5v5.id, summoner_id: newSumm.id)
 								teamComposition.save
@@ -183,6 +182,28 @@ module LolApiHelper
 			check_query_resut(result, "get_team5v5_league_by_team", team)
 		end
 	end
+
+
+	# This function get all the recent matches from a 5v5team and return an array
+	# containing only matches ids.
+	#
+	# * *Args*    :
+	#   - +team+ -> object from class Team
+	# * *Returns* :
+	#   - A array containing matches's ids
+	def get_team5v5_recent_match_ids(team)
+		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v2.4/team/"+team.key.to_s+"?api_key="+Rails.application.secrets.riot_api_key.to_s)	
+		if check_http_error_code(result)
+			historyJsonArray = JSON.parse(result).first[1]['matchHistory']
+			matches_ids_array = []
+			historyJsonArray.each do |match|
+				matches_ids_array << match['gameId']
+			end
+			return matches_ids_array
+		else
+			check_query_resut(result, "get_team5v5_match_history", team)
+		end
+	end
 	# -------------------------------------------------------------------------------------------
 
 	# Matches -----------------------------------------------------------------------------------
@@ -195,20 +216,160 @@ module LolApiHelper
 	# * *Returns* :
 	#   - If all goes well, return the getted JSON array
 	#   - Else return the http error code
-	def get_duo_match_by_summoner(summoner)
-		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v1.3/game/by-summoner/"+summoner.id.to_s+"/recent?api_key="+Rails.application.secrets.riot_api_key.to_s)	
+	def get_duo_match_id_by_summoner(summoner)
+		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v2.2/matchhistory/"+summoner.id.to_s+"?rankedQueues=RANKED_SOLO_5x5&api_key="+Rails.application.secrets.riot_api_key.to_s)	
 		if check_http_error_code(result)
-			
+			matches = JSON.parse(result).first[1]
+			duo_ranked_matches_id = []
+			matches.each do |match|
+				duo_ranked_matches_id << match['matchId']
+			end
+			return duo_ranked_matches_id
 		else
-			check_query_resut(result, "get_match_by_summoner", summoner)
+			check_query_resut(result, "get_duo_match_id_by_summoner", summoner)
 		end
 	end
 
-
+	# This function get all the information about a match.
+	#
+	# * *Args*    :
+	#   - +match_id+ -> Id of the concerned match
+	# * *Returns* :
+	#   - an object from class Match
+	#   - nill if the match wasn't found on the riot api
 	def get_match_by_id(match_id)
 		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v2.2/match/"+match_id.to_s+"?api_key="+Rails.application.secrets.riot_api_key.to_s)	
 		if check_http_error_code(result)
-			
+			jsonMatch = JSON.parse(result)
+			if jsonMatch
+				# Add new match in the match DB Table
+				newDbMatch = Match.find_or_create_by(riot_id: jsonMatch['matchId'])
+				newDbMatch.match_date = Time.at(jsonMatch['matchCreation']/1000)
+				newDbMatch.team_type = TeamType.find_by(key: jsonMatch['queueType'])
+				newDbMatch.version = jsonMatch['matchVersion'].to_s
+				newDbMatch.duration = jsonMatch['matchDuration']
+				newDbMatch.season = Season.find_by(riot_key: jsonMatch['season'])
+				newDbMatch.save
+
+				# Add the two team in the match_teams table
+				teams = jsonMatch['teams']
+				team100 = ""
+				team200 = ""
+				teams.each do |team|
+					matchTeam = MatchTeam.find_or_create_by({ match_id: newDbMatch.id, riot_id: team['teamId']})
+					matchTeam.riot_id = team['teamId']
+					matchTeam.won = team['winner']
+					matchTeam.first_blood = team['firstBlood']
+					matchTeam.first_tower = team['firstTower']
+					matchTeam.first_inhibitor = team['firstInhibitor']
+					matchTeam.first_baron = team['firstBaron']
+					matchTeam.first_dragon = team['firstDragon']
+					matchTeam.tower_kills = team['towerKills']
+					matchTeam.inhibitor_kills = team['inhibitorKills']
+					matchTeam.baron_kills = team['baronKills']
+					matchTeam.dragon_kills = team['dragonKills']
+					matchTeam.vilemaw_kills = team['vilemawKills']
+					matchTeam.save
+					if matchTeam.riot_id == 100
+						team100 = matchTeam
+					else
+						team200 = matchTeam
+					end
+				end
+
+				# Add all participants in the match_participants table
+				participants = jsonMatch['participants']
+				participants.each do |participant|
+					summoners = jsonMatch['participantIdentities']
+					db_summoner = nil
+					summoners.each do |summoner|
+						if summoner['participantId'] == participant['participantId']
+							db_summoner = Summoner.find_by(id: summoner['player']['summonerId'].to_i)
+							if db_summoner== nil || db_summoner.name == ""
+								db_summoner = Summoner.new(LolApiHelper.get_summoner_by_id(summoner['player']['summonerId']))
+								db_summoner.generate_token
+								db_summoner.save
+							end
+							db_summoner.region = Region.find_by(name: "euw") # BEFORE REGION MIGRATION
+							db_summoner.get_tier_and_division
+							break
+						end
+					end
+
+					if participant['teamId'] == 100
+						dbParticipant = MatchParticipant.find_or_create_by({ match_team_id:  team100.id, summoner_id: db_summoner.id, participant_number: participant['participantId']})
+					else
+						dbParticipant = MatchParticipant.find_or_create_by({ match_team_id:  team200.id, summoner_id: db_summoner.id, participant_number: participant['participantId']})
+					end
+					
+					# Set MatchParticipant stats
+					dbParticipant.league_tier = db_summoner.league_tier
+					dbParticipant.league_division = db_summoner.league_division
+					dbParticipant.summoner_level = db_summoner.summonerLevel
+					dbParticipant.spell1_id = participant['spell1Id']
+					dbParticipant.spell2_id = participant['spell2Id']
+					dbParticipant.champion_id = participant['championId']
+					dbParticipant.champion_level = participant['stats']['champLevel']
+					dbParticipant.item0_id = participant['stats']['item0']
+					dbParticipant.item1_id = participant['stats']['item1']
+					dbParticipant.item2_id = participant['stats']['item2']
+					dbParticipant.item3_id = participant['stats']['item3']
+					dbParticipant.item4_id = participant['stats']['item4']
+					dbParticipant.item5_id = participant['stats']['item5']
+					dbParticipant.item6_id = participant['stats']['item6']
+					dbParticipant.kills = participant['stats']['kills']
+					dbParticipant.double_kills = participant['stats']['doubleKills']
+					dbParticipant.triple_kills = participant['stats']['tripleKills']
+					dbParticipant.quadra_kills = participant['stats']['quadraKills']
+					dbParticipant.penta_kills = participant['stats']['pentaKills']
+					dbParticipant.unreal_kills = participant['stats']['unrealKills']
+					dbParticipant.largest_killing_spree = participant['stats']['largestKillingSpree']
+					dbParticipant.deaths = participant['stats']['deaths']
+					dbParticipant.assists = participant['stats']['assists']
+					dbParticipant.total_damage_dealt = participant['stats']['totalDamageDealt']
+					dbParticipant.total_damage_dealt_to_champions = participant['stats']['totalDamageDealtToChampions']
+					dbParticipant.total_damage_taken = participant['stats']['totalDamageTaken']
+					dbParticipant.largest_critical_strike = participant['stats']['largestCriticalStrike']
+					dbParticipant.total_heal = participant['stats']['totalHeal']
+					dbParticipant.minions_killed = participant['stats']['minionsKilled']
+					dbParticipant.neutral_minions_killed = participant['stats']['neutralMinionsKilled']
+					dbParticipant.neutral_minions_killed_team_jungle = participant['stats']['neutralMinionsKilledTeamJungle']
+					dbParticipant.neutral_minions_killed_enemy_jungle = participant['stats']['neutralMinionsKilledEnemyJungle']
+					dbParticipant.gold_earned = participant['stats']['goldEarned']
+					dbParticipant.gold_spent = participant['stats']['goldSpent']
+					dbParticipant.combat_player_score = participant['stats']['combatPlayerScore']
+					dbParticipant.objective_player_score = participant['stats']['objectivePlayerScore']
+					dbParticipant.total_player_score = participant['stats']['totalPlayerScore']
+					dbParticipant.total_score_rank = participant['stats']['totalScoreRank']
+					dbParticipant.magic_damage_dealt_to_champions = participant['stats']['magicDamageDealtToChampions']
+					dbParticipant.physical_damage_dealt_to_champions = participant['stats']['physicalDamageDealtToChampions']
+					dbParticipant.true_damage_dealt_to_champions = participant['stats']['trueDamageDealtToChampions']
+					dbParticipant.vision_wards_bought_in_game = participant['stats']['visionWardsBoughtInGame']
+					dbParticipant.sight_wards_bought_in_game = participant['stats']['sightWardsBoughtInGame']
+					dbParticipant.magic_damage_dealt = participant['stats']['magicDamageDealt']
+					dbParticipant.physical_damage_dealt = participant['stats']['physicalDamageDealt']
+					dbParticipant.true_damage_dealt = participant['stats']['trueDamageDealt']
+					dbParticipant.magic_damage_taken = participant['stats']['magicDamageTaken']
+					dbParticipant.physical_damage_taken = participant['stats']['physicalDamageTaken']
+					dbParticipant.true_damage_taken = participant['stats']['trueDamageTaken']
+					dbParticipant.first_blood_kill = participant['stats']['firstBloodKill']
+					dbParticipant.first_blood_assist = participant['stats']['firstBloodAssist']
+					dbParticipant.first_tower_kill = participant['stats']['firstTowerKill']
+					dbParticipant.first_tower_assist = participant['stats']['firstTowerAssist']
+					dbParticipant.first_inhibitor_kill = participant['stats']['firstInhibitorKill']
+					dbParticipant.first_inhibitor_assist = participant['stats']['firstInhibitorAssist']
+					dbParticipant.inhibitor_kills = participant['stats']['inhibitorKills']
+					dbParticipant.tower_kills = participant['stats']['towerKills']
+					dbParticipant.wards_placed = participant['stats']['wardsPlaced']
+					dbParticipant.wards_killed = participant['stats']['wardsKilled']
+					dbParticipant.largest_multi_kill = participant['stats']['largestMultiKill']
+					dbParticipant.killing_sprees = participant['stats']['killingSprees']
+					dbParticipant.total_units_healed = participant['stats']['totalUnitsHealed']
+					dbParticipant.total_time_crowd_control_dealt = participant['stats']['totalTimeCrowdControlDealt']
+					dbParticipant.save
+				end
+			end
+			return newDbMatch
 		else
 			check_query_resut(result, "get_match_by_id", match_id)
 		end
@@ -228,9 +389,10 @@ module LolApiHelper
 	#   - If all goes well, return the getted JSON array
 	#   - Else return the http error code
 	def perform_request(url)
-		Rails.logger.info "[RiotRequest] "+url
+		riot_logger = Logger.new("#{Rails.root}/log/riot_api.log")
+		riot_logger.info "[RiotRequest] "+url
 		resp = Net::HTTP.get_response(URI.parse(URI.encode(url)))
-		Rails.logger.info "[RiotReply] "+resp.message.to_s
+		riot_logger.info "[RiotReply] "+resp.message.to_s
 		if resp.code.to_s == "200"
 			return resp.body
 		else
@@ -275,5 +437,6 @@ module LolApiHelper
 
 
 	module_function :get_summoner_by_name, :get_summoner_by_id, :get_teams5v5_by_summoner, :get_team5v5_league_by_team, :refresh_teams_from_api_by_appuser, :refresh_team_league_by_team, :perform_request
-	module_function :check_query_resut, :check_http_error_code, :get_summoner_tier_by_id, :get_summoner_division_by_id
+	module_function :check_query_resut, :check_http_error_code, :get_summoner_tier_by_id, :get_summoner_division_by_id, :get_team5v5_recent_match_ids, :get_duo_match_id_by_summoner
+	module_function :get_match_by_id
 end

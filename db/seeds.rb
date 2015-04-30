@@ -12,20 +12,20 @@ TeamType.find_or_create_by("number_players"=>"2","name"=>"ranked duo","key"=>"RA
 TeamType.find_or_create_by("number_players"=>"5","name"=>"ranked 5v5","key"=>"RANKED_TEAM_5x5")
 
 #Populate the TeamDivision table
-TeamDivision.find_or_create_by("name"=>"I", "value"=>"1")
-TeamDivision.find_or_create_by("name"=>"II", "value"=>"2")
-TeamDivision.find_or_create_by("name"=>"III", "value"=>"3")
-TeamDivision.find_or_create_by("name"=>"IV", "value"=>"4")
-TeamDivision.find_or_create_by("name"=>"V", "value"=>"5")
+LeagueDivision.find_or_create_by("name"=>"I", "value"=>"1")
+LeagueDivision.find_or_create_by("name"=>"II", "value"=>"2")
+LeagueDivision.find_or_create_by("name"=>"III", "value"=>"3")
+LeagueDivision.find_or_create_by("name"=>"IV", "value"=>"4")
+LeagueDivision.find_or_create_by("name"=>"V", "value"=>"5")
 
 #Populate the TeamTier table
-TeamTier.find_or_create_by("name"=>"bronze")
-TeamTier.find_or_create_by("name"=>"silver")
-TeamTier.find_or_create_by("name"=>"gold")
-TeamTier.find_or_create_by("name"=>"platinum")
-TeamTier.find_or_create_by("name"=>"diamond")
-TeamTier.find_or_create_by("name"=>"master")
-TeamTier.find_or_create_by("name"=>"challenger")
+LeagueTier.find_or_create_by("name"=>"bronze")
+LeagueTier.find_or_create_by("name"=>"silver")
+LeagueTier.find_or_create_by("name"=>"gold")
+LeagueTier.find_or_create_by("name"=>"platinum")
+LeagueTier.find_or_create_by("name"=>"diamond")
+LeagueTier.find_or_create_by("name"=>"master")
+LeagueTier.find_or_create_by("name"=>"challenger")
 
 #Populate the Region table
 region = Region.find_or_create_by("name"=>"br", "endpoint"=>"br.api.pvp.net")
@@ -52,6 +52,13 @@ region.chat_endpoint = "chat.ru.lol.riotgames.com"
 region.save
 region = Region.find_or_create_by("name"=>"global", "endpoint"=>"global.api.pvp.net")
 
+#Populate the Season table
+Season.find_or_create_by("name" => "pre S3", "riot_key"=>"PRESEASON3")
+Season.find_or_create_by("name" => "S3", "riot_key"=>"SEASON3")
+Season.find_or_create_by("name" => "pre S4", "riot_key"=>"PRESEASON2014")
+Season.find_or_create_by("name" => "S4", "riot_key"=>"SEASON2014")
+Season.find_or_create_by("name" => "pre S5", "riot_key"=>"PRESEASON2015")
+Season.find_or_create_by("name" => "S5", "riot_key"=>"SEASON2015")
 
 
 
