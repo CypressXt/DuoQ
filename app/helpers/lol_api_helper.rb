@@ -201,7 +201,7 @@ module LolApiHelper
 			end
 			return matches_ids_array
 		else
-			check_query_resut(result, "get_team5v5_match_history", team)
+			check_query_resut(result, "get_team5v5_recent_match_ids", team)
 		end
 	end
 	# -------------------------------------------------------------------------------------------
