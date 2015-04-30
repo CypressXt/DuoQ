@@ -22,15 +22,15 @@ server {
   client_max_body_size 8m;
   large_client_header_buffers 2 1k;
 
-  client_body_timeout 12;
-  client_header_timeout 12;
-  keepalive_timeout 15;
-  send_timeout 10;
-
   location @rails_app {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
+
+    proxy_connect_timeout      1500;
+    proxy_send_timeout         1500;
+    proxy_read_timeout         1500;
+
 
     proxy_buffers 8 32k;
     proxy_buffer_size 64k;
@@ -46,6 +46,7 @@ server {
     alias /home/cypress/www/DuoQ/current/vendor/assets/fonts;
   }
 }
+
 
 ```
 ### Puma
