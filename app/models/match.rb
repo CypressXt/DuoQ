@@ -28,9 +28,9 @@ class Match < ActiveRecord::Base
 		self.match_teams.each do |match_team|
 			match_team.match_participants.each do |participant|
 				if match_team.riot_id == 100
-					result['100'] = participant.kills
+					result['100'] = result['100'].to_i+participant.kills
 				else
-					result['200'] = participant.kills
+					result['200'] = result['200'].to_i+participant.kills
 				end
 			end
 		end
