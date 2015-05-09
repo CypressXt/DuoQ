@@ -219,10 +219,12 @@ module LolApiHelper
 	def get_duo_match_id_by_summoner(summoner)
 		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v2.2/matchhistory/"+summoner.id.to_s+"?rankedQueues=RANKED_SOLO_5x5&api_key="+Rails.application.secrets.riot_api_key.to_s)	
 		if check_http_error_code(result)
-			matches = JSON.parse(result).first[1]
-			duo_ranked_matches_id = []
-			matches.each do |match|
-				duo_ranked_matches_id << match['matchId']
+			if(JSON.parse(result))
+				matches = JSON.parse(result).first[1]
+				duo_ranked_matches_id = []
+				matches.each do |match|
+					duo_ranked_matches_id << match['matchId']
+				end
 			end
 			return duo_ranked_matches_id
 		else
