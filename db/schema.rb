@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150428115205) do
+ActiveRecord::Schema.define(version: 20150506114907) do
 
   create_table "app_users", force: :cascade do |t|
     t.datetime "created_at"
@@ -20,6 +20,15 @@ ActiveRecord::Schema.define(version: 20150428115205) do
     t.string   "email",         limit: 255
     t.string   "password",      limit: 255
     t.boolean  "mailConfirmed"
+  end
+
+  create_table "champions", force: :cascade do |t|
+    t.string   "name"
+    t.string   "key"
+    t.string   "title"
+    t.string   "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "league_divisions", force: :cascade do |t|
@@ -104,6 +113,8 @@ ActiveRecord::Schema.define(version: 20150428115205) do
     t.integer  "total_time_crowd_control_dealt"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.integer  "player_lane_id"
+    t.integer  "player_role_id"
   end
 
   add_index "match_participants", ["champion_id"], name: "index_match_participants_on_champion_id"
@@ -117,6 +128,8 @@ ActiveRecord::Schema.define(version: 20150428115205) do
   add_index "match_participants", ["league_division_id"], name: "index_match_participants_on_league_division_id"
   add_index "match_participants", ["league_tier_id"], name: "index_match_participants_on_league_tier_id"
   add_index "match_participants", ["match_team_id"], name: "index_match_participants_on_match_team_id"
+  add_index "match_participants", ["player_lane_id"], name: "index_match_participants_on_player_lane_id"
+  add_index "match_participants", ["player_role_id"], name: "index_match_participants_on_player_role_id"
   add_index "match_participants", ["spell1_id"], name: "index_match_participants_on_spell1_id"
   add_index "match_participants", ["spell2_id"], name: "index_match_participants_on_spell2_id"
   add_index "match_participants", ["summoner_id"], name: "index_match_participants_on_summoner_id"
@@ -154,6 +167,20 @@ ActiveRecord::Schema.define(version: 20150428115205) do
 
   add_index "matches", ["season_id"], name: "index_matches_on_season_id"
   add_index "matches", ["team_type_id"], name: "index_matches_on_team_type_id"
+
+  create_table "player_lanes", force: :cascade do |t|
+    t.string   "name"
+    t.string   "key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "player_roles", force: :cascade do |t|
+    t.string   "name"
+    t.string   "key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "regions", force: :cascade do |t|
     t.string   "name",          limit: 255

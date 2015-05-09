@@ -1,0 +1,59 @@
+<div class="visible-md visible-lg">
+	<p class="text-center">
+		<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseMatches" aria-expanded="false" aria-controls="collapseMatches">Show match history
+			<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+		</button>
+	</p>
+	<div class="collapse" id="collapseMatches">
+		<% if @team.matches.count > 0 %>
+		<table class="table table-condensed">
+			<tr>
+				<th>#</th>
+				<th>Patch</th>
+				<th>Season</th>
+				<th>Score</th>
+				<th>Result</th>
+				<th>Duration</th>
+				<th>Date</th>
+				<th>Action</th>
+			</tr>
+			<% @team.matches.order(match_date: :desc).each_with_index  do |match, i| %>
+			<tr>
+				<td><%= (i+1) %></td>
+				<td><%= truncate(match.version, :length => 5, :separator => '.', omission: '') %></td>
+				<td><%= match.season.name.capitalize %></td>
+				<td>
+					<% if match.get_team_side(@team) == 100 %>
+					<span class="label label-blue"><%= match.get_score['100'] %></span> - <span class="label label-purple"><%= match.get_score['200'] %></span>
+					<% else %>
+					<span class="label label-purple"><%= match.get_score['200'] %></span> - <span class="label label-blue"><%= match.get_score['100'] %></span>
+					<% end %>
+				</td>
+				<td>
+					<% if (match.is_won(@team)) %>
+					<span class="label label-success">Victory</span>
+					<% else %>
+					<span class="label label-danger">Defeat</span>
+					<% end %>
+				</td>
+				<td><%= (match.duration/60) %>'</td>
+				<td><%= match.get_match_date_and_time %></td>
+				<td><%= link_to "show", app_user_team_match_path(@user.id, @team.id, match.id) %></td>
+			</tr>
+			<% end %>
+		</table>
+		<% else %>
+		<div class="well well-lg text-center">
+			No matches recorded yet... </br>
+			<% if(is_proprietary) %>
+			Start a ranked game with this team, win it, it's better ;), then come back here and click there:</br>
+			<% if @team.team_type.key == "RANKED_TEAM_5x5" %>
+			<%= link_to "Refresh team 5v5 matches (could be VERY long... rito plz...)", app_user_team_refresh_team_matches_path(@user.id, @team.id), :class => 'btn btn-info btn-xs', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")' %>
+			<% else %>
+			<%= link_to "Refresh team matches (could be VERY long... rito plz...)", app_user_team_refresh_team_matches_path(@user.id, @team.id), :class => 'btn btn-info btn-xs', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")' %>
+			<% end %>
+			<% end %>
+		</div>
+		<% end %>
+	</div>
+</div>

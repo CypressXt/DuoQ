@@ -1,0 +1,88 @@
+// Place all the styles related to the matches controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.match-table{
+	tr{
+		td{
+			vertical-align: middle !important;
+		}
+	}
+}
+
+.your-summoner{
+	color:#000;
+	background-image: linear-gradient(rgb(61, 200, 255) 0%, rgba(0, 150, 188, 0.74902) 100%);
+}
+
+.champ-img{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.match-header{
+	background-color: transparent;
+	padding-top: 5%;
+	padding-left: 5%;
+	padding-right: 5%;
+	padding-bottom: 1em;
+	background-position: right top;
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 300px;
+	margin-bottom: 1%;
+	color:#FFF !important;
+	text-shadow: 0px 2px 1px #000;
+}
+
+.label-blue, .label-purple{
+	text-shadow: 0px 0px 0px #000 !important;
+}
+
+.summoner-name{
+	width: 40%;
+}
+
+.title-blue-team, .title-purple-team{
+	color:black;
+}
+
+.title-blue-team{
+	text-shadow: 1px 0px 1px #3DC8FF;
+}
+
+.title-purple-team{
+	text-shadow: 1px 0px 1px #CC33FF;
+}
+
+.panel-blue-team{
+	border-color: #3DC8FF;
+}
+
+.panel-purple-team{
+	border-color: #CC33FF;
+}
+
+.panel-player-mobile{
+	.kda{
+		font-size: 28px;
+		font-weight: bold;
+	}
+
+	.panel-body{
+		padding: 1em;
+	}
+
+	table{
+		td{
+			padding-left: 5px !important;
+			padding-right: 5px !important;
+		}
+		margin-right: auto;
+		margin-left: auto;
+		width: 100%;
+		margin-bottom: 0px;
+	}
+}

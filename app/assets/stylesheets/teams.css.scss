@@ -24,10 +24,10 @@
  	vertical-align: middle !important;
  }
 
-.label-purple{
-	color: #000;
-	background-color: #CC33FF;
-	display: inline-block;
+ .label-purple{
+ 	color: #000;
+ 	background-color: #CC33FF;
+ 	display: inline-block;
     *display: inline;/* for IE7*/
     *zoom:1;/* for IE7*/
     min-width: 3em;
@@ -44,4 +44,19 @@
 
 .text-center{
 	text-align:center;
+}
+
+.champ-background{
+	background-color: transparent;
+	padding-top: 5%;
+	padding-left: 5%;
+	padding-right: 5%;
+	padding-bottom: 1em;
+	background-position: right top;
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 200px;
+	margin-bottom: 1%;
+	color:#FFF !important;
+	text-shadow: 0px 2px 1px #000;
 }

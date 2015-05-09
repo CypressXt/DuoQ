@@ -1,0 +1,62 @@
+<% 
+team_color=""
+if match_team.riot_id==100
+	team_color="blue"
+else 
+	team_color="purple"
+end 
+%>
+<div class="visible-xs visible-sm">
+	<% match_team.match_participants.each do |player| %>
+	<div class="panel panel-default panel-player-mobile panel-<%= team_color %>-team">
+		<div class="panel-body">
+			<p class="title-<%= team_color %>-team">
+				<%= team_color.capitalize %> side
+			</p>
+			<table>
+				<tr class="text-left">
+					<td>
+						<% if (player.league_tier!=nil && player.league_division!=nil) %>
+						<%= image_tag("leaguesIcones/"+player.league_tier.name+"_"+player.league_division.value.to_s+".png", size: "92x92", id: "mobile_rank_img_"+player.id.to_s, onmouseover: "$('#"+"mobile_rank_img_"+player.id.to_s+"').tooltip('show');", 
+						:data => { "toggle" => "tooltip", "original-title"=> player.league_tier.name.capitalize+" "+ player.league_division.name}) %>
+						<% else %>
+						<%= image_tag("leaguesIcones/unranked.png", size: "92x92", id: "mobile_rank_img_"+player.id.to_s, onmouseover: "$('#"+"mobile_rank_img_"+player.id.to_s+"').tooltip('show');", 
+						:data => { "toggle" => "tooltip", "original-title"=> "Unranked"}) %>
+						<% end %>
+					</td>
+					<td>
+						<h4>
+							<%= player.summoner.name %>
+							<small>
+								<% if (player.player_lane && player.player_role) %>
+								<br>
+								<%= player.player_role.name %> <%= player.player_lane.name %>
+								<% end %>
+							</small>
+						</h4>
+					</td>
+				</tr>
+			</table>
+			<p class="text-center">
+				<%= image_tag("http://ddragon.leagueoflegends.com/cdn/"+@ddragon_version+"/img/champion/"+player.champion.image, size: "100x100", id: "mobile_champ_img_"+player.id.to_s, :class => "champ-img img-responsive img-circle" ,onmouseover: "$('#"+"mobile_champ_img_"+player.id.to_s+"').tooltip('show');", 
+				:data => { "toggle" => "tooltip", "original-title"=> player.champion.name}) %>
+			</p>
+			<p class="text-center kda">
+				<%= player.kills %>/<%= player.deaths %>/<%= player.assists %>
+			</p>
+			<table>
+				<tr>
+					<td>
+						<%= player.minions_killed %> 
+						<%= image_tag "http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/minion.png", id: "mobile_minion_img_"+player.id.to_s, size: "32x32", onmouseover: "$('#"+"mobile_minion_img_"+player.id.to_s+"').tooltip('show');", :data => { "toggle" => "tooltip", "original-title"=> "minions killed"} %>
+					</td>
+					<td>
+						<%= player.gold_earned/1000 %>K 
+						<%= image_tag "http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/gold.png",  id: "mobile_gold_img_"+player.id.to_s, size: "32x32", onmouseover: "$('#"+"mobile_gold_img_"+player.id.to_s+"').tooltip('show');", :data => { "toggle" => "tooltip", "original-title"=> "Gold earned"} %>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<% end %>		
+</div>

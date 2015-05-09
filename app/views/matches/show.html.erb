@@ -1,0 +1,9 @@
+<div class="row">
+	<div class="col-md-10 col-md-offset-1 whiteContent">
+		<%= render 'show_match_header', :match => @match %>
+		<% @match.match_teams.each do |match_team| %>
+		<%= render 'show_match_team_desktop', :match_team => match_team %>
+		<%= render 'show_match_team_mobile', :match_team => match_team %>
+		<% end %>
+	</div>
+</div>

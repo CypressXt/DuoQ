@@ -90,3 +90,18 @@ input[type="text"],input[type="email"],input[type="password"].form-control{
 	}
 }
 
+.pointer{
+	cursor: pointer;
+}
+
+.caret_ios_like{
+	font-size: 30px;
+}
+
+header{
+	.container{
+		margin-left: 5%;
+		margin-right: 5%;
+		width: 90%;
+	}
+}

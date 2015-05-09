@@ -141,29 +141,7 @@ class TeamsController < ApplicationController
 	end
 
 	def refresh_team_matches
-		if @team.team_type.key == "RANKED_TEAM_5x5"
-			# Team 5v5 refresh 
-			match_ids = LolApiHelper.get_team5v5_recent_match_ids(@team)
-		else
-			# Team Duo refresh
-			match_ids_sum1 = LolApiHelper.get_duo_match_id_by_summoner(@team.summoners.first)
-			match_ids_sum2 = LolApiHelper.get_duo_match_id_by_summoner(@team.summoners.last)
-			match_ids = match_ids_sum1 & match_ids_sum2
-		end
-		if match_ids
-			match_ids.each do |match_id|
-				if(!Match.find_by(riot_id: match_id))
-					match = LolApiHelper.get_match_by_id(match_id)
-					if match
-						RelationTeamMatch.link_match_to_team(@team, match)
-					end
-				else
-					match = Match.find_by(riot_id: match_id)
-					RelationTeamMatch.link_match_to_team(@team, match)
-				end
-			end
-		end
-		
+		@team.refresh_matches
 		redirect_to app_user_team_path(@user.id, @team.id)
 	end
 

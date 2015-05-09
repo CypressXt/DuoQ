@@ -367,6 +367,8 @@ module LolApiHelper
 					dbParticipant.killing_sprees = participant['stats']['killingSprees']
 					dbParticipant.total_units_healed = participant['stats']['totalUnitsHealed']
 					dbParticipant.total_time_crowd_control_dealt = participant['stats']['totalTimeCrowdControlDealt']
+					dbParticipant.player_lane = PlayerLane.find_by(key: participant['timeline']['lane'])
+					dbParticipant.player_role = PlayerRole.find_by(key: participant['timeline']['role'])
 					dbParticipant.save
 				end
 			end
@@ -375,6 +377,60 @@ module LolApiHelper
 			check_query_resut(result, "get_match_by_id", match_id)
 		end
 	end
+	# -------------------------------------------------------------------------------------------
+
+	# Champions ---------------------------------------------------------------------------------
+
+	# This function get the last 10th matches from a given summoner.
+	#
+	# * *Args*    :
+	#   - +champion_id+ -> ID of the champion asked
+	# * *Returns* :
+	#   - 
+	def get_all_champions
+		result = perform_request("https://global.api.pvp.net/api/lol/static-data/euw/v1.2/champion?dataById=true&champData=image&api_key="+Rails.application.secrets.riot_api_key.to_s)	
+		if check_http_error_code(result)
+			jsonChampions = JSON.parse(result)['data']
+		else
+			check_query_resut(result, "get_champion_by_id", champion_id)
+		end
+	end
+
+	# This function get the last 10th matches from a given summoner.
+	#
+	# * *Args*    :
+	#   - +champion_id+ -> ID of the champion asked
+	# * *Returns* :
+	#   - 
+	def get_champion_by_id(champion_id)
+		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v2.2/matchhistory/"+summoner.id.to_s+"?rankedQueues=RANKED_SOLO_5x5&api_key="+Rails.application.secrets.riot_api_key.to_s)	
+		if check_http_error_code(result)
+			
+		else
+			check_query_resut(result, "get_champion_by_id", champion_id)
+		end
+	end
+
+	# -------------------------------------------------------------------------------------------
+
+
+	# DDragon external resources
+	
+	# This function get lastest version number of DDragon resources.
+	#
+	# * *Args*    :
+	#   - 
+	# * *Returns* :
+	#   - version number
+	def get_lastest_ddragon_version
+		result = perform_request("https://global.api.pvp.net/api/lol/static-data/euw/v1.2/versions?&api_key="+Rails.application.secrets.riot_api_key.to_s)	
+		if check_http_error_code(result)
+			jsonVersion = JSON.parse(result).first
+		else
+			check_query_resut(result, "get_lastest_ddragon_version", "")
+		end
+	end
+
 	# -------------------------------------------------------------------------------------------
 
 
@@ -439,5 +495,5 @@ module LolApiHelper
 
 	module_function :get_summoner_by_name, :get_summoner_by_id, :get_teams5v5_by_summoner, :get_team5v5_league_by_team, :refresh_teams_from_api_by_appuser, :refresh_team_league_by_team, :perform_request
 	module_function :check_query_resut, :check_http_error_code, :get_summoner_tier_by_id, :get_summoner_division_by_id, :get_team5v5_recent_match_ids, :get_duo_match_id_by_summoner
-	module_function :get_match_by_id
+	module_function :get_match_by_id, :get_all_champions, :get_lastest_ddragon_version
 end

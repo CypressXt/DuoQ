@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :summoners, :except => [:show]
     resources :teams do
       get 'refresh_team_matches' => 'teams#refresh_team_matches', as: :refresh_team_matches
+      resources :matches, :except => [:new, :create]
     end
     get 'refresh_teams' => 'teams#refresh_teams'
     post '/summoners/create_token' => 'summoners#create_token'

@@ -1,0 +1,31 @@
+<% champion_name = ""
+champ = match.get_your_sum_champion(@user)
+if champ
+	champion_name = champ.key.sub(/^(\w)/) {|s| s.capitalize}
+else 
+	champion_name = match.match_participants.first.champion.key.sub(/^(\w)/) {|s| s.capitalize}
+end
+%>
+<div class="match-header" style="background-image: url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/<%=champion_name%>_0.jpg);">
+	<p>
+		<h2>
+			<% if (match.is_won(match.team.first)) %>
+			<span class="label label-success">Victory</span>
+			<% else %>
+			<span class="label label-danger">Defeat</span>
+			<% end %>
+		</h2>
+	</p>
+	<p>
+		<% if match.get_team_side(match.team.first) == 100 %>
+		<span class="label label-blue"><%= match.get_score['100'] %></span> - 
+		<span class="label label-purple"><%= match.get_score['200'] %></span>
+		<% else %>
+		<span class="label label-purple"><%= match.get_score['200'] %></span> - 
+		<span class="label label-blue"><%= match.get_score['100'] %></span>
+		<% end %>
+	</p>
+	<p>
+		<span class="label label-default"><%= match.get_match_date_and_time %></span> <span class="label label-default">#<%= match.riot_id.to_i %></span>
+	</p>
+</div>

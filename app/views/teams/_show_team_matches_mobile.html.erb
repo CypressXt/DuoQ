@@ -1,0 +1,62 @@
+<div class="visible-xs visible-sm">
+	<p class="text-center">
+		<button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="#collapse_matches_mobile" aria-expanded="false" aria-controls="collapse_matches_mobile">Show match history
+			<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+		</button>
+	</p>
+	<div class="collapse" id="collapse_matches_mobile">
+		<% if @team.matches.count > 0 %>
+		<% @team.matches.order(match_date: :desc).each_with_index  do |match, i| %>
+		<%
+		champion_name = ""
+		champ = match.get_your_sum_champion(@user)
+		if champ
+			champion_name = champ.key.sub(/^(\w)/) {|s| s.capitalize}
+		else 
+			champion_name = match.match_participants.first.champion.key.sub(/^(\w)/) {|s| s.capitalize}
+		end
+		%>
+		<div class="panel panel-default panel-player-mobile pointer champ-background" onclick="document.location.href='<%= url_for app_user_team_match_path(@user.id, @team.id, match.id) %>'"
+			style="background-image: url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/<%=champion_name%>_0.jpg);">
+			<div class="panel-body text-center">
+				<h4>
+					<% if (match.is_won(@team)) %>
+					<span class="label label-success">Victory</span>
+					<% else %>
+					<span class="label label-danger">Defeat</span>
+					<% end %>
+				</h4>
+				<p>
+					<% if match.get_team_side(@team) == 100 %>
+					<span class="label label-blue"><%= match.get_score['100'] %></span> - 
+					<span class="label label-purple"><%= match.get_score['200'] %></span>
+					<% else %>
+					<span class="label label-purple"><%= match.get_score['200'] %></span> - 
+					<span class="label label-blue"><%= match.get_score['100'] %></span>
+					<% end %>
+				</p>
+				<span class="glyphicon glyphicon-chevron-right pull-right caret_ios_like" aria-hidden="true"></span>
+				<p>
+					<%= match.season.name.capitalize %> - <%= truncate(match.version, :length => 5, :separator => '.', omission: '') %>
+				</p>
+				<p>
+					<%= match.get_match_date_and_time %> <small>(<%= (match.duration/60) %> mins)</small>
+				</p>
+			</div>
+		</div>
+		<% end %>
+		<% else %>
+		<div class="well well-lg text-center">
+			No matches recorded yet... </br>
+			<% if(is_proprietary) %>
+			Start a ranked game with this team, win it, it's better ;), then come back here and click there:</br>
+			<% if @team.team_type.key == "RANKED_TEAM_5x5" %>
+			<%= link_to "Refresh team 5v5 matches (could be VERY long... rito plz...)", app_user_team_refresh_team_matches_path(@user.id, @team.id), :class => 'btn btn-info btn-xs', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")' %>
+			<% else %>
+			<%= link_to "Refresh team matches (could be VERY long... rito plz...)", app_user_team_refresh_team_matches_path(@user.id, @team.id), :class => 'btn btn-info btn-xs', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")' %>
+			<% end %>
+			<% end %>
+		</div>
+		<% end %>
+	</div>
+</div>

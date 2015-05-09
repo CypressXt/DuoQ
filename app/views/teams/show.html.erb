@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-md-6 col-md-offset-3 whiteContent">
+	<div class="col-md-10 col-md-offset-1 whiteContent">
 		<div class="page-header">
 			<div class="center-block" style="width:300px; text-align:center;">
 				<h2><%= @team.name %></h2>
@@ -16,9 +16,9 @@
 		<p>
 			<% if(is_proprietary) %>
 			<% if @team.team_type.key == "RANKED_TEAM_5x5" %>
-			<%= link_to "Refresh team 5v5 matches (could be VERY long... rito plz...)", app_user_team_refresh_team_matches_path(@user.id, @team.id), :class => 'btn btn-info', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")' %>
+			<%= link_to "Refresh team 5v5 matches (could be VERY long... rito plz...)", app_user_team_refresh_team_matches_path(@user.id, @team.id), :class => 'btn btn-info btn-sm', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")' %>
 			<% else %>
-			<%= link_to "Refresh team matches (could be VERY long... rito plz...)", app_user_team_refresh_team_matches_path(@user.id, @team.id), :class => 'btn btn-info', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")' %>
+			<%= link_to "Refresh team matches (could be VERY long... rito plz...)", app_user_team_refresh_team_matches_path(@user.id, @team.id), :class => 'btn btn-info btn-sm', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")' %>
 			<% end %>
 			<% end %>
 		</p>
@@ -47,59 +47,7 @@
 			</tr>
 			<% end %>
 		</table>
-		<h4>
-			Matches:
-		</h4>
-		<% if @team.matches.count > 0 %>
-		<table class="table table-condensed">
-			<tr>
-				<th>#</th>
-				<th>Patch version</th>
-				<th>Season</th>
-				<th>Score</th>
-				<th>Result</th>
-				<th>Duration</th>
-				<th>Date</th>
-			</tr>
-			<% @team.matches.order(match_date: :desc).each_with_index  do |match, i| %>
-			<tr>
-				<td><%= (i+1) %></td>
-				<td><%= truncate(match.version, :length => 5, :separator => '.', omission: '') %></td>
-				<td><%= match.season.name.capitalize %></td>
-				<td>
-					<% if match.get_team_side(@team) == 100 %>
-					<span class="label label-blue"><%= match.get_score['100'] %></span> - 
-					<span class="label label-purple"><%= match.get_score['200'] %></span>
-					<% else %>
-					<span class="label label-purple"><%= match.get_score['200'] %></span> - 
-					<span class="label label-blue"><%= match.get_score['100'] %></span>
-					<% end %>
-				</td>
-				<td>
-					<% if (match.is_won(@team)) %>
-					<span class="label label-success">Victory</span>
-					<% else %>
-					<span class="label label-danger">Defeat</span>
-					<% end %>
-				</td>
-				<td><%= (match.duration/60) %> mins</td>
-				<td><%= match.match_date.strftime("%d %h, %Y %R") %></td>
-			</tr>
-			<% end %>
-		</table>
-		<% else %>
-		<div class="well well-lg text-center">
-			No matches recorded yet... </br>
-			<% if(is_proprietary) %>
-			Start a ranked game with this team, win it, it's better ;), then come back here and click there:</br>
-			<% if @team.team_type.key == "RANKED_TEAM_5x5" %>
-			<%= link_to "Refresh team 5v5 matches (could be VERY long... rito plz...)", app_user_team_refresh_team_matches_path(@user.id, @team.id), :class => 'btn btn-info btn-xs', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")' %>
-			<% else %>
-			<%= link_to "Refresh team matches (could be VERY long... rito plz...)", app_user_team_refresh_team_matches_path(@user.id, @team.id), :class => 'btn btn-info btn-xs', :onclick => '$(this).addClass("disabled"); $(this).text("refreshing...")' %>
-			<% end %>
-			<% end %>
-		</div>
-		<% end %>
+		<%= render 'show_team_matches_desktop' %>
+		<%= render 'show_team_matches_mobile' %>
 	</div>
-</div>
 </div>

@@ -1,0 +1,60 @@
+<div class="visible-md visible-lg">
+	<% if match_team.riot_id==100%>
+	<h4 class="title-blue-team">Team blue</h4>
+	<% else %>
+	<h4 class="title-purple-team">Team purple</h4>
+	<% end %>
+	<table class="table table-condensed match-table">
+		<tr>
+			<th class="text-left summoner-name">Summoner</th>
+			<th class="rank">Rank</th>
+			<th class="champIcon">Champion</th>
+			<th class="text-right killDeathAssist">Kill</th>
+			<th class="text-right killDeathAssist">Death</th>
+			<th class="text-right killDeathAssist">Assist</th>
+			<th class="text-right creeps">Creeps</th>
+			<th class="text-right gold">Gold</th>
+			<th>Lane</th>
+		</tr>
+		<% match_team.match_participants.each do |player| %>
+		<tr <% if player.is_your_summoner(@user.summoners)%>class="your-summoner"<% end %> >
+			<td class="summoner-name text-left">
+				<%= player.summoner.name %>
+			</td>
+			<td class="rank">
+				<% if (player.league_tier!=nil && player.league_division!=nil) %>
+				<%= image_tag("leaguesIcones/"+player.league_tier.name+"_"+player.league_division.value.to_s+".png", size: "32x32", id: "rank_img_"+player.id.to_s, onmouseover: "$('#"+"rank_img_"+player.id.to_s+"').tooltip('show');", 
+				:data => { "toggle" => "tooltip", "original-title"=> player.league_tier.name.capitalize+" "+ player.league_division.name}) %>
+				<% else %>
+				<%= image_tag("leaguesIcones/unranked.png", size: "32x32", id: "rank_img_"+player.id.to_s, onmouseover: "$('#"+"rank_img_"+player.id.to_s+"').tooltip('show');", 
+				:data => { "toggle" => "tooltip", "original-title"=> "Unranked"}) %>
+				<% end %>
+			</td>
+			<td>
+				<%= image_tag("http://ddragon.leagueoflegends.com/cdn/"+@ddragon_version+"/img/champion/"+player.champion.image, size: "32x32", id: "champ_img_"+player.id.to_s, :class => "champ-img img-responsive img-circle" ,onmouseover: "$('#"+"champ_img_"+player.id.to_s+"').tooltip('show');", 
+				:data => { "toggle" => "tooltip", "original-title"=> player.champion.name}) %>
+			</td>
+			<td class="text-right killDeathAssist">
+				<%= player.kills %>
+			</td>
+			<td class="text-right killDeathAssist">
+				<%= player.deaths %>
+			</td>
+			<td class="text-right killDeathAssist">
+				<%= player.assists %>
+			</td>
+			<td class="text-right creeps">
+				<%= player.minions_killed %>
+			</td>
+			<td class="text-right gold">
+				<%= player.gold_earned/1000 %>K
+			</td>
+			<td>
+				<% if player.player_lane && player.player_role %>
+				<%= player.player_role.name %> <%= player.player_lane.name %>
+				<% end %>
+			</td>
+		</tr>
+		<% end %>
+	</table>
+</div>

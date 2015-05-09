@@ -52,7 +52,7 @@ region.chat_endpoint = "chat.ru.lol.riotgames.com"
 region.save
 region = Region.find_or_create_by("name"=>"global", "endpoint"=>"global.api.pvp.net")
 
-#Populate the Season table
+#Populate the Seasons table
 Season.find_or_create_by("name" => "pre S3", "riot_key"=>"PRESEASON3")
 Season.find_or_create_by("name" => "S3", "riot_key"=>"SEASON3")
 Season.find_or_create_by("name" => "pre S4", "riot_key"=>"PRESEASON2014")
@@ -60,5 +60,16 @@ Season.find_or_create_by("name" => "S4", "riot_key"=>"SEASON2014")
 Season.find_or_create_by("name" => "pre S5", "riot_key"=>"PRESEASON2015")
 Season.find_or_create_by("name" => "S5", "riot_key"=>"SEASON2015")
 
+#Populate the player_lanes table
+PlayerLane.find_or_create_by("name" => "middle", "key" => "MIDDLE")
+PlayerLane.find_or_create_by("name" => "top", "key" => "TOP")
+PlayerLane.find_or_create_by("name" => "jungle", "key" => "JUNGLE")
+PlayerLane.find_or_create_by("name" => "bottom", "key" => "BOTTOM")
+
+#Populate the player_roles table
+PlayerRole.find_or_create_by("name" => "", "key" => "NONE")
+PlayerRole.find_or_create_by("name" => "solo", "key" => "SOLO")
+PlayerRole.find_or_create_by("name" => "carry", "key" => "DUO_CARRY")
+PlayerRole.find_or_create_by("name" => "support", "key" => "DUO_SUPPORT")
 
 
