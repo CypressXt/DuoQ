@@ -73,3 +73,5 @@ PlayerRole.find_or_create_by("name" => "carry", "key" => "DUO_CARRY")
 PlayerRole.find_or_create_by("name" => "support", "key" => "DUO_SUPPORT")
 
 
+#Populate the champions table
+Champion.refresh_all_champions

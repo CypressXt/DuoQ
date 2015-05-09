@@ -65,7 +65,6 @@ module LolApiHelper
 		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v2.5/league/by-summoner/"+summoner.id.to_s+"/entry?api_key="+Rails.application.secrets.riot_api_key.to_s)
 		if check_http_error_code(result)
 			riotDivisionName = JSON.parse(result).first[1][0]['entries'][0]['division']
-			puts riotDivisionName
 			return LeagueDivision.find_by(name: riotDivisionName)
 		else
 			check_query_resut(result, "get_summoner_division_by_id", summoner)
