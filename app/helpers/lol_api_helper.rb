@@ -195,8 +195,10 @@ module LolApiHelper
 		if check_http_error_code(result)
 			historyJsonArray = JSON.parse(result).first[1]['matchHistory']
 			matches_ids_array = []
-			historyJsonArray.each do |match|
-				matches_ids_array << match['gameId']
+			if(historyJsonArray)
+				historyJsonArray.each do |match|
+					matches_ids_array << match['gameId']
+				end
 			end
 			return matches_ids_array
 		else
