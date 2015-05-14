@@ -1,6 +1,7 @@
 class SummonersController < ApplicationController
-	after_filter "save_previous_url", :only => [:index, :new]
-	before_action :get_user, :connected?, :proprietary?
+	before_action :get_user
+	before_action :connected?, :except => [:show]
+	before_action :proprietary?, :except => [:show]
 
 	def summoner_params
 		params.require(:summoner).permit(:id, :name, :summonerLevel, :summonerToken, :region_id)
@@ -8,6 +9,11 @@ class SummonersController < ApplicationController
 
 	def index
 		@summoners = @user.summoners.where(validated: true).order(:id)
+	end
+
+	def show
+		@summoner = @user.summoners.find_by(id: params['id'])
+		@ddragon_version = LolApiHelper.get_lastest_ddragon_version
 	end
 
 	def new

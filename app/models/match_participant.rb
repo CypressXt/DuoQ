@@ -24,4 +24,9 @@ class MatchParticipant < ActiveRecord::Base
 		end
 		return false
 	end
+
+	def has_won
+		match_team = self.match_team
+		return match_team.won
+	end
 end

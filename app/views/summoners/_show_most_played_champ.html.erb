@@ -1,0 +1,48 @@
+<div class="row" id="role_menu">
+	<div class="col-md-12">
+		<ul class="nav nav-pills">
+			<li role="presentation" class="active" id="5_mot_played_li"><a href="#">5 most played</a></li>
+			<li role="presentation" id="adc_li"><a href="#">ADC</a></li>
+			<li role="presentation" id="support_li"><a href="#">Support</a></li>
+			<li role="presentation" id="mid_li"><a href="#">Mid</a></li>
+			<li role="presentation" id="top_li"><a href="#">Top</a></li>
+			<li role="presentation" id="jungle_li"><a href="#">Jungle</a></li>
+		</ul>
+	</div>
+</div>
+<div id="div_most_champ_played">
+	<% most_played_champ = summoner.get_5_most_played_champ
+	most_played_champ.each do |champ| %>
+	<%= render 'show_champ_stats', :summoner=>summoner ,:champ=>champ, :ddragon_version=>ddragon_version, :laneOrRole=>"" %>
+	<% end %>
+</div>
+<div id="div_most_adc_played" style="display: none;">
+	<% most_played_champ = summoner.get_5_most_played_by_role("DUO_CARRY")
+	most_played_champ.each do |champ| %>
+	<%= render 'show_champ_stats', :summoner=>summoner ,:champ=>champ, :ddragon_version=>ddragon_version, :laneOrRole=>"DUO_CARRY" %>
+	<% end %>
+</div>
+<div id="div_most_support_played" style="display: none;">
+	<% most_played_champ = summoner.get_5_most_played_by_role("DUO_SUPPORT")
+	most_played_champ.each do |champ| %>
+	<%= render 'show_champ_stats', :summoner=>summoner ,:champ=>champ, :ddragon_version=>ddragon_version, :laneOrRole=>"DUO_SUPPORT" %>
+	<% end %>
+</div>
+<div id="div_most_mid_played" style="display: none;">
+	<% most_played_champ = summoner.get_5_most_played_by_role("MIDDLE")
+	most_played_champ.each do |champ| %>
+	<%= render 'show_champ_stats', :summoner=>summoner ,:champ=>champ, :ddragon_version=>ddragon_version, :laneOrRole=>"MIDDLE" %>
+	<% end %>
+</div>
+<div id="div_most_top_played" style="display: none;">
+	<% most_played_champ = summoner.get_5_most_played_by_role("TOP")
+	most_played_champ.each do |champ| %>
+	<%= render 'show_champ_stats', :summoner=>summoner ,:champ=>champ, :ddragon_version=>ddragon_version, :laneOrRole=>"TOP" %>
+	<% end %>
+</div>
+<div id="div_most_jungle_played" style="display: none;">
+	<% most_played_champ = summoner.get_5_most_played_by_role("JUNGLE")
+	most_played_champ.each do |champ| %>
+	<%= render 'show_champ_stats', :summoner=>summoner ,:champ=>champ, :ddragon_version=>ddragon_version, :laneOrRole=>"JUNGLE" %>
+	<% end %>
+</div>

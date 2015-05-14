@@ -1,0 +1,22 @@
+<div class="row champ_result">
+	<div class="col-md-2">
+		<%= image_tag("http://ddragon.leagueoflegends.com/cdn/"+ddragon_version+"/img/champion/"+champ.image,size: "42x42",:class => "champ-img img-responsive img-circle" ,id: "champ_img_"+laneOrRole+"_"+champ.id.to_s,onmouseover: "$('#"+"champ_img_"+laneOrRole+"_"+champ.id.to_s+"').tooltip('show');",:data => { "toggle" => "tooltip", "original-title"=> champ.name}) %>
+	</div>
+	<div class="col-md-10">
+		<%
+		win_rate = summoner.get_win_loose_ratio_by_champ(champ, laneOrRole)
+		%>
+		<div class="row">
+			<div class="col-md-12">
+				<div id="progress_<%= champ.id %>_<%= laneOrRole%>" class="progress champ_win_rate_progress" onmouseover="$('#progress_<%= champ.id %>_<%= laneOrRole%>').tooltip('show');" data-original-title="Matches: <%= summoner.get_nb_game_by_champ_and_role(champ, laneOrRole) %>">
+					<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: <%= win_rate%>%;">
+						W <%= win_rate%>%
+					</div>
+					<div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: <%= 100-win_rate%>%;">
+						L <%= 100-win_rate%>%
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

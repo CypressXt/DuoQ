@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get '/user/:id/validate_once_again' => 'app_users#resend_mail' , as: :validation
 
   resources :user, :as => :app_users, :controller => "app_users", :except => [:destroy] do
-    resources :summoners, :except => [:show]
+    resources :summoners
     resources :teams do
       get 'refresh_team_matches' => 'teams#refresh_team_matches', as: :refresh_team_matches
       resources :matches, :except => [:new, :create]

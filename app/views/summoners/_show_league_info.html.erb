@@ -1,0 +1,11 @@
+<div class="row">
+	<div class="col-md-12">
+		<% if (summoner.league_tier!=nil && summoner.league_division!=nil) %>
+		<%= image_tag("leaguesIcones/"+summoner.league_tier.name+"_"+summoner.league_division.value.to_s+".png", size: "192x192", id: "mobile_rank_img_"+summoner.id.to_s, onmouseover: "$('#"+"mobile_rank_img_"+summoner.id.to_s+"').tooltip('show');", 
+		:data => { "toggle" => "tooltip", "original-title"=> summoner.league_tier.name.capitalize+" "+ summoner.league_division.name}) %>
+		<% else %>
+		<%= image_tag("leaguesIcones/unranked.png", size: "192x192", id: "mobile_rank_img_"+summoner.id.to_s, onmouseover: "$('#"+"mobile_rank_img_"+summoner.id.to_s+"').tooltip('show');", 
+		:data => { "toggle" => "tooltip", "original-title"=> "Unranked"}) %>
+		<% end %>
+	</div>
+</div>
