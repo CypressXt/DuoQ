@@ -36,7 +36,6 @@ $( document ).ready(function() {
 });
 
 function set_visible(element){
-	console.log(element);
 	element.show( "slow", function() {
     // Animation complete.
 });

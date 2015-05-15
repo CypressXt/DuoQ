@@ -12,7 +12,11 @@ class SummonersController < ApplicationController
 	end
 
 	def show
-		@summoner = @user.summoners.find_by(id: params['id'])
+		if @user
+			@summoner = @user.summoners.find_by(id: params['id'])
+		else
+			@summoner = Summoner.find_by(id: params['id'])
+		end
 		@ddragon_version = LolApiHelper.get_lastest_ddragon_version
 	end
 
