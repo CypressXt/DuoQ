@@ -71,7 +71,10 @@ cd /home/cypress/
 ```
 
 
-#### XMPPP.py
+# XMPPP.py
+Install xmpppy lib with tls support
 ```
 https://github.com/ArchipelProject/xmpppy
+pip install git+https://github.com/ArchipelProject/xmpppy
+python setup.py install
 ```
