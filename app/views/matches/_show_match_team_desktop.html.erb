@@ -19,7 +19,7 @@
 		<% match_team.match_participants.each do |player| %>
 		<tr <% if player.is_your_summoner(@user.summoners)%>class="your-summoner"<% end %> >
 			<td class="summoner-name text-left">
-				<%= player.summoner.name %>
+				<%= link_to player.summoner.name, summoner_path(player.summoner.id)%>
 			</td>
 			<td class="rank">
 				<% if (player.league_tier!=nil && player.league_division!=nil) %>

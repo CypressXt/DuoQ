@@ -1,0 +1,24 @@
+<div class="max-350">
+	<div class="scroll">
+		<table class="table table-condensed">
+			<tr>
+				<th>Summoner's name</th>
+				<th>Rank</th>
+			</tr>
+			<% @team.summoners.each do |summoner| %>
+			<tr>
+				<td class="verticalMiddle"><%= summoner.name %></td>
+				<td>
+					<% if (summoner.league_tier!=nil && summoner.league_division!=nil) %>
+					<%= image_tag("leaguesIcones/"+summoner.league_tier.name+"_"+summoner.league_division.value.to_s+".png", size: "22x22", id: "rank_img_"+summoner.id.to_s, onmouseover: "$('#"+"rank_img_"+summoner.id.to_s+"').tooltip('show');", 
+					:data => { "toggle" => "tooltip", "original-title"=> summoner.league_tier.name.capitalize+" "+ summoner.league_division.name}) %>
+					<% else %>
+					<%= image_tag("leaguesIcones/unranked.png", size: "22x22", id: "rank_img_"+summoner.id.to_s, onmouseover: "$('#"+"rank_img_"+summoner.id.to_s+"').tooltip('show');", 
+					:data => { "toggle" => "tooltip", "original-title"=> "Unranked"}) %>
+					<% end %>
+				</td>
+			</tr>
+			<% end %>
+		</table>
+	</div>
+</div>

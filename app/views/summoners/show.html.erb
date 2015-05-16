@@ -3,7 +3,9 @@
 		<div class="page-header">
 			<h2><%= @summoner.name %> 
 				<small>
+					<% if @user %>
 					<%= link_to 'unlink from DuoQ account', [@user, @summoner], method: :delete, :class => 'btn btn-danger btn-xs'   %>
+					<% end %>
 				</small>
 			</h2>
 		</div>
@@ -12,7 +14,7 @@
 				<%= render 'show_most_played_champ', :summoner=>@summoner, :ddragon_version=>@ddragon_version %>
 			</div>
 			<div class="col-md-8">
-				<h4>more soon...</h4>
+				<%= render 'show_league_info', :summoner=>@summoner %>
 			</div>
 		</div>
 	</div>

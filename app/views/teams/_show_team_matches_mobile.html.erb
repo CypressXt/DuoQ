@@ -1,9 +1,4 @@
 <div class="visible-xs visible-sm">
-	<p class="text-center">
-		<button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="#collapse_matches_mobile" aria-expanded="false" aria-controls="collapse_matches_mobile">Show match history
-			<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-		</button>
-	</p>
 	<div class="collapse" id="collapse_matches_mobile">
 		<% if @team.matches.count > 0 %>
 		<% @team.matches.order(match_date: :desc).each_with_index  do |match, i| %>

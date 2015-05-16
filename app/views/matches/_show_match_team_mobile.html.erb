@@ -26,7 +26,7 @@ end
 					</td>
 					<td>
 						<h4>
-							<%= player.summoner.name %>
+							<%= link_to player.summoner.name, summoner_path(player.summoner.id)%>
 							<small>
 								<% if (player.player_lane && player.player_role) %>
 								<br>
