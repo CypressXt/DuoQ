@@ -69,3 +69,9 @@ kill $(ps aux | grep "puma -e" | grep "ruby" | awk '{print $2}')
 cd /home/cypress/
 ./startPuma.sh
 ```
+
+
+#### XMPPP.py
+```
+https://github.com/ArchipelProject/xmpppy
+```
