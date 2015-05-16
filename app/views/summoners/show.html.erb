@@ -2,11 +2,6 @@
 	<div class="col-md-10 col-md-offset-1 whiteContent">
 		<div class="page-header">
 			<h2><%= @summoner.name %> 
-				<small>
-					<% if @user %>
-					<%= link_to 'unlink from DuoQ account', [@user, @summoner], method: :delete, :class => 'btn btn-danger btn-xs'   %>
-					<% end %>
-				</small>
 			</h2>
 		</div>
 		<div class="row">

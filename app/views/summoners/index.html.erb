@@ -14,7 +14,12 @@
 				<td><%= summoner.name %></td>
 				<td><%= summoner.id %></td>
 				<td>
-					<%= link_to 'show', app_user_summoner_path(@user.id, summoner.id) , :class => 'btn btn-info btn-xs'   %>
+					<button class="btn btn-info btn-xs" onclick="document.location='<%= url_for controller: 'summoners', action: 'show', app_user_id: @user, id: summoner.id %>';">Show
+					</button>
+					<% if @user %>
+					<button class="btn btn-danger btn-xs" onclick="ask_confirmation($(this), '<%= url_for controller: 'summoners', action: 'destroy', app_user_id: @user, id: summoner.id %>', 'DELETE')">Unlink
+					</button>
+					<% end %>
 				</td>
 			</tr>
 			<% end %>

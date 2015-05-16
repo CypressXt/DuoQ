@@ -14,3 +14,20 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require_tree .
+
+function ask_confirmation(element, url, method){
+	if ($(element).data('pressed')){
+		$(element).removeData('passed');
+		$.ajax({
+			url: url,
+			type: method,
+			success: function() { 
+				$(element).parent().parent().hide();
+			}
+		});
+	}else{
+		$(element).data("pressed", true);
+		$(element).text('Sure ???');
+	}
+}
+

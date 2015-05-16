@@ -55,8 +55,10 @@
 				</td>
 				<td><%= team.team_type.name.capitalize %></td>
 				<td>
-					<%= link_to 'Show', app_user_team_path(@user.id, team.id), :class => 'btn btn-info btn-xs' %>
-					<%= link_to 'Unlink', app_user_team_path(@user, team.id), method: :delete, :class => 'btn btn-danger btn-xs' %>
+					<button class="btn btn-info btn-xs" onclick="document.location='<%= url_for controller: 'teams', action: 'show', app_user_id: @user, id: team.id %>';">Show
+					</button>
+					<button class="btn btn-danger btn-xs" onclick="ask_confirmation($(this), '<%= url_for controller: 'teams', action: 'destroy', app_user_id: @user, id: team.id %>', 'DELETE')">Unlink
+					</button>
 				</td>
 			</tr>
 			<% end %>

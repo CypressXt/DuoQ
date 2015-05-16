@@ -27,16 +27,12 @@
 					Refresh  <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> (could be long... rito plz...) 
 				</button>
 				<% end %>
-				<div class="visible-md visible-lg">
-					<button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="#collapseMatches" aria-expanded="false" aria-controls="collapseMatches">Show match history
-						<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-					</button>
-				</div>
-				<div class="visible-xs visible-sm">
-					<button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="#collapse_matches_mobile" aria-expanded="false" aria-controls="collapse_matches_mobile">Show match history
-						<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-					</button>
-				</div>
+				<button class="btn btn-info btn-sm visible-md visible-lg" type="button" data-toggle="collapse" data-target="#collapseMatches" aria-expanded="false" aria-controls="collapseMatches" data-pressed="false" onclick="show_matches($(this))">Show match history
+					<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+				</button>
+				<button class="btn btn-info btn-sm visible-xs visible-sm" type="button" data-toggle="collapse" data-target="#collapse_matches_mobile" aria-expanded="false" aria-controls="collapse_matches_mobile" data-pressed="false" onclick="show_matches($(this))">Show match history
+					<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+				</button>
 			</div>
 		</div>
 		<p>
