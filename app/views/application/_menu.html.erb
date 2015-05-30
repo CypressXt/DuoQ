@@ -16,6 +16,7 @@
                 <li><%= link_to "Game account", app_user_summoners_path(current_logged_user.id) %></li>
                 <li><%= link_to "Teams", app_user_teams_path(current_logged_user.id) %></li>
                 <% end %>
+                <li><%= link_to "Chat cmd", chat_cmd_path %></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><%= link_to "Logs",change_log_path %></li>
