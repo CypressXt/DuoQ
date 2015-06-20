@@ -6,7 +6,7 @@ matches.each do |match|
 	if match[1]==nil
 		rank = 0
 	else
-		rank = match[1].id.to_s+""+(6-match[2].id).to_s
+		rank = match[1].id.to_s+""+match[2].id.to_s
 	end
 
 	if matches_date_string!=""
@@ -19,16 +19,15 @@ matches.each do |match|
 end
 
 league_divisions = Array.new()
+league_divisions<< ""
 LeagueDivision.all.each do |division|
-	league_divisions<<[division.name]
+	league_divisions.insert(division.id, division.name)
 end
-league_divisions= league_divisions.reverse
-league_divisions.unshift("")
 
 league_tier = Array.new()
 league_tier<< "Unranked"
 LeagueTier.all.each do |tier|
-	league_tier<<[tier.name.capitalize]
+	league_tier.insert(tier.id,tier.name.capitalize)
 end
 
 
