@@ -4,7 +4,7 @@ matches_date_string = ""
 matches_rank = ""
 matches.each do |match|
 	if match[1]==nil
-		rank = 0
+		rank = 9
 	else
 		rank = match[1].id.to_s+""+match[2].id.to_s
 	end
@@ -60,7 +60,7 @@ $(function () {
 			labels: {
 				formatter: function() {
 					console.log(this.value);
-					if(String(this.value).charAt(0)==0 && !String(this.value).charAt(1)){
+					if(String(this.value).charAt(0)==9 && !String(this.value).charAt(1)){
 						return league_tier[parseInt(String(this.value).charAt(0))];	
 					}else if(league_tier[parseInt(String(this.value).charAt(0))] && league_divisions[parseInt(String(this.value).charAt(1))]){
 						return league_tier[parseInt(String(this.value).charAt(0))]+" "+league_divisions[parseInt(String(this.value).charAt(1))];
@@ -80,7 +80,7 @@ $(function () {
 		}],
 		tooltip: {
 			formatter: function() {
-				if(String(this.y).charAt(0)==0 && !String(this.y).charAt(1)){
+				if(String(this.y).charAt(0)==9 && !String(this.y).charAt(1)){
 					return league_tier[parseInt(String(this.y).charAt(0))];	
 				}else{
 					return league_tier[parseInt(String(this.y).charAt(0))]+" "+league_divisions[parseInt(String(this.y).charAt(1))];
