@@ -21,15 +21,14 @@ end
 league_divisions = Array.new()
 league_divisions<< ""
 LeagueDivision.all.each do |division|
-	league_divisions.insert(division.id, division.name)
+	league_divisions<<division.name
 end
 league_divisions = league_divisions.reverse
 league_divisions.insert(0, "")
 
 league_tier = Array.new()
-league_tier<< "Unranked"
 LeagueTier.all.each do |tier|
-	league_tier.insert(tier.id,tier.name.capitalize)
+	league_tier<<tier.name.capitalize
 end
 
 
@@ -61,7 +60,7 @@ $(function () {
 				formatter: function() {
 					console.log(this.value);
 					if(String(this.value).charAt(0)==9 && !String(this.value).charAt(1)){
-						return league_tier[parseInt(String(this.value).charAt(0))];	
+						return "Unranked";
 					}else if(league_tier[parseInt(String(this.value).charAt(0))] && league_divisions[parseInt(String(this.value).charAt(1))]){
 						return league_tier[parseInt(String(this.value).charAt(0))]+" "+league_divisions[parseInt(String(this.value).charAt(1))];
 					}
@@ -81,7 +80,7 @@ $(function () {
 		tooltip: {
 			formatter: function() {
 				if(String(this.y).charAt(0)==9 && !String(this.y).charAt(1)){
-					return league_tier[parseInt(String(this.y).charAt(0))];	
+					return "Unranked";	
 				}else{
 					return league_tier[parseInt(String(this.y).charAt(0))]+" "+league_divisions[parseInt(String(this.y).charAt(1))];
 				}
