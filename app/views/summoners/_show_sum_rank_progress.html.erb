@@ -62,7 +62,7 @@ $(function () {
 					console.log(this.value);
 					if(String(this.value).charAt(0)==0 && !String(this.value).charAt(1)){
 						return league_tier[parseInt(String(this.value).charAt(0))];	
-					}else{
+					}else if(league_tier[parseInt(String(this.value).charAt(0))] && league_divisions[parseInt(String(this.value).charAt(1))]){
 						return league_tier[parseInt(String(this.value).charAt(0))]+" "+league_divisions[parseInt(String(this.value).charAt(1))];
 					}
 				}

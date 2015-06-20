@@ -18,6 +18,9 @@ class SummonersController < ApplicationController
 			@summoner = Summoner.find_by(id: params['id'])
 		end
 		@ddragon_version = LolApiHelper.get_lastest_ddragon_version
+		if !@summoner
+			throw_404
+		end
 	end
 
 	def new
