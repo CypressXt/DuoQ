@@ -49,7 +49,10 @@ $(function () {
 			text: "<%= summoner.name%>'s rank"
 		},
 		xAxis: {
-			categories: [<%=raw matches_date_string%>]
+			categories: [<%=raw matches_date_string%>],
+			labels:{
+				y: 30
+			}
 		},
 		yAxis: {
 			tickInterval: 1,
@@ -62,8 +65,7 @@ $(function () {
 					}else{
 						return leagueAndDivision[this.value];
 					}
-				},
-				y: -20
+				}
 			}
 		},
 		series: [{
