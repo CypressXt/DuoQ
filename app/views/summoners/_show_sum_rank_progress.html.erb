@@ -6,7 +6,7 @@ matches.each do |match|
 	if match[1]==nil
 		rank = 0
 	else
-		rank = match[1].id.to_s+""+match[2].id.to_s
+		rank = match[1].id.to_s+""+(5-match[2].id).to_s
 	end
 
 	if matches_date_string!=""
