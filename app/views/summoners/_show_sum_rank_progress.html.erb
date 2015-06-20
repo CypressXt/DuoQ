@@ -65,9 +65,14 @@ $(function () {
 					}else if(league_tier[parseInt(String(this.value).charAt(0))] && league_divisions[parseInt(String(this.value).charAt(1))]){
 						return league_tier[parseInt(String(this.value).charAt(0))]+" "+league_divisions[parseInt(String(this.value).charAt(1))];
 					}
-				}, 
-				step: 1
-			}
+				}
+			},
+			tickInterval: 1,
+			breaks: [{
+				from: 1,
+				to: 9,
+				breakSize: 0.1
+			}]
 		},
 		series: [{
 			name: '<%= summoner.name%>',
