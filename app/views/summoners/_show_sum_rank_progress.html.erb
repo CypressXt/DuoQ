@@ -23,6 +23,8 @@ league_divisions<< ""
 LeagueDivision.all.each do |division|
 	league_divisions.insert(division.id, division.name)
 end
+league_divisions = league_divisions.reverse
+league_divisions.insert(0, "")
 
 league_tier = Array.new()
 league_tier<< "Unranked"
