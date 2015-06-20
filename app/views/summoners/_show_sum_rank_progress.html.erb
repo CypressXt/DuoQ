@@ -1,0 +1,87 @@
+<%
+matches = summoner.get_all_games_ordered_by_date
+matches_date_string = ""
+matches_rank = ""
+matches.each do |match|
+	if match[1]==nil
+		rank = 0
+	else
+		rank = match[1].id.to_s+""+match[2].id.to_s
+	end
+
+	if matches_date_string!=""
+		matches_date_string = matches_date_string+", '"+match[0].match_date.strftime("%d %h %Y").to_s+"'"
+		matches_rank+=","+rank.to_s
+	else
+		matches_date_string = "'"+match[0].match_date.strftime("%d %h %Y").to_s+"'"
+		matches_rank=rank.to_s
+	end
+end
+
+league_divisions = Array.new()
+league_divisions << ""
+LeagueDivision.all.each do |division|
+	league_divisions<<[division.name]
+end
+
+league_tier = Array.new()
+league_tier << "Unranked"
+LeagueTier.all.each do |tier|
+	league_tier<<[tier.name.capitalize]
+end
+
+
+
+%>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript">
+
+var league_divisions = <%=raw league_divisions%>
+var league_tier = <%=raw league_tier%>
+
+$(function () { 
+	$('#chart_container').highcharts({
+		chart: {
+			type: 'line', 
+			backgroundColor:'transparent'
+		},
+		title: {
+			text: "<%= summoner.name%>'s rank"
+		},
+		xAxis: {
+			categories: [<%=raw matches_date_string%>]
+		},
+		yAxis: {
+			title: {
+				text: ''
+			},
+			labels: {
+				formatter: function() {
+					console.log(this.value);
+					if(String(this.value).charAt(1)){
+						return league_tier[parseInt(String(this.value).charAt(0))]+" "+league_divisions[parseInt(String(this.value).charAt(1))];
+					}else{
+						return league_tier[parseInt(String(this.value).charAt(0))];	
+					}
+				}
+			},
+		},
+		series: [{
+			name: '<%= summoner.name%>',
+			data: [<%=raw matches_rank%>]
+		}],
+		tooltip: {
+			formatter: function() {
+				if(String(this.y).charAt(1)){
+					return league_tier[parseInt(String(this.y).charAt(0))]+" "+league_divisions[parseInt(String(this.y).charAt(1))];
+				}else{
+					return league_tier[parseInt(String(this.y).charAt(0))];
+				}
+			}
+		}
+	});
+});
+</script>
+<div id="chart_container" style="width:100%;">
+
+</div>

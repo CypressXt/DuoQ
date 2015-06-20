@@ -105,4 +105,11 @@ class Summoner < ActiveRecord::Base
 	end
 
 
+	def get_all_games_ordered_by_date
+		matches = Array.new()
+		self.match_participants.each do |match_participant|
+			matches<<[match_participant.match_team.match, match_participant.league_tier, match_participant.league_division]
+		end
+		return matches.sort_by{|match| match[0].match_date}
+	end
 end

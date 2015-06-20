@@ -11,6 +11,12 @@ html,body {
 	background-size: cover;
 }
 
+body{
+	max-width: 1920px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 table{
 	margin-bottom: 25px;
 }
@@ -102,6 +108,7 @@ header{
 	.container{
 		margin-left: 5%;
 		margin-right: 5%;
+		max-width: 1920px;
 		width: 90%;
 	}
 }
