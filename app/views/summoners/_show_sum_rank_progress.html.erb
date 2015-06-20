@@ -65,7 +65,8 @@ $(function () {
 					}else if(league_tier[parseInt(String(this.value).charAt(0))] && league_divisions[parseInt(String(this.value).charAt(1))]){
 						return league_tier[parseInt(String(this.value).charAt(0))]+" "+league_divisions[parseInt(String(this.value).charAt(1))];
 					}
-				}
+				}, 
+				step: 1
 			}
 		},
 		series: [{
