@@ -4,9 +4,10 @@ matches_date_string = ""
 matches_rank = ""
 matches.each do |match|
 	if match[1]==nil
-		rank = 9
+		rank = -1
 	else
-		rank = (match[1].id-1).to_s+""+match[2].id.to_s
+		#rank = match[1].id.to_s+""+match[2].id.to_s
+		rank = (match[1].id-1)*5+5-match[2].id
 	end
 
 	if matches_date_string!=""
@@ -18,18 +19,17 @@ matches.each do |match|
 	end
 end
 
-league_divisions = Array.new()
-league_divisions<< ""
-LeagueDivision.all.each do |division|
-	league_divisions<<division.name
-end
-league_divisions = league_divisions.reverse
-league_divisions.insert(0, "")
-
-league_tier = Array.new()
+leagueAndDivision = Array.new()
 LeagueTier.all.each do |tier|
-	league_tier<<tier.name.capitalize
+	if tier.name != "master" && tier.name != "challenger"
+		LeagueDivision.all.reverse.each do |division|
+			leagueAndDivision<<tier.name.capitalize+" "+division.name
+		end
+	end
 end
+leagueAndDivision<<"Master"
+leagueAndDivision<<"Challenger"
+
 
 
 
@@ -37,8 +37,7 @@ end
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script type="text/javascript">
 
-var league_divisions = <%=raw league_divisions%>
-var league_tier = <%=raw league_tier%>
+var leagueAndDivision = <%=raw leagueAndDivision%>
 
 $(function () { 
 	$('#chart_container').highcharts({
@@ -56,11 +55,10 @@ $(function () {
 			title: false,
 			labels: {
 				formatter: function() {
-					console.log(this.value);
-					if(String(this.value).charAt(0)==9 && !String(this.value).charAt(1)){
+					if(this.value==-1){
 						return "Unranked";
-					}else if(league_tier[parseInt(String(this.value).charAt(0))] && league_divisions[parseInt(String(this.value).charAt(1))]){
-						return league_tier[parseInt(String(this.value).charAt(0))]+" "+league_divisions[parseInt(String(this.value).charAt(1))];
+					}else{
+						return leagueAndDivision[this.value];
 					}
 				}
 			},
@@ -75,10 +73,10 @@ $(function () {
 		}],
 		tooltip: {
 			formatter: function() {
-				if(String(this.y).charAt(0)==9 && !String(this.y).charAt(1)){
-					return "Unranked";	
+				if(this.y==-1){
+					return "Unranked";
 				}else{
-					return league_tier[parseInt(String(this.y).charAt(0))]+" "+league_divisions[parseInt(String(this.y).charAt(1))];
+					return leagueAndDivision[this.y];
 				}
 			}
 		}
