@@ -1,0 +1,65 @@
+<% if summoner.get_teams.count > 0 %>
+<h4><%= summoner.name %>'s team</h4>
+<% summoner.get_teams.each do |team| %>
+<% if team.team_type.key == "RANKED_TEAM_5x5" %>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="row" style="text-align:center;">
+			<div class="col-md-12">
+				<h5>
+					<%= team.name %>
+					<% if (team.league_tier!=nil && team.league_division!=nil) %>
+					<%= image_tag("leaguesIcones/"+team.league_tier.name+"_"+team.league_division.value.to_s+".png", size: "32x32", id: "mobile_rank_img_"+team.id.to_s, onmouseover: "$('#"+"mobile_rank_img_"+team.id.to_s+"').tooltip('show');", 
+					:data => { "toggle" => "tooltip", "original-title"=> team.league_tier.name.capitalize+" "+ team.league_division.name}) %>
+					<% else %>
+					<%= image_tag("leaguesIcones/unranked.png", size: "32x32", id: "mobile_rank_img_"+team.id.to_s, onmouseover: "$('#"+"mobile_rank_img_"+team.id.to_s+"').tooltip('show');", 
+					:data => { "toggle" => "tooltip", "original-title"=> "Unranked"}) %>
+					<% end %>
+				</h5>
+			</div>
+		</div>		
+	</div>
+</div>
+<% elsif team.team_type.key = "RANKED_SOLO_5x5"%>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="row" style="text-align:center;">
+			<div class="col-md-5">
+				<h5>
+					<%= team.team_compositions.first.summoner.name %>
+
+					<% if (team.team_compositions.first.summoner.league_tier!=nil && team.team_compositions.first.summoner.league_division!=nil) %>
+					<%= image_tag("leaguesIcones/"+team.team_compositions.first.summoner.league_tier.name+"_"+team.team_compositions.first.summoner.league_division.value.to_s+".png", size: "32x32", id: "mobile_rank_img_in_team"+team.team_compositions.first.summoner.id.to_s, onmouseover: "$('#"+"mobile_rank_img_in_team"+team.team_compositions.first.summoner.id.to_s+"').tooltip('show');", 
+					:data => { "toggle" => "tooltip", "original-title"=> team.team_compositions.first.summoner.league_tier.name.capitalize+" "+ team.team_compositions.first.summoner.league_division.name}) %>
+					<% else %>
+					<%= image_tag("leaguesIcones/unranked.png", size: "32x32", id: "mobile_rank_img_in_team"+team.team_compositions.first.summoner.id.to_s, onmouseover: "$('#"+"mobile_rank_img_in_team"+team.team_compositions.first.summoner.id.to_s+"').tooltip('show');", 
+					:data => { "toggle" => "tooltip", "original-title"=> "Unranked"}) %>
+					<% end %>
+				</h5>
+			</div>
+			<div class="col-md-2" style="padding-top:10px;">
+				<h5>&</h5>
+			</div>
+			<div class="col-md-5">
+				<h5>
+					<%= team.team_compositions.last.summoner.name %>
+
+					<% if (team.team_compositions.last.summoner.league_tier!=nil && team.team_compositions.last.summoner.league_division!=nil) %>
+					<%= image_tag("leaguesIcones/"+team.team_compositions.last.summoner.league_tier.name+"_"+team.team_compositions.last.summoner.league_division.value.to_s+".png", size: "32x32", id: "mobile_rank_img_in_team"+team.team_compositions.last.summoner.id.to_s, onmouseover: "$('#"+"mobile_rank_img_in_team"+team.team_compositions.last.summoner.id.to_s+"').tooltip('show');", 
+					:data => { "toggle" => "tooltip", "original-title"=> team.team_compositions.last.summoner.league_tier.name.capitalize+" "+ team.team_compositions.last.summoner.league_division.name}) %>
+					<% else %>
+					<%= image_tag("leaguesIcones/unranked.png", size: "32x32", id: "mobile_rank_img_in_team"+team.team_compositions.last.summoner.id.to_s, onmouseover: "$('#"+"mobile_rank_img_in_team"+team.team_compositions.last.summoner.id.to_s+"').tooltip('show');", 
+					:data => { "toggle" => "tooltip", "original-title"=> "Unranked"}) %>
+					<% end %>
+				</h5>
+			</div>
+		</div>
+	</div>
+</div>
+<% end %>
+<% end %>
+<% else %>
+<div class="well">
+	<h4><%= summoner.name %> <small>has no registered teams</small></h4>
+</div>
+<% end %>
