@@ -17,8 +17,47 @@ class SummonersController < ApplicationController
 		else
 			@summoner = Summoner.find_by(id: params['id'])
 		end
-		@ddragon_version = LolApiHelper.get_lastest_ddragon_version
-		if !@summoner
+		if @summoner
+			@ddragon_version = LolApiHelper.get_lastest_ddragon_version
+			matches = @summoner.get_all_games_ordered_by_date
+			@matches_date_string = ""
+			@matches_rank = ""
+			matches.each do |match|
+				if match[1]==nil
+					rank = -1
+				else
+					if(match[1].name=="master" || match[1].name="challenger")
+						if(match[1].name=="master")
+							rank = 26
+						else
+							rank = 27
+						end
+					else
+						rank = (match[1].id-1)*5+5-match[2].id
+					end
+				end
+
+				if @matches_date_string!=""
+					@matches_date_string = @matches_date_string+", '"+match[0].match_date.strftime("%d %h %Y").to_s+"'"
+					@matches_rank+=","+rank.to_s
+				else
+					@matches_date_string = "'"+match[0].match_date.strftime("%d %h %Y").to_s+"'"
+					@matches_rank=rank.to_s
+				end
+			end
+
+			@leagueAndDivision = Array.new()
+			LeagueTier.all.each do |tier|
+				if tier.name != "master" && tier.name != "challenger"
+					LeagueDivision.all.reverse.each do |division|
+						@leagueAndDivision<<tier.name.capitalize+" "+division.name
+					end
+				end
+			end
+			@leagueAndDivision<<"Master"
+			@leagueAndDivision<<"Challenger"
+
+		else
 			throw_404
 		end
 	end
