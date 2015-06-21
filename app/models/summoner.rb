@@ -44,7 +44,7 @@ class Summoner < ActiveRecord::Base
 		return champ_array
 	end
 
-	def get_5_most_played_by_role(role_key)
+	def get_champ_played_by_role(role_key)
 		champ_hash = {}
 		all_match_participations=self.match_participants.all
 		all_match_participations.each do |match_participation|
