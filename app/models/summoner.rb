@@ -30,7 +30,7 @@ class Summoner < ActiveRecord::Base
 			champ_id = match_participation.champion.id
 			champion_hash[champ_id]=champion_hash[champ_id].to_i+1
 		end
-		champion_hash.sort
+		champion_hash = champion_hash.sort_by{|champ_id, game_played| game_played}.reverse
 		return champion_hash
 	end
 
