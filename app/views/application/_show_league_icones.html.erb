@@ -1,0 +1,8 @@
+<% rnd = Random.rand(1000) %>
+<% if (itemToLeague.league_tier!=nil && itemToLeague.league_division!=nil) %>
+<%= image_tag("leaguesIcones/"+itemToLeague.league_tier.name+"_"+itemToLeague.league_division.value.to_s+".png", size: size, id: "mobile_rank_img_"+rnd.to_s+"-"+itemToLeague.id.to_s, onmouseover: "$('#"+"mobile_rank_img_"+rnd.to_s+"-"+itemToLeague.id.to_s+"').tooltip('show');", 
+:data => { "toggle" => "tooltip", "original-title"=> itemToLeague.league_tier.name.capitalize+" "+ itemToLeague.league_division.name}) %>
+<% else %>
+<%= image_tag("leaguesIcones/unranked.png", size: size, id: "mobile_rank_img_"+rnd.to_s+"-"+itemToLeague.id.to_s, onmouseover: "$('#"+"mobile_rank_img_"+rnd.to_s+"-"+itemToLeague.id.to_s+"').tooltip('show');", 
+:data => { "toggle" => "tooltip", "original-title"=> "Unranked"}) %>
+<% end %>

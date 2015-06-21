@@ -112,3 +112,15 @@ header{
 		width: 90%;
 	}
 }
+
+.max-350{
+	max-height: 350px;
+	overflow: hidden;
+	.scroll{
+		max-height: 350px;
+		overflow-y: scroll;
+	}
+	table{
+		margin-bottom: 0px;
+	}
+}
