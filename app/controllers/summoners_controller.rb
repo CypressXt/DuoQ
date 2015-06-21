@@ -26,11 +26,11 @@ class SummonersController < ApplicationController
 				if match[1]==nil
 					rank = -1
 				else
-					if(match[1].name=="master" || match[1].name="challenger")
+					if(match[1].name=="master" || match[1].name=="challenger")
 						if(match[1].name=="master")
-							rank = 26
+							rank = 25
 						else
-							rank = 27
+							rank = 26
 						end
 					else
 						rank = (match[1].id-1)*5+5-match[2].id
@@ -56,7 +56,6 @@ class SummonersController < ApplicationController
 			end
 			@leagueAndDivision<<"Master"
 			@leagueAndDivision<<"Challenger"
-
 		else
 			throw_404
 		end
