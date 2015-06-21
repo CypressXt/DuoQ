@@ -34,7 +34,18 @@ $(function () {
 		},
 		series: [{
 			name: '<%= summoner.name%>',
-			data: [<%=raw matches_rank%>]
+			data: [<%=raw matches_rank%>],
+			zones: [
+			{value: -0, color: '#000'},
+			{value: 5, color: '#FFAE00'},
+			{value: 10, color: '#B3B3B3'},
+			{value: 15, color: '#FFDD00'},
+			{value: 20, color: '#00FFBF'},
+			{value: 25, color: '#00B7FF'},
+			{value: 26, color: '#E61E1E'},
+			{value: 27, color: '#DF1EE6'}, 
+			{color: '#DF1EE6'}
+			]
 		}],
 		tooltip: {
 			formatter: function() {
