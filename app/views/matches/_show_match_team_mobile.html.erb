@@ -16,13 +16,7 @@ end
 			<table>
 				<tr class="text-left">
 					<td>
-						<% if (player.league_tier!=nil && player.league_division!=nil) %>
-						<%= image_tag("leaguesIcones/"+player.league_tier.name+"_"+player.league_division.value.to_s+".png", size: "92x92", id: "mobile_rank_img_"+player.id.to_s, onmouseover: "$('#"+"mobile_rank_img_"+player.id.to_s+"').tooltip('show');", 
-						:data => { "toggle" => "tooltip", "original-title"=> player.league_tier.name.capitalize+" "+ player.league_division.name}) %>
-						<% else %>
-						<%= image_tag("leaguesIcones/unranked.png", size: "92x92", id: "mobile_rank_img_"+player.id.to_s, onmouseover: "$('#"+"mobile_rank_img_"+player.id.to_s+"').tooltip('show');", 
-						:data => { "toggle" => "tooltip", "original-title"=> "Unranked"}) %>
-						<% end %>
+						<%= render 'show_league_icones', :itemToLeague=>player, :size=>"92x92" %>
 					</td>
 					<td>
 						<h4>

@@ -112,6 +112,62 @@ class Summoner < ActiveRecord::Base
 		return matches.sort_by{|match| match[0].match_date}
 	end
 
+	def get_main_roles
+		all_games = self.match_participants
+		all_roles = {Support: Array.new(), ADC: Array.new(), Mid: Array.new(), Top: Array.new(), Jungle: Array.new}
+		all_games.each do |player_result|
+			if player_result.player_role.key == "DUO_CARRY" && player_result.player_lane.key == "BOTTOM"
+				all_roles[:ADC] = all_roles[:ADC]<<player_result
+			elsif player_result.player_role.key == "DUO_SUPPORT" && player_result.player_lane.key == "BOTTOM"
+				all_roles[:Support] = all_roles[:Support] << player_result
+			elsif player_result.player_lane.key == "TOP" && player_result.player_role.key == "SOLO"
+				all_roles[:Top] = all_roles[:Top] << player_result
+			elsif player_result.player_lane.key == "MIDDLE" && player_result.player_role.key == "SOLO"
+				all_roles[:Mid] = all_roles[:Mid] << player_result
+			elsif player_result.player_lane.key == "JUNGLE" && player_result.player_role.key == "NONE"
+				all_roles[:Jungle] = all_roles[:Jungle] << player_result
+			end
+		end
+		return Hash[all_roles.sort_by{|key, value| value.count}.reverse]
+	end
+
+	def get_average_neutral_minions_killed_by_match_participants(role)
+		all_match_participations = self.get_main_roles[role.to_sym]
+		total_neutral_minions_killed = 0
+		if all_match_participations
+			number_of_games = all_match_participations.count
+
+			all_match_participations.each do |match_participation|
+				total_neutral_minions_killed += match_participation.neutral_minions_killed
+			end
+			if number_of_games > 0
+				return total_neutral_minions_killed / number_of_games
+			end
+		end
+		return 0
+	end
+
+	def get_win_rate(role)
+		all_match_participations = self.get_main_roles[role.to_sym]
+		total_game_played = 0
+		total_won_game = 0
+		if all_match_participations
+			total_game_played = all_match_participations.count
+			all_match_participations.each do |match_participation|
+				if match_participation.match_team.won
+					total_won_game = total_won_game+1
+				end
+			end
+		end
+		puts total_game_played
+		puts total_won_game
+
+		if total_game_played > 0
+			return ((total_won_game.to_f/total_game_played.to_f)*100).to_i
+		end
+		return 0
+	end
+
 	def get_teams
 		return self.team
 	end

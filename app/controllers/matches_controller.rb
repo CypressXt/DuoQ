@@ -6,6 +6,9 @@ class MatchesController < ApplicationController
 	def show
 		@match = @user.team.find_by(id: params[:team_id]).matches.find_by(id: params[:id])
 		@ddragon_version = LolApiHelper.get_lastest_ddragon_version
+		if !@ddragon_version
+			@ddragon_version = "5.11.1"
+		end
 	end
 
 	def is_match_existing

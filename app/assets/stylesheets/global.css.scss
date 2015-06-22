@@ -124,3 +124,30 @@ header{
 		margin-bottom: 0px;
 	}
 }
+
+#video-container {
+	overflow: hidden;
+}
+
+.video-and-text-container{
+	position: relative;
+	overflow: hidden;
+	background: image-url("particles.png");
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	color: #FFF !important;
+	small{
+		color: #FFF;
+	}
+}
+#video-container > video {
+	margin-top: -19px;
+	width: 99%;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	position: absolute;
+}

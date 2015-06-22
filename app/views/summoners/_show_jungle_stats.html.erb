@@ -1,0 +1,27 @@
+<div class="well video-and-text-container">
+	<div id="video-container">
+		<video autoplay loop class="hidden-xs hidden-sm hidden-md">
+			<source type="video/mp4" src="http://status.cypressxt.net/particles.mp4" media="(orientation: landscape)"></source>
+		</video>
+	</div>
+	<div class="row" style="text-align:center;">
+		<div class="col-md-4">
+			<h3>
+				<%= summoner.get_average_neutral_minions_killed_by_match_participants("Jungle") %></br>
+				<small>Average jungle minions killed per game</small>
+			</h3>
+		</div>
+		<div class="col-md-4">
+			<h3>
+				<%= summoner.get_win_rate("Jungle") %>%</br>
+				<small>Win rate when playing as Jungler</small>
+			</h3>
+		</div>
+		<div class="col-md-4">
+			<h3>
+				<%= summoner.get_main_roles.first[1].count %></br>
+				<small>Matches played as Jungler</small>
+			</h3>
+		</div>
+	</div>
+</div>

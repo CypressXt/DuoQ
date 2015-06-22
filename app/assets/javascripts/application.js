@@ -30,4 +30,3 @@ function ask_confirmation(element, url, method){
 		$(element).text('Sure ???');
 	}
 }
-

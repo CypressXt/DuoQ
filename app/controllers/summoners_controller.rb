@@ -19,6 +19,9 @@ class SummonersController < ApplicationController
 		end
 		if @summoner
 			@ddragon_version = LolApiHelper.get_lastest_ddragon_version
+			if !@ddragon_version
+				@ddragon_version = "5.11.1"
+			end
 			matches = @summoner.get_all_games_ordered_by_date
 			@matches_date_string = ""
 			@matches_rank = ""

@@ -4,9 +4,13 @@
 			<div class="row">
 				<div class="col-md-12">
 					<h2><%= @summoner.name %> <%= render 'show_league_info', :summoner=>@summoner %></h2>
+					<p>Main role: <%= @summoner.get_main_roles.first[0].capitalize %> or feed !</p>
 				</div>
 			</div>
 		</div>
+		<% if @summoner.get_main_roles.first[0].to_s=="Jungle" %>
+		<%= render 'show_jungle_stats', :summoner=>@summoner, :ddragon_version=>@ddragon_version %>
+		<% end %>
 		<div class="row">
 			<div class="col-md-4">
 				<%= render 'show_most_played_champ', :summoner=>@summoner, :ddragon_version=>@ddragon_version %>

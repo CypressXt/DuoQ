@@ -7,15 +7,9 @@
 			</tr>
 			<% @team.summoners.each do |summoner| %>
 			<tr>
-				<td class="verticalMiddle"><%= summoner.name %></td>
+				<td class="verticalMiddle"><%= link_to summoner.name, summoner_path(summoner.id)%></td>
 				<td>
-					<% if (summoner.league_tier!=nil && summoner.league_division!=nil) %>
-					<%= image_tag("leaguesIcones/"+summoner.league_tier.name+"_"+summoner.league_division.value.to_s+".png", size: "22x22", id: "rank_img_"+summoner.id.to_s, onmouseover: "$('#"+"rank_img_"+summoner.id.to_s+"').tooltip('show');", 
-					:data => { "toggle" => "tooltip", "original-title"=> summoner.league_tier.name.capitalize+" "+ summoner.league_division.name}) %>
-					<% else %>
-					<%= image_tag("leaguesIcones/unranked.png", size: "22x22", id: "rank_img_"+summoner.id.to_s, onmouseover: "$('#"+"rank_img_"+summoner.id.to_s+"').tooltip('show');", 
-					:data => { "toggle" => "tooltip", "original-title"=> "Unranked"}) %>
-					<% end %>
+					<%= render 'show_league_icones', :itemToLeague=>summoner, :size=>"22x22" %>
 				</td>
 			</tr>
 			<% end %>
