@@ -1,0 +1,39 @@
+<div class="well video-and-text-container">
+	<div id="video-container">
+		<video autoplay loop class="hidden-xs hidden-sm hidden-md">
+			<source type="video/mp4" src="http://status.cypressxt.net/particles.mp4" media="(orientation: landscape)"></source>
+		</video>
+	</div>
+	<div class="row" style="text-align:center;">
+		<div class="col-md-2">
+			<h3>
+				<%= summoner.get_average_info_by_match_participants_and_role("minions_killed","ADC") %> <%= image_tag"http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/minion.png",size: "30x30", :style => "margin-top:0px;" %></br>
+				<small>Avg minions killed per game</small>
+			</h3>
+		</div>
+		<div class="col-md-2">
+			<h3>
+				<%= summoner.get_kda_by_role("ADC") %></br>
+				<small>KDA</small>
+			</h3>
+		</div>
+		<div class="col-md-4">
+			<h3>
+				<%= summoner.get_win_rate("ADC") %>%</br>
+				<small>Win rate when playing as AD carry</small>
+			</h3>
+		</div>
+		<div class="col-md-2">
+			<h3>
+				<%= summoner.get_info_per_minutes_by_match_participants_and_role("gold_earned","ADC") %> <%= image_tag "http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/gold.png",size: "30x30", :style => "margin-top:0px;"%></br>
+				<small>golds per minutes</small>
+			</h3>
+		</div>
+		<div class="col-md-2">
+			<h3>
+				<%= summoner.get_main_roles.first[1].count %></br>
+				<small>Matches played as AD carry</small>
+			</h3>
+		</div>
+	</div>
+</div>

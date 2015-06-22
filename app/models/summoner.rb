@@ -131,17 +131,52 @@ class Summoner < ActiveRecord::Base
 		return Hash[all_roles.sort_by{|key, value| value.count}.reverse]
 	end
 
-	def get_average_neutral_minions_killed_by_match_participants(role)
+	def get_average_info_by_match_participants_and_role(info, role)
 		all_match_participations = self.get_main_roles[role.to_sym]
-		total_neutral_minions_killed = 0
+		total_infos = 0
 		if all_match_participations
 			number_of_games = all_match_participations.count
 
 			all_match_participations.each do |match_participation|
-				total_neutral_minions_killed += match_participation.neutral_minions_killed
+				total_infos += match_participation.send(info)
 			end
 			if number_of_games > 0
-				return total_neutral_minions_killed / number_of_games
+				return total_infos / number_of_games
+			end
+		end
+		return 0
+	end
+
+	def get_total_info_by_match_participants_and_role(info, role)
+		all_match_participations = self.get_main_roles[role.to_sym]
+		total_infos = 0
+		if all_match_participations
+			number_of_games = all_match_participations.count
+
+			all_match_participations.each do |match_participation|
+				total_infos += match_participation.send(info)
+			end
+			if number_of_games > 0
+				return total_infos
+			end
+		end
+		return 0
+	end
+
+
+	def get_info_per_minutes_by_match_participants_and_role(info, role)
+		all_match_participations = self.get_main_roles[role.to_sym]
+		total_infos = 0
+		total_playing_time = 0
+		if all_match_participations
+			number_of_games = all_match_participations.count
+
+			all_match_participations.each do |match_participation|
+				total_playing_time += match_participation.match_team.match.duration
+				total_infos += match_participation.send(info)
+			end
+			if total_playing_time > 0
+				return total_infos/(total_playing_time/60)
 			end
 		end
 		return 0
@@ -166,6 +201,13 @@ class Summoner < ActiveRecord::Base
 			return ((total_won_game.to_f/total_game_played.to_f)*100).to_i
 		end
 		return 0
+	end
+
+	def get_kda_by_role(role)
+		average_kills = self.get_average_info_by_match_participants_and_role("kills", role)
+		average_assits = self.get_average_info_by_match_participants_and_role("assists", role)
+		average_death = self.get_average_info_by_match_participants_and_role("deaths", role)
+		return average_kills.to_s+"/"+average_death.to_s+"/"+average_assits.to_s
 	end
 
 	def get_teams

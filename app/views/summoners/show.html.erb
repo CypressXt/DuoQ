@@ -9,7 +9,9 @@
 			</div>
 		</div>
 		<% if @summoner.get_main_roles.first[0].to_s=="Jungle" %>
-		<%= render 'show_jungle_stats', :summoner=>@summoner, :ddragon_version=>@ddragon_version %>
+		<%= render 'show_stats_jungle', :summoner=>@summoner, :ddragon_version=>@ddragon_version %>
+		<% elsif @summoner.get_main_roles.first[0].to_s=="ADC" %>
+		<%= render 'show_stats_adc', :summoner=>@summoner, :ddragon_version=>@ddragon_version %>
 		<% end %>
 		<div class="row">
 			<div class="col-md-4">
