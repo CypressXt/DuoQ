@@ -8,7 +8,7 @@
 		if champ
 			champion_name = champ.key.sub(/^(\w)/) {|s| s.capitalize}
 		else 
-			champion_name = match.match_participants.first.champion.key.sub(/^(\w)/) {|s| s.capitalize}
+			champion_name = match.match_teams.first.match_participants.first.champion.key.sub(/^(\w)/) {|s| s.capitalize}
 		end
 		%>
 		<div class="panel panel-default panel-player-mobile pointer champ-background" onclick="document.location.href='<%= url_for app_user_team_match_path(@user.id, @team.id, match.id) %>'"
