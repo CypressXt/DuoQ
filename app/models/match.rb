@@ -1,8 +1,8 @@
 class Match < ActiveRecord::Base
 	belongs_to :team_type
 	belongs_to :season
-	has_many :match_teams
-	has_many :relation_team_matches
+	has_many :match_teams, dependent: :destroy
+	has_many :relation_team_matches, dependent: :destroy
 	has_many :team, through: :relation_team_matches
 
 

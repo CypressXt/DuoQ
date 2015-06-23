@@ -428,9 +428,7 @@ module LolApiHelper
 					if dbParticipant.save
 						# Store every event linked to a match_participant
 						participants_events_array.each do |participant_event|
-							puts participant_event.to_s
 							if participant_event['participantId'] == participant['participantId']
-								puts "!!!!! "+participant_event.to_s+" !!!!!!!"
 								match_participant_event_db = MatchParticipantEvent.find_or_create_by({match_participant_id: dbParticipant.id, timing: participant_event['timing']})
 								if participant_event['position']
 									match_participant_event_db.position_x = participant_event['position']['x']
@@ -526,7 +524,6 @@ module LolApiHelper
 	def perform_request(url)
 		riot_logger = Logger.new("#{Rails.root}/log/riot_api.log")
 		riot_logger.info "[RiotRequest] "+url
-		puts "[RiotRequest] "+url
 		resp = Net::HTTP.get_response(URI.parse(URI.encode(url)))
 		riot_logger.info "[RiotReply] "+resp.message.to_s
 		if resp.code.to_s == "200"
