@@ -233,6 +233,56 @@ module LolApiHelper
 		end
 	end
 
+	def get_participants_event_from_match_by_id(match_id)
+		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v2.2/match/"+match_id.to_s+"?includeTimeline=true&api_key="+Rails.application.secrets.riot_api_key.to_s)	
+		if check_http_error_code(result)
+			jsonMatch = JSON.parse(result)
+			if jsonMatch
+				# Participants events
+				participants_events = Array.new()
+				timeline_frames = jsonMatch['timeline']['frames']
+
+				timeline_frames.each do |frame|
+					frame['participantFrames'].each do |participant_frame|
+						participant_frame.last["timing"] = frame['timestamp']
+						participants_events << participant_frame.last
+					end
+				end
+				return participants_events
+			else
+				return Array.new()
+			end
+		end
+	end
+
+	def get_participants_event_from_match_by_json(jsonMatch)
+		if jsonMatch
+			participants_events = Array.new()
+			timeline_frames = jsonMatch['timeline']['frames']
+
+			timeline_frames.each do |frame|
+				frame['participantFrames'].each do |participant_frame|
+					participant_frame.last["timing"] = frame['timestamp']
+					participants_events << participant_frame.last
+				end
+			end
+			return participants_events
+		else
+			return Array.new()
+		end
+	end
+
+	def get_participant_summoner_id_from_match_by_number(participant_number, jsonMatch)
+		if jsonMatch
+			participants = jsonMatch['participantIdentities']
+			participants.each do |participant|
+				if participant['participantId'] == participant_number
+					return participant['player']
+				end
+			end
+		end
+	end
+
 	# This function get all the information about a match.
 	#
 	# * *Args*    :
@@ -241,7 +291,7 @@ module LolApiHelper
 	#   - an object from class Match
 	#   - nill if the match wasn't found on the riot api
 	def get_match_by_id(match_id)
-		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v2.2/match/"+match_id.to_s+"?api_key="+Rails.application.secrets.riot_api_key.to_s)	
+		result = perform_request("https://euw.api.pvp.net/api/lol/euw/v2.2/match/"+match_id.to_s+"?includeTimeline=true&api_key="+Rails.application.secrets.riot_api_key.to_s)	
 		if check_http_error_code(result)
 			jsonMatch = JSON.parse(result)
 			if jsonMatch
@@ -279,6 +329,9 @@ module LolApiHelper
 						team200 = matchTeam
 					end
 				end
+
+				# Get all participants_event from match
+				participants_events_array = get_participants_event_from_match_by_json(jsonMatch)
 
 				# Add all participants in the match_participants table
 				participants = jsonMatch['participants']
@@ -372,7 +425,29 @@ module LolApiHelper
 					dbParticipant.total_time_crowd_control_dealt = participant['stats']['totalTimeCrowdControlDealt']
 					dbParticipant.player_lane = PlayerLane.find_by(key: participant['timeline']['lane'])
 					dbParticipant.player_role = PlayerRole.find_by(key: participant['timeline']['role'])
-					dbParticipant.save
+					if dbParticipant.save
+						# Store every event linked to a match_participant
+						participants_events_array.each do |participant_event|
+							puts participant_event.to_s
+							if participant_event['participantId'] == participant['participantId']
+								puts "!!!!! "+participant_event.to_s+" !!!!!!!"
+								match_participant_event_db = MatchParticipantEvent.find_or_create_by({match_participant_id: dbParticipant.id, timing: participant_event['timing']})
+								if participant_event['position']
+									match_participant_event_db.position_x = participant_event['position']['x']
+									match_participant_event_db.position_y = participant_event['position']['y']
+								end
+								match_participant_event_db.current_gold = participant_event['currentGold']
+								match_participant_event_db.total_gold = participant_event['totalGold']
+								match_participant_event_db.level = participant_event['level']
+								match_participant_event_db.xp = participant_event['xp']
+								match_participant_event_db.minions_killed = participant_event['minionsKilled']
+								match_participant_event_db.jungle_minions_killed = participant_event['jungleMinionsKilled']
+								match_participant_event_db.timing = participant_event['timing']
+								match_participant_event_db.match_participant = dbParticipant
+								match_participant_event_db.save
+							end
+						end
+					end
 				end
 			end
 			return newDbMatch
@@ -451,6 +526,7 @@ module LolApiHelper
 	def perform_request(url)
 		riot_logger = Logger.new("#{Rails.root}/log/riot_api.log")
 		riot_logger.info "[RiotRequest] "+url
+		puts "[RiotRequest] "+url
 		resp = Net::HTTP.get_response(URI.parse(URI.encode(url)))
 		riot_logger.info "[RiotReply] "+resp.message.to_s
 		if resp.code.to_s == "200"
@@ -498,5 +574,6 @@ module LolApiHelper
 
 	module_function :get_summoner_by_name, :get_summoner_by_id, :get_teams5v5_by_summoner, :get_team5v5_league_by_team, :refresh_teams_from_api_by_appuser, :refresh_team_league_by_team, :perform_request
 	module_function :check_query_resut, :check_http_error_code, :get_summoner_tier_by_id, :get_summoner_division_by_id, :get_team5v5_recent_match_ids, :get_duo_match_id_by_summoner
-	module_function :get_match_by_id, :get_all_champions, :get_lastest_ddragon_version
+	module_function :get_match_by_id, :get_all_champions, :get_lastest_ddragon_version, :get_participants_event_from_match_by_id, :get_participants_event_from_match_by_json
+	module_function :get_participant_summoner_id_from_match_by_number
 end
