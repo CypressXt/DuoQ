@@ -6,6 +6,7 @@
 		</div>
 	</div>
 </main>
+
 <div class="bs-docs-featurette whiteContent text-center" style="height:100%;width:80%;margin-left:auto;margin-right:auto;">
 	<div class="row">
 		<div class="col-md-4">
@@ -19,6 +20,32 @@
 		<div class="col-md-4">
 			<h1><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="glyphicon glyphicon-user" aria-hidden="true"></span></h1>
 			<h1><%= @nbTeams %><br><small>registered teams</small></h1>
+		</div>
+	</div></br>
+	<div class="row">
+		<div class="col-md-4">
+			<h4><span class="glyphicon glyphicon-fire" aria-hidden="true"></span></h4>
+			<h4><%= @nbDelayedRiotRequest %><br>
+				<small>delayed requests to Riot's servers </br>
+					<small>since last DuoQ applied <%= link_to "patch", change_log_path %></small>
+				</small>
+			</h4>
+		</div>
+		<div class="col-md-4">
+			<h4><span class="glyphicon glyphicon-globe" aria-hidden="true"></span></h4>
+			<h4><%= @nbRiotRequest %><br>
+				<small>requests to Riot's servers </br>
+					<small>since last DuoQ applied <%= link_to "patch", change_log_path %></small>
+				</small>
+			</h4>
+		</div>
+		<div class="col-md-4">
+			<h4><span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span></h4>
+			<h4><%= @nb404RiotRequest %><br>
+				<small>404 errors from Riot's servers</br>
+					<small>since last DuoQ applied <%= link_to "patch", change_log_path %></small>
+				</small>
+			</h4>
 		</div>
 	</div>
 </div>
