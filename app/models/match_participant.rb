@@ -6,6 +6,7 @@ class MatchParticipant < ActiveRecord::Base
 	belongs_to :player_role
 	belongs_to :player_lane
 	belongs_to :champion
+	has_many :match_participant_events
 
 
 	def is_your_summoner(appUser_summoners)

@@ -25,7 +25,7 @@
 	<div class="row">
 		<div class="col-md-4">
 			<h4><span class="glyphicon glyphicon-fire" aria-hidden="true"></span></h4>
-			<h4><%= @nbDelayedRiotRequest %><br>
+			<h4><%= number_with_delimiter(@nbDelayedRiotRequest,delimiter: "'", separator: ",") %><br>
 				<small>delayed requests to Riot's servers </br>
 					<small>since last DuoQ applied <%= link_to "patch", change_log_path %></small>
 				</small>
@@ -33,7 +33,7 @@
 		</div>
 		<div class="col-md-4">
 			<h4><span class="glyphicon glyphicon-globe" aria-hidden="true"></span></h4>
-			<h4><%= @nbRiotRequest %><br>
+			<h4><%= number_with_delimiter(@nbRiotRequest,delimiter: "'", separator: ",") %><br>
 				<small>requests to Riot's servers </br>
 					<small>since last DuoQ applied <%= link_to "patch", change_log_path %></small>
 				</small>
@@ -41,8 +41,8 @@
 		</div>
 		<div class="col-md-4">
 			<h4><span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span></h4>
-			<h4><%= @nb404RiotRequest %><br>
-				<small>404 errors from Riot's servers</br>
+			<h4><%= number_with_delimiter(@nb404RiotRequest,delimiter: "'", separator: ",") %><br>
+				<small>404 response code from Riot servers</br>
 					<small>since last DuoQ applied <%= link_to "patch", change_log_path %></small>
 				</small>
 			</h4>

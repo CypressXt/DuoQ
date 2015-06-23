@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150506114907) do
+ActiveRecord::Schema.define(version: 20150623141204) do
 
   create_table "app_users", force: :cascade do |t|
     t.datetime "created_at"
@@ -43,6 +43,23 @@ ActiveRecord::Schema.define(version: 20150506114907) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "match_participant_events", force: :cascade do |t|
+    t.integer  "position_x"
+    t.integer  "position_y"
+    t.integer  "current_gold"
+    t.integer  "total_gold"
+    t.integer  "level"
+    t.integer  "xp"
+    t.integer  "minions_killed"
+    t.integer  "jungle_minions_killed"
+    t.integer  "timing"
+    t.integer  "match_participant_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "match_participant_events", ["match_participant_id"], name: "index_match_participant_events_on_match_participant_id"
 
   create_table "match_participants", force: :cascade do |t|
     t.integer  "participant_number"
