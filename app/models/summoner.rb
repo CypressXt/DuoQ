@@ -141,7 +141,7 @@ class Summoner < ActiveRecord::Base
 				total_infos += match_participation.send(info)
 			end
 			if number_of_games > 0
-				return total_infos / number_of_games
+				return (total_infos.to_f / number_of_games.to_f).to_f
 			end
 		end
 		return 0
@@ -176,7 +176,7 @@ class Summoner < ActiveRecord::Base
 				total_infos += match_participation.send(info)
 			end
 			if total_playing_time > 0
-				return total_infos/(total_playing_time/60)
+				return (total_infos.to_f/(total_playing_time.to_f/60)).to_f
 			end
 		end
 		return 0
@@ -198,15 +198,15 @@ class Summoner < ActiveRecord::Base
 		puts total_won_game
 
 		if total_game_played > 0
-			return ((total_won_game.to_f/total_game_played.to_f)*100).to_i
+			return ((total_won_game.to_f/total_game_played.to_f)*100)
 		end
 		return 0
 	end
 
 	def get_kda_by_role(role)
-		average_kills = self.get_average_info_by_match_participants_and_role("kills", role)
-		average_assits = self.get_average_info_by_match_participants_and_role("assists", role)
-		average_death = self.get_average_info_by_match_participants_and_role("deaths", role)
+		average_kills = self.get_average_info_by_match_participants_and_role("kills", role).round(1)
+		average_assits = self.get_average_info_by_match_participants_and_role("assists", role).round(1)
+		average_death = self.get_average_info_by_match_participants_and_role("deaths", role).round(1)
 		return average_kills.to_s+"/"+average_death.to_s+"/"+average_assits.to_s
 	end
 

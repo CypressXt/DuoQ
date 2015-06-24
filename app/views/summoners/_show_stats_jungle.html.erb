@@ -5,19 +5,25 @@
 		</video>
 	</div>
 	<div class="row" style="text-align:center;">
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<h3>
-				<%= summoner.get_average_info_by_match_participants_and_role("neutral_minions_killed","Jungle") %> <%= image_tag"http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/minion.png",size: "30x30", :style => "margin-top:0px;" %></br>
+				<%= summoner.get_average_info_by_match_participants_and_role("neutral_minions_killed","Jungle").round(0) %> <%= image_tag"http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/minion.png",size: "30x30", :style => "margin-top:0px;" %></br>
 				<small>Average jungle minions killed per game</small>
 			</h3>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<h3>
-				<%= summoner.get_win_rate("Jungle") %>%</br>
+				<%= summoner.get_kda_by_role("Jungle") %></br>
+				<small>KDA</small>
+			</h3>
+		</div>
+		<div class="col-md-3">
+			<h3>
+				<%= summoner.get_win_rate("Jungle").round(1) %>%</br>
 				<small>Win rate when playing as Jungler</small>
 			</h3>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<h3>
 				<%= summoner.get_main_roles.first[1].count %></br>
 				<small>Matches played as Jungler</small>

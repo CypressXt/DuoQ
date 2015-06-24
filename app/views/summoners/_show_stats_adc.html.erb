@@ -7,7 +7,7 @@
 	<div class="row" style="text-align:center;">
 		<div class="col-md-2">
 			<h3>
-				<%= summoner.get_average_info_by_match_participants_and_role("minions_killed","ADC") %> <%= image_tag"http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/minion.png",size: "30x30", :style => "margin-top:0px;" %></br>
+				<%= summoner.get_average_info_by_match_participants_and_role("minions_killed","ADC").round(0) %> <%= image_tag"http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/minion.png",size: "30x30", :style => "margin-top:0px;" %></br>
 				<small>Avg minions killed per game</small>
 			</h3>
 		</div>
@@ -19,13 +19,13 @@
 		</div>
 		<div class="col-md-4">
 			<h3>
-				<%= summoner.get_win_rate("ADC") %>%</br>
+				<%= summoner.get_win_rate("ADC").round(1) %>%</br>
 				<small>Win rate when playing as AD carry</small>
 			</h3>
 		</div>
 		<div class="col-md-2">
 			<h3>
-				<%= summoner.get_info_per_minutes_by_match_participants_and_role("gold_earned","ADC") %> <%= image_tag "http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/gold.png",size: "30x30", :style => "margin-top:0px;"%></br>
+				<%= summoner.get_info_per_minutes_by_match_participants_and_role("gold_earned","ADC").round(0) %> <%= image_tag "http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/gold.png",size: "30x30", :style => "margin-top:0px;"%></br>
 				<small>golds per minutes</small>
 			</h3>
 		</div>
