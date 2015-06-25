@@ -49,12 +49,16 @@ class Summoner < ActiveRecord::Base
 		all_match_participations=self.match_participants.all
 		all_match_participations.each do |match_participation|
 			if PlayerRole.find_by(key: role_key)
-				if match_participation.player_role.key == role_key
-					champ_hash[match_participation.champion.id] = Champion.find_by(id: match_participation.champion.id)
+				if match_participation.player_role
+					if match_participation.player_role.key == role_key
+						champ_hash[match_participation.champion.id] = Champion.find_by(id: match_participation.champion.id)
+					end
 				end
 			else
-				if match_participation.player_lane.key == role_key
-					champ_hash[match_participation.champion.id] = Champion.find_by(id: match_participation.champion.id)
+				if match_participation.player_lane
+					if match_participation.player_lane.key == role_key
+						champ_hash[match_participation.champion.id] = Champion.find_by(id: match_participation.champion.id)
+					end
 				end
 			end
 		end
