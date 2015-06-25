@@ -116,16 +116,20 @@ class Summoner < ActiveRecord::Base
 		all_games = self.match_participants
 		all_roles = {Support: Array.new(), ADC: Array.new(), Mid: Array.new(), Top: Array.new(), Jungle: Array.new}
 		all_games.each do |player_result|
-			if player_result.player_role.key == "DUO_CARRY" && player_result.player_lane.key == "BOTTOM"
-				all_roles[:ADC] = all_roles[:ADC]<<player_result
-			elsif player_result.player_role.key == "DUO_SUPPORT" && player_result.player_lane.key == "BOTTOM"
-				all_roles[:Support] = all_roles[:Support] << player_result
-			elsif player_result.player_lane.key == "TOP" && player_result.player_role.key == "SOLO"
+			if player_result.player_role
+				if player_result.player_role.key == "DUO_CARRY" && player_result.player_lane.key == "BOTTOM"
+					all_roles[:ADC] = all_roles[:ADC]<<player_result
+				elsif player_result.player_role.key == "DUO_SUPPORT" && player_result.player_lane.key == "BOTTOM"
+					all_roles[:Support] = all_roles[:Support] << player_result
+				elsif player_result.player_lane.key == "TOP" && player_result.player_role.key == "SOLO"
+					all_roles[:Top] = all_roles[:Top] << player_result
+				elsif player_result.player_lane.key == "MIDDLE" && player_result.player_role.key == "SOLO"
+					all_roles[:Mid] = all_roles[:Mid] << player_result
+				elsif player_result.player_lane.key == "JUNGLE" && player_result.player_role.key == "NONE"
+					all_roles[:Jungle] = all_roles[:Jungle] << player_result
+				end
+			else
 				all_roles[:Top] = all_roles[:Top] << player_result
-			elsif player_result.player_lane.key == "MIDDLE" && player_result.player_role.key == "SOLO"
-				all_roles[:Mid] = all_roles[:Mid] << player_result
-			elsif player_result.player_lane.key == "JUNGLE" && player_result.player_role.key == "NONE"
-				all_roles[:Jungle] = all_roles[:Jungle] << player_result
 			end
 		end
 		return Hash[all_roles.sort_by{|key, value| value.count}.reverse]
