@@ -17,7 +17,6 @@ module XmppLeagueHelper
 
 		if xmpp_friend_with?(summoner.id, roster)
 			send_xmpp_message("sum"+summoner.id.to_s+"@pvp.net", " Hi\nhere is your authentication key: \n"+summoner.summonerToken+"\n ", client)
-			client.close()
 		else
 			roster.add_subscription_callback do |item,pres|
 				if pres.type.to_s == "subscribed" && pres.from.to_s == "sum"+summoner.id.to_s+"@pvp.net"
@@ -75,5 +74,5 @@ module XmppLeagueHelper
 		client.close()
 	end
 
-	module_function :connect_xmpp, :send_xmpp_message, :invite_xmpp, :xmpp_friend_with?, :get_xmpp_friend_list
+	module_function :connect_xmpp, :send_xmpp_message, :invite_xmpp, :xmpp_friend_with?, :get_xmpp_friend_list, :disconnect
 end
