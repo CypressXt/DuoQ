@@ -45,6 +45,7 @@ module XmppLeagueHelper
 		from = LolApiHelper.get_summoner_by_name(Rails.application.secrets.xmpp_riot_euw_account_name)
 		message = " <message from='sum"+from["id"].to_s+"@pvp.net' id='m_40' to='"+summoner+"' type='chat' xmlns='jabber:client'><body>"+data+"</body></message>"
 		client.send(message)
+		client.close()
 	end
 
 	def invite_xmpp(summoner, client)

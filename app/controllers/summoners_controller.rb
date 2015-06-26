@@ -100,10 +100,6 @@ class SummonersController < ApplicationController
 			summoner.validated = true
 			if summoner.save
 				@message = { "success" => "Your League of Legends account is now confirmed, thanks !"}
-				client = XmppLeagueHelper.get_client
-				if client
-					XmppLeagueHelper.disconnect(client)
-				end
 				render 'global_info'
 			end
 		else
