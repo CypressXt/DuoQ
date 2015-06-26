@@ -82,9 +82,6 @@ class SummonersController < ApplicationController
 				@summoner.save
 				client = XmppLeagueHelper.connect_xmpp(@summoner, @summoner.summonerToken)
 				XmppLeagueHelper.invite_xmpp(@summoner,client)
-				if client
-					XmppLeagueHelper.disconnect(client)
-				end
 			else
 				@message = { "danger" => "This summoner is already linked to a DuoQ account ! "}
 				render 'global_info'
@@ -103,6 +100,10 @@ class SummonersController < ApplicationController
 			summoner.validated = true
 			if summoner.save
 				@message = { "success" => "Your League of Legends account is now confirmed, thanks !"}
+				client = XmppLeagueHelper.get_client
+				if client
+					XmppLeagueHelper.disconnect(client)
+				end
 				render 'global_info'
 			end
 		else

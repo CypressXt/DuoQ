@@ -34,6 +34,11 @@ module XmppLeagueHelper
 	end
 
 
+	def get_client
+		client = Jabber::Client::new(Jabber::JID::new(Rails.application.secrets.xmpp_riot_euw_account))
+		return client
+	end
+
 	def send_xmpp_message(summoner, data, client)
 		# send a message with a content of "data" to the summoner
 		Rails.logger.info "[RiotXmppSend] to:"+summoner
@@ -74,5 +79,5 @@ module XmppLeagueHelper
 		client.close()
 	end
 
-	module_function :connect_xmpp, :send_xmpp_message, :invite_xmpp, :xmpp_friend_with?, :get_xmpp_friend_list, :disconnect
+	module_function :connect_xmpp, :send_xmpp_message, :invite_xmpp, :xmpp_friend_with?, :get_xmpp_friend_list, :disconnect, :get_client
 end
