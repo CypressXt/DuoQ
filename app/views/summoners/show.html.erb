@@ -12,6 +12,12 @@
 		<%= render 'show_stats_jungle', :summoner=>@summoner, :ddragon_version=>@ddragon_version %>
 		<% elsif @summoner.get_main_roles.first[0].to_s=="ADC" %>
 		<%= render 'show_stats_adc', :summoner=>@summoner, :ddragon_version=>@ddragon_version %>
+		<% elsif @summoner.get_main_roles.first[0].to_s=="Support" %>
+		<%= render 'show_stats_support', :summoner=>@summoner, :ddragon_version=>@ddragon_version %>
+		<% elsif @summoner.get_main_roles.first[0].to_s=="Top" %>
+		<%= render 'show_stats_top', :summoner=>@summoner, :ddragon_version=>@ddragon_version %>
+		<% elsif @summoner.get_main_roles.first[0].to_s=="Mid" %>
+		<%= render 'show_stats_mid', :summoner=>@summoner, :ddragon_version=>@ddragon_version %>
 		<% end %>
 		<div class="row">
 			<div class="col-md-4">
