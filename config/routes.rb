@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 
   resources :summoners, :only => [:show]
   
+  resources :perf_status, :only => [:index]
+
   get 'ask_new_password' => 'password_reset#new', as: :new_reset_password
   post 'new_password' => 'password_reset#create', as: :reset_password
   

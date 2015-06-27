@@ -1,0 +1,20 @@
+<div class="row">
+	<div class="col-md-10 col-md-offset-1 whiteContent">
+		<div class="page-header">
+			<h2>DuoQ website performances & status</h2>
+		</div>
+
+
+		<div class="row text-center">
+			<div class="col-md-4">
+				<h1><%= @rep_time %> ms</h1><small>avg reponse time</small>
+			</div>
+			<div class="col-md-4">
+				<h1><%= @error_rate %>%</h1><small>error rate</small>
+			</div>
+			<div class="col-md-4">
+				<h1><%= @score %></h1><small>Apdex score (1.0 Excellent, 0.0 Frustrating)</small>	
+			</div>
+		</div>
+	</div>
+</div>
