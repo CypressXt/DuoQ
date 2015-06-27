@@ -3,8 +3,6 @@
 		<div class="page-header">
 			<h2>DuoQ website performances & status</h2>
 		</div>
-
-
 		<div class="row text-center">
 			<div class="col-md-4">
 				<h1><%= @rep_time %> ms</h1><small>avg reponse time</small>
@@ -13,7 +11,7 @@
 				<h1><%= @error_rate %>%</h1><small>error rate</small>
 			</div>
 			<div class="col-md-4">
-				<h1><%= @score %></h1><small>Apdex score (1.0 Excellent, 0.0 Frustrating)</small>	
+				<h1><%= @score %></h1><small><%= link_to("Apdex score", "http://apdex.org/overview.html", target: "_blank")%> (1.0 Excellent, 0.0 Frustrating)</small>	
 			</div>
 		</div>
 	</div>
