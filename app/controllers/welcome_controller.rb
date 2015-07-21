@@ -6,11 +6,11 @@ class WelcomeController < ApplicationController
 		@nbRiotRequest = 0
 		@nbDelayedRiotRequest = 0
 		@nb404RiotRequest = 0
-		if File.exist?("log/riot_api.log")
-			@nbRiotRequest = open("log/riot_api.log").grep(/RiotRequest/).count
-			@nbDelayedRiotRequest = open("log/riot_api.log").grep(/429/).count
-			@nb404RiotRequest = open("log/riot_api.log").grep(/Not Found/).count
-		end
+		# if File.exist?("log/riot_api.log")
+		# 	@nbRiotRequest = open("log/riot_api.log").grep(/RiotRequest/).count
+		# 	@nbDelayedRiotRequest = open("log/riot_api.log").grep(/429/).count
+		# 	@nb404RiotRequest = open("log/riot_api.log").grep(/Not Found/).count
+		# end
 	end
 
 end
