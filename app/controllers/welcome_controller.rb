@@ -13,4 +13,9 @@ class WelcomeController < ApplicationController
 		# end
 	end
 
+	def riot
+		riot_check_key = Rails.application.secrets.riot_verifaction_key.to_s
+		render inline: riot_check_key
+	end
+
 end
