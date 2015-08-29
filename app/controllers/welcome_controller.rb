@@ -18,4 +18,8 @@ class WelcomeController < ApplicationController
 		render inline: riot_check_key
 	end
 
+	def maintenance
+		render :layout => false
+	end
+
 end

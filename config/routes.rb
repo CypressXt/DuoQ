@@ -1,36 +1,43 @@
 Rails.application.routes.draw do
 
-  root 'welcome#index'
-
+  root 'welcome#maintenance'
+  get '*path' => redirect('/')
   
-  get '/user/:id/validate/:token' => 'app_users#confirmation' , as: :confirmation
-  get '/user/:id/validate_once_again' => 'app_users#resend_mail' , as: :validation
+  # Past Routes -------------------
+  ##get '/user/:id/validate/:token' => 'app_users#confirmation' , as: :confirmation
+  ##get '/user/:id/validate_once_again' => 'app_users#resend_mail' , as: :validation
 
-  resources :user, :as => :app_users, :controller => "app_users", :except => [:destroy] do
-    resources :summoners
-    resources :teams do
-      get 'refresh_team_matches' => 'teams#refresh_team_matches', as: :refresh_team_matches
-      resources :matches, :except => [:new, :create]
-    end
-    get 'refresh_teams' => 'teams#refresh_teams'
-    post '/summoners/create_token' => 'summoners#create_token'
-  end
+  ##resources :user, :as => :app_users, :controller => "app_users", :except => [:destroy] do
+    ##resources :summoners
+    ##resources :teams do
+      ##get 'refresh_team_matches' => 'teams#refresh_team_matches', as: :refresh_team_matches
+      ##resources :matches, :except => [:new, :create]
+    ##end
+    ##get 'refresh_teams' => 'teams#refresh_teams'
+    ##post '/summoners/create_token' => 'summoners#create_token'
+  ##end
 
-  resources :summoners, :only => [:show]
+  ##resources :summoners, :only => [:show]
   
-  resources :perf_status, :only => [:index]
+  ##resources :perf_status, :only => [:index]
 
-  get 'ask_new_password' => 'password_reset#new', as: :new_reset_password
-  post 'new_password' => 'password_reset#create', as: :reset_password
+  ##get 'ask_new_password' => 'password_reset#new', as: :new_reset_password
+  ##post 'new_password' => 'password_reset#create', as: :reset_password
   
-  get 'change_log' => 'changes_log#get_commits'
-  get 'login' => 'sessions#new'
-  post 'login' => 'sessions#create'
-  delete 'logout' => 'sessions#destroy'
+  ##get 'change_log' => 'changes_log#get_commits'
+  ##get 'login' => 'sessions#new'
+  ##post 'login' => 'sessions#create'
+  ##delete 'logout' => 'sessions#destroy'
 
 
-  get 'chat_cmd' => 'cmd_chat#index'
-  get 'riot.txt' => 'welcome#riot'
+  ##get 'chat_cmd' => 'cmd_chat#index'
+  ##get 'riot.txt' => 'welcome#riot'
+  # -----------------------------
+
+
+
+
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
